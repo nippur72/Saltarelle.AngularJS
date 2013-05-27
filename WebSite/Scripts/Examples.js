@@ -193,7 +193,7 @@
 	var $TestAngularJS_TestApplication = function() {
 	};
 	$TestAngularJS_TestApplication.Main = function() {
-		var app = new AngularJS.Module('myApp');
+		var app = angular.module('myApp', []);
 		AngularJS.AngularUtils.RegisterConfig(app, new $TestAngularJS_PhoneConfig());
 		AngularJS.AngularUtils.RegisterControllers(app, new $TestAngularJS_PhoneController());
 		//

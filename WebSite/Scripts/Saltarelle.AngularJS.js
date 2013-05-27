@@ -32,6 +32,8 @@
 		ss.add(wr, x);
 		return wr;
 	};
+	$AngularJS_AngularUtils.CreateNewModule = function() {
+	};
 	$AngularJS_AngularUtils.Register = function(module) {
 		var serv = [];
 		var $t1 = new $AngularJS_ServiceEntry();
@@ -172,12 +174,6 @@
 	var $AngularJS_Location = function() {
 	};
 	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.Module
-	var $AngularJS_Module = function(Name) {
-		angular.module(Name, []);
-		$AngularJS_AngularUtils.Register(this);
-	};
-	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.RootScope
 	var $AngularJS_RootScope = function() {
 		$AngularJS_Scope.call(this);
@@ -220,7 +216,6 @@
 	ss.registerClass(global, 'AngularJS.Http', $AngularJS_Http);
 	ss.registerClass(global, 'AngularJS.HttpPromise', $AngularJS_HttpPromise);
 	ss.registerClass(global, 'AngularJS.Location', $AngularJS_Location);
-	ss.registerClass(global, 'AngularJS.Module', $AngularJS_Module);
 	ss.registerClass(global, 'AngularJS.Scope', $AngularJS_Scope);
 	ss.registerClass(global, 'AngularJS.RootScope', $AngularJS_RootScope, $AngularJS_Scope);
 	ss.registerClass(global, 'AngularJS.Route', $AngularJS_Route);
