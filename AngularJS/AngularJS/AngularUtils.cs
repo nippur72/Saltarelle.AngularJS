@@ -66,6 +66,10 @@ namespace AngularJS
          return false;
       }
 
+      public static void CreateNewModule()
+      {
+      }
+
       public static void Register(this Module module)
       {
          List<ServiceEntry> serv = new List<ServiceEntry>();

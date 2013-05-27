@@ -15,8 +15,7 @@ namespace TestAngularJS
       public static void Main()
       {         
          Module app = new Module("myApp"); 
-
-         app.Register();        
+          
          app.RegisterConfig(new PhoneConfig());
          app.RegisterControllers(new PhoneController());                                  
 
