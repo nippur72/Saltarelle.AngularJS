@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html ng-app='myApp' xmlns="http://www.w3.org/1999/xhtml">
+   <head>      
+      <script type="text/javascript" src="Scripts/angular.1.0.6.js"></script>
+      <script type="text/javascript" src="Scripts/mscorlib.js"></script>
+      <script type="text/javascript" src="Scripts/JavaScript.js?1500"></script>
+      <script type="text/javascript" src="Scripts/Saltarelle.AngularJS.js?1500"></script>
+      <script type="text/javascript" src="Scripts/Examples.js?1500"></script>
+      <script type="text/javascript">TestAngularJS.TestApplication.Main();</script>                         
+   </head>
+   <body>      
+      <form ng-controller="StartUpController" ng-submit="requestFunding()" >  <!--ng-change="computeNeeded()"-->
+         Starting: <input 
+         ng-model="fundingStartingEstimate">
+         Recommendation: {{fundingNeeded}}
+         <button type="submit">Fund my startup!</button>
+         <button type="button" ng-click="reset()">Reset</button>
+      </form>
+   </body>
+</html>
+
+
+

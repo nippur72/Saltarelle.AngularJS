@@ -38,10 +38,17 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AngularJS\Directive.cs" />
+    <Compile Include="AngularJS\Services\Route.cs" />
+    <Compile Include="AngularJS\Services\Location.cs" />
+    <Compile Include="AngularJS\RootScope.cs" />
+    <Compile Include="AngularJS\Services\Http.cs" />
+    <Compile Include="AngularJS\Scope.cs" />
+    <Compile Include="AngularJS\Module.cs" />
     <Compile Include="AngularJS\Angular.cs" />
+    <Compile Include="AngularJS\AngularUtils.cs" />
     <Compile Include="Assembly.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

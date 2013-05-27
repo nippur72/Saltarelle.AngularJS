@@ -1,31 +1,26 @@
 ﻿(function() {
 	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.AngularControllers
-	var $AngularJS_AngularControllers = function() {
+	// AngularJS.AngularUtils
+	var $AngularJS_AngularUtils = function() {
 	};
-	$AngularJS_AngularControllers.RegisterControllers = function(App, contrs) {
-		var ct = ss.getInstanceType(contrs);
-		var bf = 24;
-		var mis = ss.getMembers(ct, 8, bf);
-		for (var $t1 = 0; $t1 < mis.length; $t1++) {
-			var mi = mis[$t1];
-			$AngularJS_AngularControllers.RegisterController(App, mi, ct);
-		}
-	};
-	$AngularJS_AngularControllers.RegisterController = function(App, mi, ct) {
+	$AngularJS_AngularUtils.$InjectionSyntax = function(module, mi, ct) {
+		var miParameterNames = scanparms(ss.midel(mi));
 		var NamedParameters = [];
+		var services = $AngularJS_AngularUtils.Dict.get_item(module.name);
 		for (var j = 0; j < mi.params.length; j++) {
 			var t = mi.params[j];
 			var found = false;
-			for (var i = 0; i < $AngularJS_AngularControllers.$types.length; i++) {
-				if (ss.referenceEquals(t, $AngularJS_AngularControllers.$types[i]) || ss.isSubclassOf(t, $AngularJS_AngularControllers.$types[i])) {
-					ss.add(NamedParameters, $AngularJS_AngularControllers.$names[i]);
+			for (var i = 0; i < services.length; i++) {
+				if (ss.referenceEquals(t, services[i].type) || ss.isSubclassOf(t, services[i].type)) {
+					if (ss.startsWithString(services[i].name, '$') || !ss.startsWithString(services[i].name, '$') && ss.referenceEquals(services[i].name, miParameterNames[j])) {
+						ss.add(NamedParameters, services[i].name);
+					}
 					found = true;
 					break;
 				}
 			}
 			if (!found) {
-				throw new ss.Exception('controller named parameter[' + j.toString() + '] of type \'' + t.toString() + '\' not recognized');
+				throw new ss.Exception('controller named parameter \'' + miParameterNames[j] + '\' of type \'' + t.toString() + '\' not recognized');
 			}
 		}
 		var wr = [];
@@ -34,17 +29,143 @@
 			ss.add(wr, s);
 		}
 		var x = ss.midel(mi);
-		// wr.Add(ct.FullName+"."+mi.ScriptName);                          
 		ss.add(wr, x);
-		App.controller(mi.name, wr);
+		return wr;
+	};
+	$AngularJS_AngularUtils.Register = function(module) {
+		var serv = [];
+		var $t1 = new $AngularJS_ServiceEntry();
+		$t1.name = '$scope';
+		$t1.type = $AngularJS_Scope;
+		ss.add(serv, $t1);
+		var $t2 = new $AngularJS_ServiceEntry();
+		$t2.name = '$rootscope';
+		$t2.type = $AngularJS_RootScope;
+		ss.add(serv, $t2);
+		var $t3 = new $AngularJS_ServiceEntry();
+		$t3.name = '$http';
+		$t3.type = $AngularJS_Http;
+		ss.add(serv, $t3);
+		var $t4 = new $AngularJS_ServiceEntry();
+		$t4.name = '$location';
+		$t4.type = $AngularJS_Location;
+		ss.add(serv, $t4);
+		var $t5 = new $AngularJS_ServiceEntry();
+		$t5.name = '$routeProvider';
+		$t5.type = $AngularJS_RouteProvider;
+		ss.add(serv, $t5);
+		var $t6 = new $AngularJS_ServiceEntry();
+		$t6.name = '$routeParams';
+		$t6.type = $AngularJS_RouteParams;
+		ss.add(serv, $t6);
+		$AngularJS_AngularUtils.Dict.add(module.name, serv);
+	};
+	$AngularJS_AngularUtils.RegisterControllers = function(module, controllers) {
+		var ct = ss.getInstanceType(controllers);
+		var bf = 24;
+		var $t1 = ss.getMembers(ct, 8, bf);
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var mi = $t1[$t2];
+			var wr = $AngularJS_AngularUtils.$InjectionSyntax(module, mi, ct);
+			module.controller(mi.name, wr);
+		}
+	};
+	$AngularJS_AngularUtils.RegisterFactory = function(module, factory) {
+		var ft = ss.getInstanceType(factory);
+		var bf = 24;
+		var $t1 = ss.getMembers(ft, 8, bf);
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var mi = $t1[$t2];
+			$AngularJS_AngularUtils.$RegisterSingleFactory(module, mi, ft);
+		}
+	};
+	$AngularJS_AngularUtils.$RegisterSingleFactory = function(module, mi, ft) {
+		var factoryname = mi.name;
+		var returntype = mi.returnType;
+		var services = $AngularJS_AngularUtils.Dict.get_item(module.name);
+		var $t1 = new $AngularJS_ServiceEntry();
+		$t1.name = factoryname;
+		$t1.type = returntype;
+		ss.add(services, $t1);
+		var wr = $AngularJS_AngularUtils.$InjectionSyntax(module, mi, ft);
+		module.factory(factoryname, wr);
+	};
+	$AngularJS_AngularUtils.RegisterFilters = function(module, filter) {
+		var ft = ss.getInstanceType(filter);
+		var bf = 24;
+		var $t1 = ss.getMembers(ft, 8, bf);
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var mi = $t1[$t2];
+			$AngularJS_AngularUtils.$RegisterFilter(module, mi, ft);
+		}
+	};
+	$AngularJS_AngularUtils.$RegisterFilter = function(module, mi, ft) {
+		var filtername = mi.name;
+		var returntype = mi.returnType;
+		//var wr = InjectionSyntax(module, mi, ft);
+		// TODO: support injectable filters
+		var wr = ss.midel(mi);
+		module.filter(filtername, function() {
+			var filter = wr;
+			return filter;
+		});
+	};
+	$AngularJS_AngularUtils.RegisterConfig = function(module, config) {
+		var ct = ss.getInstanceType(config);
+		var bf = 24;
+		var $t1 = ss.getMembers(ct, 8, bf);
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var mi = $t1[$t2];
+			var wr = $AngularJS_AngularUtils.$InjectionSyntax(module, mi, ct);
+			module.config(wr);
+		}
+	};
+	$AngularJS_AngularUtils.RegisterDirectives = function(module, directives) {
+		var ct = ss.getInstanceType(directives);
+		var bf = 24;
+		var $t1 = ss.getMembers(ct, 8, bf);
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var mi = $t1[$t2];
+			var wr = $AngularJS_AngularUtils.$InjectionSyntax(module, mi, ct);
+			module.directive(mi.name, wr);
+		}
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.DirectiveDefinition
+	var $AngularJS_DirectiveDefinition = function() {
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.Http
 	var $AngularJS_Http = function() {
+		this.defaults = null;
+		this.pendingRequests = null;
 	};
 	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.IScope
-	var $AngularJS_IScope = function() {
+	// AngularJS.HttpPromise
+	var $AngularJS_HttpPromise = function() {
+	};
+	$AngularJS_HttpPromise.prototype = {
+		then: function(success, error) {
+			return this;
+		},
+		success: function(function1) {
+			return this;
+		},
+		success: function(function1) {
+			return this;
+		},
+		success: function(function1) {
+			return this;
+		},
+		error: function(function1) {
+			return this;
+		},
+		error: function(function1) {
+			return this;
+		},
+		error: function(function1) {
+			return this;
+		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.Location
@@ -53,133 +174,53 @@
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.RootScope
 	var $AngularJS_RootScope = function() {
+		$AngularJS_Scope.call(this);
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.Route
+	var $AngularJS_Route = function() {
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.RouteMap
+	var $AngularJS_RouteMap = function() {
+	};
+	$AngularJS_RouteMap.createInstance = function() {
+		return {};
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.RouteParams
+	var $AngularJS_RouteParams = function() {
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.RouteProvider
+	var $AngularJS_RouteProvider = function() {
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.RouteProviderExtension
+	var $AngularJS_RouteProviderExtension = function() {
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.Scope
 	var $AngularJS_Scope = function() {
 	};
 	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.CartModel
-	var $TestAngularJS_CartModel = function() {
-		this.items = null;
-		this.remove = null;
-		this.totalCart = null;
-		this.subtotal = null;
-		this.billDiscount = 0;
-		$AngularJS_Scope.call(this);
+	// AngularJS.ServiceEntry
+	var $AngularJS_ServiceEntry = function() {
+		this.name = null;
+		this.type = null;
 	};
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.CartModel.CartItem
-	var $TestAngularJS_CartModel$CartItem = function() {
-		this.title = null;
-		this.quantity = 0;
-		this.price = 0;
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.Controllers
-	var $TestAngularJS_Controllers = function() {
-		$AngularJS_AngularControllers.call(this);
-	};
-	$TestAngularJS_Controllers.HelloController = function(scope) {
-		scope.greetings = 'Douglas Adams';
-	};
-	$TestAngularJS_Controllers.CartController = function(scope) {
-		scope.items = [];
-		var $t2 = scope.items;
-		var $t1 = new $TestAngularJS_CartModel$CartItem();
-		$t1.title = 'Paint pots';
-		$t1.quantity = 8;
-		$t1.price = 3.95;
-		ss.add($t2, $t1);
-		var $t4 = scope.items;
-		var $t3 = new $TestAngularJS_CartModel$CartItem();
-		$t3.title = 'Polka dots';
-		$t3.quantity = 17;
-		$t3.price = 12.95;
-		ss.add($t4, $t3);
-		var $t6 = scope.items;
-		var $t5 = new $TestAngularJS_CartModel$CartItem();
-		$t5.title = 'Pebbles';
-		$t5.quantity = 5;
-		$t5.price = 6.95;
-		ss.add($t6, $t5);
-		scope.remove = function(index) {
-			ss.removeAt(scope.items, index);
-		};
-		scope.totalCart = function() {
-			var total = 0;
-			for (var i = 0; i < scope.items.length; i++) {
-				total = total + scope.items[i].price * scope.items[i].quantity;
-			}
-			return total;
-		};
-		scope.subtotal = function() {
-			return ss.Nullable.unbox(ss.cast(scope.totalCart(), Number)) - scope.billDiscount;
-		};
-		var calculateDiscount = function(newValue, oldValue) {
-			scope.billDiscount = ((ss.Nullable.unbox(ss.cast(newValue, Number)) > 100) ? 10 : 0);
-		};
-		scope.$watch(scope.totalCart, calculateDiscount);
-	};
-	$TestAngularJS_Controllers.StartUpController = function(scope) {
-		scope.fundingStartingEstimate = 0;
-		scope.computeNeeded = function() {
-			scope.fundingNeeded = scope.fundingStartingEstimate * 10;
-		};
-		scope.requestFunding = function() {
-			window.alert('Sorry, please get more customers first.');
-		};
-		scope.reset = function() {
-			scope.fundingStartingEstimate = 0;
-		};
-		var compneeded = function(newval, oldval) {
-			scope.fundingNeeded = scope.fundingStartingEstimate * 10;
-		};
-		scope.$watch('fundingStartingEstimate', compneeded);
-		var pippo = function(sc) {
-			return 33;
-		};
-		scope.$watch($TestAngularJS_FundingModel.check, compneeded);
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.FundingModel
-	var $TestAngularJS_FundingModel = function() {
-		this.fundingStartingEstimate = 0;
-		this.fundingNeeded = 0;
-		this.computeNeeded = null;
-		this.requestFunding = null;
-		this.reset = null;
-		$AngularJS_Scope.call(this);
-	};
-	$TestAngularJS_FundingModel.check = function() {
-		return 6;
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.HelloModel
-	var $TestAngularJS_HelloModel = function() {
-		this.greetings = null;
-		$AngularJS_Scope.call(this);
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.TestApplication
-	var $TestAngularJS_TestApplication = function() {
-	};
-	$TestAngularJS_TestApplication.Main = function() {
-		var app = angular.module('myApp', []);
-		$AngularJS_AngularControllers.RegisterControllers(app, new $TestAngularJS_Controllers());
-	};
-	ss.registerClass(global, 'AngularJS.AngularControllers', $AngularJS_AngularControllers);
+	ss.registerClass(global, 'AngularJS.AngularUtils', $AngularJS_AngularUtils);
+	ss.registerClass(global, 'AngularJS.DirectiveDefinition', $AngularJS_DirectiveDefinition);
 	ss.registerClass(global, 'AngularJS.Http', $AngularJS_Http);
-	ss.registerInterface(global, 'AngularJS.IScope', $AngularJS_IScope);
+	ss.registerClass(global, 'AngularJS.HttpPromise', $AngularJS_HttpPromise);
 	ss.registerClass(global, 'AngularJS.Location', $AngularJS_Location);
-	ss.registerClass(global, 'AngularJS.RootScope', $AngularJS_RootScope);
-	ss.registerClass(global, 'AngularJS.Scope', $AngularJS_Scope, null, [$AngularJS_IScope]);
-	ss.registerClass(global, 'TestAngularJS.CartModel', $TestAngularJS_CartModel, $AngularJS_Scope, [$AngularJS_IScope]);
-	ss.registerClass(global, 'TestAngularJS.CartModel$CartItem', $TestAngularJS_CartModel$CartItem);
-	ss.registerClass(global, 'TestAngularJS.Controllers', $TestAngularJS_Controllers, $AngularJS_AngularControllers, [], { members: [{ name: 'CartController', isStatic: true, type: 8, sname: 'CartController', returnType: Object, params: [$TestAngularJS_CartModel] }, { name: 'HelloController', isStatic: true, type: 8, sname: 'HelloController', returnType: Object, params: [$TestAngularJS_HelloModel] }, { name: 'StartUpController', isStatic: true, type: 8, sname: 'StartUpController', returnType: Object, params: [$TestAngularJS_FundingModel] }] });
-	ss.registerClass(global, 'TestAngularJS.FundingModel', $TestAngularJS_FundingModel, $AngularJS_Scope, [$AngularJS_IScope]);
-	ss.registerClass(global, 'TestAngularJS.HelloModel', $TestAngularJS_HelloModel, $AngularJS_Scope, [$AngularJS_IScope]);
-	ss.registerClass(global, 'TestAngularJS.TestApplication', $TestAngularJS_TestApplication);
-	$AngularJS_AngularControllers.$names = ['$scope', '$rootscope', '$http', '$location'];
-	$AngularJS_AngularControllers.$types = [$AngularJS_Scope, $AngularJS_RootScope, $AngularJS_Http, $AngularJS_Location];
+	ss.registerClass(global, 'AngularJS.Scope', $AngularJS_Scope);
+	ss.registerClass(global, 'AngularJS.RootScope', $AngularJS_RootScope, $AngularJS_Scope);
+	ss.registerClass(global, 'AngularJS.Route', $AngularJS_Route);
+	ss.registerClass(global, 'AngularJS.RouteMap', $AngularJS_RouteMap);
+	ss.registerClass(global, 'AngularJS.RouteParams', $AngularJS_RouteParams);
+	ss.registerClass(global, 'AngularJS.RouteProvider', $AngularJS_RouteProvider);
+	ss.registerClass(global, 'AngularJS.RouteProviderExtension', $AngularJS_RouteProviderExtension);
+	ss.registerClass(global, 'AngularJS.ServiceEntry', $AngularJS_ServiceEntry);
+	$AngularJS_AngularUtils.Dict = new (ss.makeGenericType(ss.Dictionary$2, [String, Array]))();
 })();

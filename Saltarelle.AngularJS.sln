@@ -23,6 +23,12 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebSite", "WebSite\", "{7B8
 	EndProjectSection
 	ProjectSection(ProjectDependencies) = postProject
 		{67CCC814-5E88-49A1-BF39-9555D27E8748} = {67CCC814-5E88-49A1-BF39-9555D27E8748}
+		{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC} = {00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{67CCC814-5E88-49A1-BF39-9555D27E8748} = {67CCC814-5E88-49A1-BF39-9555D27E8748}
 	EndProjectSection
 EndProject
 Global
@@ -39,6 +45,10 @@ Global
 		{7B8AFF18-46AF-475D-9978-057FE45DFBB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B8AFF18-46AF-475D-9978-057FE45DFBB1}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B8AFF18-46AF-475D-9978-057FE45DFBB1}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

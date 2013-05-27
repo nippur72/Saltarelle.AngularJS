@@ -6,6 +6,7 @@
       <script type="text/javascript" src="Scripts/mscorlib.js"></script>
       <script type="text/javascript" src="Scripts/JavaScript.js?1500"></script>
       <script type="text/javascript" src="Scripts/Saltarelle.AngularJS.js?1500"></script>
+      <script type="text/javascript" src="Scripts/Examples.js?1500"></script>
       <script type="text/javascript">TestAngularJS.TestApplication.Main();</script>                         
    </head>
    <body>
@@ -14,22 +15,14 @@
          <div ng-repeat='item in items'>
             <span>{{item.title}}</span>
             <input ng-model='item.quantity'>
-            <span>{{item.price | currency}}</span>
-            <span>{{item.price * item.quantity | currency}}</span>
+            <span>{{item.price | euro}}</span>
+            <span>{{item.price * item.quantity | euro}}</span>
             <button ng-click="remove($index)">Remove</button>
          </div>
          <div>Total: {{totalCart() | currency}}</div>
          <div>Discount: {{billDiscount | currency}}</div>
          <div>Subtotal: {{subtotal() | currency}}</div>
-      </div>
-      <hr />
-      <form ng-controller="StartUpController" ng-submit="requestFunding()" >  <!--ng-change="computeNeeded()"-->
-         Starting: <input 
-         ng-model="fundingStartingEstimate">
-         Recommendation: {{fundingNeeded}}
-         <button type="submit">Fund my startup!</button>
-         <button type="button" ng-click="reset()">Reset</button>
-      </form>
+      </div>      
    </body>
 </html>
 
