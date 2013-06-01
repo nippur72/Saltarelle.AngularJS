@@ -38,7 +38,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AngularJS\Directive.cs" />
+    <Compile Include="AngularJS\Attributes.cs" />
+    <Compile Include="AngularJS\Element.cs" />
+    <Compile Include="AngularJS\DirectiveDefinition.cs" />
+    <Compile Include="AngularJS\Services\Injector.cs" />
     <Compile Include="AngularJS\Services\Route.cs" />
     <Compile Include="AngularJS\Services\Location.cs" />
     <Compile Include="AngularJS\RootScope.cs" />
@@ -72,7 +75,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.2.2.0\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.2.2.0\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.2.2.0\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)$(TargetName).js" "$(SolutionDir)\WebSite\Scripts"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetDir)$(TargetName).js" "$(SolutionDir)\WebSite\Scripts"
+copy "$(TargetDir)$(TargetName).js" "$(SolutionDir)\todomvc\js"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

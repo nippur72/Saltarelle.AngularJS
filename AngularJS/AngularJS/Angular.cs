@@ -11,6 +11,7 @@ using System.Diagnostics;
 namespace AngularJS
 {             
    [Imported]
+   [ScriptNamespace("angular")]
    public static class Angular
    {
       [InlineCode("angular.module({ModuleName},[])")]
@@ -24,6 +25,7 @@ namespace AngularJS
       {
          return null;
       }
-   }                                     
+   }   
+       
 }
 

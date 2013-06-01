@@ -5,23 +5,16 @@
    <title></title>
    <script type="text/javascript" src="Scripts/angular.1.0.6.js"></script>
    <script type="text/javascript" src="Scripts/mscorlib.js"></script>
-   <script type="text/javascript" src="Scripts/JavaScript.js?1500"></script>
    <script type="text/javascript" src="Scripts/Saltarelle.AngularJS.js?1500"></script>
    <script type="text/javascript" src="Scripts/Examples.js?1500"></script>
-
-
-   <script type="text/javascript">
-      TestAngularJS.TestApplication.Main();
-   </script>                         
+   <script type="text/javascript">TestAngularJS.PhoneExample.Main();</script>                            
 </head>
-<body>
-    <div ng-app="myApp">
-    <div ng-controller="HelloController">
-      <p>
-        Greetings {{greetings}}
-      </p>      
-    </div>
-    </div>
+<body ng-app="myApp">    
+   
+    <p> phone app main container start</p>
+    <div ng-view></div>
+    <p> phone app end main container </p>   
+
 </body>
 </html>
 

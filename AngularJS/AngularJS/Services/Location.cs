@@ -10,8 +10,14 @@ using System.Diagnostics;
 
 namespace AngularJS
 {       
-   public class Location
+   [Imported]
+   public sealed class Location
    {
+      public string Path
+      {
+         [InlineCode("{this}.path()")]        get { return ""; }         
+         [InlineCode("{this}.path({value})")] set { }
+      }
    }
 }
 

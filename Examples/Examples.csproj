@@ -39,11 +39,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assembly.cs" />
-    <Compile Include="Examples\hello.cs" />
+    <Compile Include="Examples\directives.cs" />
+    <Compile Include="Examples\Directives\expander.cs" />
+    <Compile Include="Examples\Directives\hello.cs" />
+    <Compile Include="Examples\phone.cs" />
     <Compile Include="Examples\funding.cs" />
     <Compile Include="Examples\shopping_cart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Examples\main.cs" />
+    <Compile Include="Examples\Directives\accordion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

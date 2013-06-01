@@ -10,7 +10,8 @@ using System.Diagnostics;
 
 namespace AngularJS
 {       
-   public class RootScope : Scope
+   [Imported]
+   public sealed class RootScope : Scope
    {             
    } 
 }

@@ -43,161 +43,23 @@ namespace AngularJS
       $on(name, listener)
       */
       
-      /*
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchExpression})")]
-      public void Watch(string watchExpression)
-      {
-      }
+      #region Watch
 
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchExpression},{listener})")]
-      public void Watch(string watchExpression, Action listener)
-      {
-      }
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, Action listener) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, Action listener, bool objectEquality) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, Action<T> listener) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(string watchFunction, Action<T> listener, bool objectEquality) {}
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, WatchListener<T> listener) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(string watchFunction, WatchListener<T> listener, bool objectEquality) {}
 
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchExpression},{listener},{objectEquality})")]
-      public void Watch(string watchExpression, Action listener, bool objectEquality)
-      {
-      }
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, Action listener) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, Action listener, bool objectEquality) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, Action<T> listener) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(Func<T> watchFunction, Action<T> listener, bool objectEquality) {}
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, WatchListener<T> listener) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(Func<T> watchFunction, WatchListener<T> listener, bool objectEquality) {}
       
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchExpression},{listener})")]
-      public void Watch(string watchExpression, WatchListener listener)
-      {
-      }       
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchExpression},{listener},{objectEquality})")]
-      public void Watch(string watchExpression, WatchListener listener, bool objectEquality)
-      {
-      }
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]
-      public void Watch(Func<object> watchFunction, Action listener)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]
-      public void Watch(Func<object> watchFunction, Action listener, bool objectEquality)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]
-      public void Watch(Func<object,object> watchFunction, Action listener)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]
-      public void Watch(Func<object,object> watchFunction, Action listener, bool objectEquality)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]
-      public void Watch(Func<object> watchFunction, WatchListener listener)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]
-      public void Watch(Func<object> watchFunction, WatchListener listener, bool objectEquality)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]
-      public void Watch(Func<object,object> watchFunction, WatchListener listener)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]
-      public void Watch(Func<object,object> watchFunction, WatchListener listener, bool objectEquality)
-      {
-      } 
-      */
-
-      /*
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]
-      public void Watch<T>(string watchFunction, WatchListener<T> listener)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]
-      public void Watch<T>(string watchFunction, WatchListener<T> listener, bool objectEquality)
-      {
-      } 
-      */
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]
-      public void Watch<T>(Func<T> watchFunction, Action listener)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]
-      public void Watch<T>(Func<T> watchFunction, Action listener, bool objectEquality)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]
-      public void Watch<T>(Func<T> watchFunction, WatchListener<T> listener)
-      {
-      } 
-
-      /// <summary>
-      /// Registers a listener callback to be executed whenever the watchExpression changes.
-      /// </summary>
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]
-      public void Watch<T>(Func<T> watchFunction, WatchListener<T> listener, bool objectEquality)
-      {
-      } 
+      #endregion 
 
       /*
       $id

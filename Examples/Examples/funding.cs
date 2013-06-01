@@ -9,47 +9,46 @@ using System.Serialization;
 using AngularJS;
 
 namespace TestAngularJS
-{                      
-   public class FundingModel : Scope
-   {      
+{                           
+   public class FundingExample
+   {
+      public static void Main()
+      {
+         Module app = new Module("myApp");
+         app.RegisterController(typeof(StartUpController));
+      }   
+   }   
+   
+   public class StartUpController : Scope
+   {                    	                                                                                               
       public double fundingStartingEstimate;
       public double fundingNeeded;
 
-      public Action computeNeeded;
-      public Action requestFunding;
-      public Action reset;                
-   }
-   
-   [Reflectable]
-   public class FundingControllers 
-   {                    	                                                                                            
-      [Reflectable]
-      public static void StartUpController(FundingModel scope)
+      public StartUpController(Scope _scope)
       {
-         scope.fundingStartingEstimate = 0;
+         fundingStartingEstimate = 0;
 
-         scope.computeNeeded = delegate() 
-         {
-            scope.fundingNeeded = scope.fundingStartingEstimate * 10;
-         };
-
-         scope.requestFunding = delegate() 
-         {
-            Window.Alert("Sorry, please get more customers first.");
-         };
-
-         scope.reset = delegate()
-         {
-            scope.fundingStartingEstimate = 0;
-         };
-
-         WatchListener<double> compneeded = (newval,oldval) => 
-         {
-            scope.fundingNeeded = scope.fundingStartingEstimate * 10;
-         };            
-
-         scope.Watch<double>( ()=>{ return scope.fundingStartingEstimate; }, compneeded);
+         Watch<double>( ()=>{ return fundingStartingEstimate; }, compneeded);
       }
 
+      public void computeNeeded() 
+      {
+         fundingNeeded = fundingStartingEstimate * 10;
+      }
+
+      public void requestFunding() 
+      {
+         Window.Alert("Sorry, please get more customers first.");
+      }
+
+      public void reset()
+      {
+         fundingStartingEstimate = 0;
+      }
+
+      public void compneeded(double newval, double oldval)
+      {
+         fundingNeeded = fundingStartingEstimate * 10;
+      }            
    }   
 }

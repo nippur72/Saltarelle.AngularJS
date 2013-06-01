@@ -13,7 +13,7 @@ namespace AngularJS
    public delegate string Filter<T>(T input);
 
    [Imported]
-   public class Module
+   public sealed class Module
    {
       [InlineCode("angular.module({Name},[])")] 
       public Module(string Name)
@@ -59,6 +59,11 @@ namespace AngularJS
       {
       }      
 
+      [InlineCode("{this}.filter({FilterName},{ob})")]
+      public void Filter(string FilterName, object ob)
+      {
+      }      
+
       [InlineCode("{this}.filter({FilterName},function() {{ var filter = {func}; return filter; }})")]
       public void FilterAll(string FilterName, object func)
       {
@@ -69,7 +74,7 @@ namespace AngularJS
       {
       }    
 
-      [InlineCode("{this}.directive({Name},{func})")]
+      [InlineCode("{this}.directive({Name},function() {{ return {func}; }})")]
       public void Directive(string Name, object func)
       {
       }

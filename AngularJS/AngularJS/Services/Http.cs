@@ -14,7 +14,8 @@ namespace AngularJS
    public delegate void HttpDelegate3(object data, object status, object header);
    public delegate void HttpDelegate4(object data, object status, object header, object config);
 
-   public class HttpPromise
+   [Imported]
+   public sealed class HttpPromise
    {
       [ScriptName("then")]
       public HttpPromise Then(object success, object error)
@@ -31,7 +32,8 @@ namespace AngularJS
       [ScriptName("error")] public HttpPromise Error(HttpDelegate4 function) { return this; }
    }
 
-   public class Http
+   [Imported]
+   public sealed class Http
    {
       [InlineCode("{this}.get({Url})         ")] public HttpPromise Get(string Url               ) { return null; }
       [InlineCode("{this}.get({Url},{Config})")] public HttpPromise Get(string Url, object Config) { return null; }

@@ -12,10 +12,10 @@
 </head>
 <body ng-app="myApp">    
 
-    <p> main container start</p>
-    <div ng-view></div>
-    <p> end main container </p>
-
+   <div ng-controller="mycontroller">
+      this is {{mystring}}
+      <button ng-click="faime('ciao')">Ciao</button>
+   </div>  
 </body>
 </html>
 

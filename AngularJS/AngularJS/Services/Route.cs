@@ -10,10 +10,12 @@ using System.Diagnostics;
 
 namespace AngularJS
 {       
-   public class Route
+   [Imported]
+   public sealed class Route
    {
    }
 
+   [Imported]
    public sealed class RouteMap
    {
       [ScriptName("controller")]     public string Controller;
@@ -29,7 +31,8 @@ namespace AngularJS
       }
    }
 
-   public class RouteProvider
+   [Imported]
+   public sealed class RouteProvider
    {
       [InlineCode("{this}.otherwise({route})")]
       public RouteProvider otherwise(RouteMap route)
@@ -43,12 +46,13 @@ namespace AngularJS
          return this;
       }
    }
-
+   
    public class RouteParams
    {
    }
 
-   public static class RouteProviderExtension
+   [Imported]
+   public sealed class RouteProviderExtension
    {
    }
 }

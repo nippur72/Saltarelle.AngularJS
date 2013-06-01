@@ -3,11 +3,10 @@
    <head>
       <title>Your Shopping Cart</title>
       <script type="text/javascript" src="Scripts/angular.1.0.6.js"></script>
-      <script type="text/javascript" src="Scripts/mscorlib.js"></script>
-      <script type="text/javascript" src="Scripts/JavaScript.js?1500"></script>
+      <script type="text/javascript" src="Scripts/mscorlib.js"></script>      
       <script type="text/javascript" src="Scripts/Saltarelle.AngularJS.js?1500"></script>
       <script type="text/javascript" src="Scripts/Examples.js?1500"></script>
-      <script type="text/javascript">TestAngularJS.TestApplication.Main();</script>                         
+      <script type="text/javascript">TestAngularJS.ShoppingCartExample.Main();</script>                         
    </head>
    <body>
       <div ng-controller='CartController'>
@@ -16,12 +15,12 @@
             <span>{{item.title}}</span>
             <input ng-model='item.quantity'>
             <span>{{item.price | euro}}</span>
-            <span>{{item.price * item.quantity | euro}}</span>
+            <span>{{item.price * item.quantity | dracma}}</span>
             <button ng-click="remove($index)">Remove</button>
          </div>
          <div>Total: {{totalCart() | currency}}</div>
          <div>Discount: {{billDiscount | currency}}</div>
-         <div>Subtotal: {{subtotal() | currency}}</div>
+         <div>Subtotal: {{subtotal() | currency}}</div>      
       </div>      
    </body>
 </html>
