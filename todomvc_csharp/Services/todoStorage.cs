@@ -17,7 +17,7 @@ namespace Todo
 
    public class todoStorageService
    {
-      public static TodoStorage todoStorage()
+      public TodoStorage todoStorage()
       {
          return new TodoStorage();   
       }  

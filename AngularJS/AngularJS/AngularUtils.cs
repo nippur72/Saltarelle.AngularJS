@@ -10,6 +10,8 @@ using System.Diagnostics;
 
 namespace AngularJS
 {         
+   public enum ThisMode { ScopeStrict, Scope, This, NewObject};
+
    public static class TypeExtensionMethods
    {
       public static List<string> GetPublicInstanceMethodNames(this Type type)
@@ -35,6 +37,79 @@ namespace AngularJS
 
       [InlineCode("{type}[{funcname}]")]
       public static Function GetKey(this Type type, string funcname) { return null; }
+
+      [InlineCode("new Function({args},{body})")]
+      public static Function CreateNewFunction(List<string> args, string body) { return null; }
+
+      #region Basic Function builder      
+
+      public static Function BuildControllerFunction(this Type type, ThisMode this_mode, string return_function=null, bool return_function_call=false)
+      {         
+         string body = "";
+         string thisref = "";  
+         
+              if(this_mode == ThisMode.NewObject)   thisref = "$self";  
+         else if(this_mode == ThisMode.ScopeStrict) thisref = "_scope";
+         else if(this_mode == ThisMode.Scope)       thisref = "_scope";
+         else if(this_mode == ThisMode.This)        thisref = "this";
+
+         if(this_mode == ThisMode.NewObject) body+="var $self = new Object();"; 
+         
+         // gets and annotate constructor parameter; annotations are stored in type.$inject                                             
+         var parameters = Injector.Annotate(type.GetConstructorFunction());
+                  
+         if(this_mode == ThisMode.ScopeStrict)
+         {
+            // verifies that "scope" is the first parameter in constructor
+            if(parameters.Count<1 || parameters[0]!="_scope")
+            {
+               throw new Exception(String.Format("Controller {0} must specify '_scope' as first parameter in its constructor",type.Name));
+            } 
+         }
+                  
+         // takes method into $scope, binding "$scope" to "this"                 
+         foreach(string funcname in type.GetPublicInstanceMethodNames())
+         {
+            body += String.Format("{2}.{1} = {0}.prototype.{1}.bind({2});\r\n",type.FullName,funcname,thisref);             
+         }
+                  
+         // put call at the end so that methods are defined first
+         body+=String.Format("{0}.apply({1},arguments);\r\n",type.FullName,thisref);
+
+         if(return_function!=null)
+         {
+            if(return_function_call) body+=String.Format("return {1}.{0}();\r\n",return_function,thisref);   
+            else                     body+=String.Format("return {1}.{0}  ;\r\n",return_function,thisref);   
+            
+            if(!type.GetPublicInstanceMethodNames().Contains(return_function))
+            {
+               throw new Exception("function '"+return_function+"' not defined in controller '"+type.Name+"'");
+            }
+         }
+
+         return TypeExtensionMethods.CreateNewFunction(parameters,body);
+      }
+
+      #endregion
+   }
+
+   public static class FunctionExtensionMethods
+   {
+      public static object CreateFunctionCall(this Function fun, List<string> parameters) 
+      {
+         // if no parameters, takes function out of the array
+         if(parameters.Count==0) return fun;
+
+         // builds array
+         List<object> result = new List<object>();
+         for(int t=0;t<parameters.Count;t++)
+         {
+            if(parameters[t].StartsWith("_")) parameters[t] = "$" + parameters[t].Substring(1);
+            result.Add(parameters[t]);
+         }                           
+         result.Add(fun);
+         return result;
+      }      
    }
 
    #region Comment explaining how classes are turned into function controllers
@@ -55,8 +130,17 @@ namespace AngularJS
       public static List<string> Items(Http _http) { return ...; }
    }
 
+   // *** resume ***
+   // config:     this = global   (no name required)
+   // directive:  this = global 
+
+   // factory:    this = new object 
+   // controller: this = new object   // scope patched
+   // filter:     this = new object 
+   // service:    this = new object 
+
    // as controller: requires $scope as first parameter, inject derived from constructor
-   function($scope)
+   function($scope,injectables)
    {
       $scope.remove = ControllerClass.prototype.remove.bind($scope);
       $scope.clear = ControllerClass.prototype.clear.bind($scope);
@@ -89,315 +173,47 @@ namespace AngularJS
 
    public static class AngularUtils
    {        
-      #region old code (to delete)
-      /*
-      public static Dictionary<string,List<ServiceEntry>> Dict = new Dictionary<string,List<ServiceEntry>>();     
-
-      private static List<object> InjectionSyntax(Module module, MethodInfo mi, Type ct)
-      {
-         List<string> miParameterNames = scanparms(mi.CreateDelegate());
-         List<object> NamedParameters = new List<object>();
-         
-         List<ServiceEntry> services = Dict[module.Name];
-                                             
-         for(int j=0;j<mi.ParameterTypes.Length;j++)     
-         {
-            Type t = mi.ParameterTypes[j];               
-            bool found = false;
-            for(int i=0;i<services.Count;i++)
-            {
-               if(t==services[i].type || IsSubclassOf(t,services[i].type))
-               {  
-                  if(services[i].name.StartsWith("$") || (!services[i].name.StartsWith("$") && services[i].name==miParameterNames[j]))
-                  NamedParameters.Add(services[i].name);
-                  found = true;
-                  break;
-               }
-            }                        
-
-            if(!found) throw new Exception("controller named parameter '"+miParameterNames[j]+"' of type '"+t.ToString()+"' not recognized");
-         }   
-         
-         List<object> wr = new List<object>();
-                                                                                                  
-         foreach(string s in NamedParameters) wr.Add(s);
-
-         object x = mi.CreateDelegate();                           
-         wr.Add(x);          
-         return wr;                
-      }
-      */
-
-      /*
-      [InlineCode("scanparms({fn})")]
-      private static List<string> scanparms(object fn)
-      {
-         return null;
-      }
-
-      [InlineCode("scanparms({fn})")]
-      private static List<string> scanparms(Function fn)
-      {
-         return null;
-      }
-      */
-      
-      /*
-      [InlineCode("ss.isSubclassOf({target},{type})")]
-      private static bool IsSubclassOf(Type target, Type type)
-      {
-         return false;
-      }
-
-      public static bool IsOverridenMethod(object derivedtype, string methodname, Type basetype)
-      {         
-         dynamic thisfn = ((dynamic)derivedtype)[methodname];
-         dynamic basefn = ((dynamic)basetype).prototype[methodname];
-         return thisfn != basefn;
-                  
-         // using Reflection
-         //Type t1 = derivedtype.GetMethod(methodname).DeclaringType;
-         //Type t2 = basetype;
-         //return (t1 != t2);
-                  
-      }       
-      */
-
-      /*
-      public static void Register(this Module module)
-      {
-         List<ServiceEntry> serv = new List<ServiceEntry>();
-         serv.Add( new ServiceEntry() { name="$scope",         type=typeof(Scope)         } );
-         serv.Add( new ServiceEntry() { name="$rootscope",     type=typeof(RootScope)     } );
-         serv.Add( new ServiceEntry() { name="$http",          type=typeof(Http)          } );
-         serv.Add( new ServiceEntry() { name="$location",      type=typeof(Location)      } );
-         serv.Add( new ServiceEntry() { name="$routeProvider", type=typeof(RouteProvider) } );
-         serv.Add( new ServiceEntry() { name="$routeParams",   type=typeof(RouteParams)   } );
-         Dict.Add(module.Name,serv);          
-      }
-             
-      public static void Old_RegisterControllers(this Module module, object controllers)
-      {
-         Type ct = controllers.GetType();
-
-         BindingFlags bf = BindingFlags.Static | BindingFlags.Public;
-         
-         foreach(MethodInfo mi in ct.GetMethods(bf))
-         {
-            var wr = InjectionSyntax(module, mi, ct);
-            module.Controller(mi.Name,wr);         
-         }
-      }
-
-      public static void OldRegisterClassController(this Module module, Type ct, string name)
-      {
-         //var wr = InjectionSyntax(module, mi, ct);
-         List<object> wr = new List<object>();
-         wr.Add("$scope");
-         wr.Add("Items");
-         wr.Add(ct);
-         module.Controller(name,wr);                  
-      }*/
-                       /*
-      public static void RegisterFactory(this Module module, object factory)
-      {
-         Type ft = factory.GetType();
-
-         BindingFlags bf = BindingFlags.Static | BindingFlags.Public;
-         
-         foreach(MethodInfo mi in ft.GetMethods(bf))
-         {
-            RegisterSingleFactory(module, mi, ft);
-         }
-      }      
-
-      private static void RegisterSingleFactory(Module module, MethodInfo mi, Type ft)
-      {
-         string factoryname = mi.Name;
-         Type returntype = mi.ReturnType;
-
-         var services = Dict[module.Name];
-
-         services.Add(new ServiceEntry(){name=factoryname, type=returntype});
-
-         var wr = InjectionSyntax(module, mi, ft);
-         module.Factory(factoryname, wr);         
-      }                       */
-
-      /*public static void RegisterFilters(this Module module, object filter)
-      {
-         Type ft = filter.GetType();
-
-         BindingFlags bf = BindingFlags.Static | BindingFlags.Public;
-
-         foreach(MethodInfo mi in ft.GetMethods(bf))
-         {
-            RegisterFilter(module, mi, ft);
-         }
-      }      
-
-      private static void RegisterFilter(Module module, MethodInfo mi, Type ft)
-      {
-         string filtername = mi.Name;
-         Type returntype = mi.ReturnType;
-         
-         //var wr = InjectionSyntax(module, mi, ft);
-         // TODO: support injectable filters
-         var wr = mi.CreateDelegate();
-         module.FilterAll(filtername, wr);         
-      }
-
-      public static void RegisterConfig(this Module module, object config)
-      {
-         Type ct = config.GetType();
-
-         BindingFlags bf = BindingFlags.Static | BindingFlags.Public;
-         
-         foreach(MethodInfo mi in ct.GetMethods(bf))
-         {
-            var wr = InjectionSyntax(module, mi, ct);
-            module.Config(wr);         
-         }
-      }      
-      
-      public static List<object> BuildInjection(Module module, Type type)
-      {
-         var services = Dict[module.Name];
-
-         var parameters = scanparms(type);
-          
-         List<object> injection_array = new List<object>();
-         for(int t=0;t<parameters.Count;t++)
-         {
-            string name = parameters[t].ToLower();                    
-            bool found = false;
-            for(int i=0;i<services.Count;i++)
-            {
-               string sname = services[i].name.ToLower();
-               if(sname.StartsWith("$")) sname = sname.Substring(1);
-               if(sname==name)
-               {
-                  injection_array.Add(services[i].name);
-                  found = true;
-                  break;
-               }
-            }                        
-
-            if(!found) throw new Exception(String.Format("Controller '{0}' parameter '{1}' not recognized",type.Name,name));
-         }   
-         
-         return injection_array;
-      }
-      */
-      #endregion                    
-
-      #region Function builder
-
-      public static Function BuildFunction(Type type, bool this_is_scope, string return_function=null)
-      {
-         string thisref = this_is_scope ? "$scope" : "this";
-         string body = "";
-                                             
-         Function consutructor = type.GetConstructorFunction();               
-         var parameters = Injector.Annotate(consutructor);
-         
-         // verifies that "scope" is the first parameter in constructor
-         if(this_is_scope)
-         {
-            if(parameters.Count<1 || parameters[0]!="_scope")
-            {
-               throw new Exception(String.Format("Controller {0} must specify '_scope' as first parameter",type.Name));
-            }
-         }
-                  
-         // takes method into $scope, binding "$scope" to "this"                 
-         foreach(string funcname in type.GetPublicInstanceMethodNames())
-         {
-            body += String.Format("{2}.{1} = {0}.prototype.{1}.bind({2});\r\n",type.FullName,funcname,thisref);             
-         }
-                  
-         // put call at the end so that methods are defined first
-         body+=String.Format("{0}.apply({1},arguments);\r\n",type.FullName,thisref);
-
-         if(return_function!=null)
-         {
-            body+=String.Format("return {1}.{0};\r\n",return_function,thisref);   
-            if(!type.GetPublicInstanceMethodNames().Contains(return_function))
-            {
-               throw new Exception("function '"+return_function+"' not defined");
-            }
-         }
-
-         // build controller function         
-         if(this_is_scope) return new Function("$scope",body);
-         else return new Function(body);
-      }
-
-      #endregion
-
       #region Controllers
-      /*
-      public static Function CreateControllerFromType(Type type)
-      {         
-         string body = "";
-                           
-         // verifies that "scope" is the first parameter in constructor
-         Function consutructor = type.GetConstructorFunction();               
-         var parameters = Injector.Annotate(consutructor);
-         if(parameters.Count<1 || parameters[0]!="_scope")
-         {
-            throw new Exception(String.Format("Controller {0} must specify '_scope' as first parameter",type.Name));
-         }
-                  
-         // takes method into $scope, binding "$scope" to "this"                 
-         foreach(string funcname in type.GetPublicInstanceMethodNames())
-         {
-            body += String.Format("$scope.{1} = {0}.prototype.{1}.bind($scope);\r\n",type.FullName,funcname);             
-         }
-                  
-         // put call at the end so that methods are defined first
-         body+=String.Format("{0}.apply($scope,arguments);\r\n",type.FullName);
-
-         // build controller function         
-         return new Function("$scope",body);
-      }
-      */
 
       public static void RegisterController(this Module module, Type type)
       {
          // TODO
          // if(!type.IsSubClassOf(Scope)) throw new Exception("controller must be derived from Scope class");
          
-         //Function cfun = AngularUtils.CreateControllerFromType(type);         
-         Function cfun = AngularUtils.BuildFunction(type, true);     
-
-         // reads $inject previously added by CreateControllerFromType
-         var inject = type.ReadInjection();         
-
-         var inarr = CreateInjectionArray(inject,cfun);         
-         module.Controller(type.Name,inarr);
+         Function fun = type.BuildControllerFunction(ThisMode.ScopeStrict);     
+         
+         var parameters = type.ReadInjection();         
+         var fcall = fun.CreateFunctionCall(parameters);         
+         module.Controller(type.Name,fcall);
       }
       
-      private static List<object> CreateInjectionArray(List<string> parameters, Function fun) 
-      {
-         List<object> result = new List<object>();
-         for(int t=0;t<parameters.Count;t++)
-         {
-            if(parameters[t].StartsWith("_")) parameters[t] = "$" + parameters[t].Substring(1);
-            result.Add(parameters[t]);
-         }                           
-         result.Add(fun);
-         return result;
-      }
       #endregion
 
       #region Factory
 
+      public static void RegisterFactory(this Module module, Type type)
+      {         
+         // register all public instance methods as filters                       
+         foreach(string funcname in type.GetPublicInstanceMethodNames())
+         {
+            module.RegisterFactory(type,funcname);
+         }
+      }
+
+      private static void RegisterFactory(this Module module, Type type, string funcname)
+      {
+         Function fun = type.BuildControllerFunction(ThisMode.This,funcname,true);         
+         
+         var parameters = type.ReadInjection();
+         var fcall = fun.CreateFunctionCall(parameters);         
+         module.Factory(funcname,fcall);
+      }     
+
       //
-      // Factor is a special case, it does use function builder
+      // Factor is a special case, it does use function builder (yet)
       //
 
-      public static void RegisterFactory(this Module module, Type type)
+      public static void RegisterFactoryOld(this Module module, Type type)
       {         
          // scan class static methods (contained in Object.keys)
          var keys = Object.Keys(type);
@@ -413,7 +229,7 @@ namespace AngularJS
                if(fun.GetType()==typeof(Function))
                {                          
                   var parameters = Injector.Annotate(fun);
-                  var injarr = CreateInjectionArray(parameters,fun);                   
+                  var injarr = fun.CreateFunctionCall(parameters);                   
                   module.Factory(funcname,injarr);                  
                }
             }
@@ -424,11 +240,7 @@ namespace AngularJS
       #region Filters
      
       public static void RegisterFilter(this Module module, Type type)
-      {
-         // annotates constructor
-         Function constructor = type.GetConstructorFunction();                 
-         var parameters = Injector.Annotate(constructor);
-
+      {         
          // register all public instance methods as filters                       
          foreach(string funcname in type.GetPublicInstanceMethodNames())
          {
@@ -438,112 +250,92 @@ namespace AngularJS
 
       private static void RegisterFilter(this Module module, Type type, string funcname)
       {
-         Function cfun = AngularUtils.BuildFunction(type,false,funcname);         
+         Function fun = type.BuildControllerFunction(ThisMode.NewObject,funcname);         
          
-         var inject = type.ReadInjection();
-
-         var inarr = CreateInjectionArray(inject,cfun);         
-         module.Filter(funcname,inarr);
+         var parameters = type.ReadInjection();
+         var fcall = fun.CreateFunctionCall(parameters);         
+         module.Filter(funcname,fcall);
       }
-
-      /*
-      private static Function CreateFilterFromType(Type type, string filtername)
-      {
-         // calls constructor, bindind "$scope" to "this"
-         string body = String.Format("this.{1} = {0}.prototype.{1}.bind(this);\r\n",type.FullName,filtername);             
-                           
-         // put call at the end so that methods are defined first
-         body+=String.Format("{0}.apply(this,arguments);\r\n",type.FullName);
-         body+=String.Format("return this.{0};\r\n",filtername);
-
-         return new Function(body);
-      }
-      */
 
       #endregion
       
       #region Configs
 
-      /*
-      public static Function CreateConfigFromType(Type type)
-      {         
-         string body = "";
-                           
-         // verifies that "scope" is the first parameter in constructor
-         Function constructor = type.GetConstructorFunction();                 
-         var parameters = Injector.Annotate(constructor);
-                  
-         // puth methods as local functions in this
-         foreach(string funcname in type.GetPublicInstanceMethodNames())
-         {
-            body += String.Format("this.{1} = {0}.prototype.{1}.bind(this);\r\n",type.FullName,funcname);             
-         }
-         
-         // put call at the end so that methods are defined first
-         body+=String.Format("{0}.apply(this,arguments);\r\n",type.FullName);
-
-         // build controller function         
-         return new Function(body);
-      }
-      */
-
       public static void RegisterConfig(this Module module, Type type)
       {
-         Function cfun = AngularUtils.BuildFunction(type,false);       
-         
-         var inject = type.ReadInjection();         
-
-         var inarr = CreateInjectionArray(inject,cfun);         
-         module.Config(inarr);
+         Function fun = type.BuildControllerFunction(ThisMode.NewObject);                
+         var parameters = type.ReadInjection();         
+         var fcall = fun.CreateFunctionCall(parameters);         
+         module.Config(fcall);
       }
+
       #endregion
 
-      #region Directives
-
-      /*
-      public static Function CreateDirectiveControllerFromType(Type type)
-      {
-         // calls constructor, bindind "$scope" to "this"
-         string body = "";
-                           
-         // verifies that "scope" is the first parameter in constructor
-         Function constructor = type.GetConstructorFunction();                 
-         var parameters = Injector.Annotate(constructor);
-                           
-         foreach(string funcname in type.GetPublicInstanceMethodNames())
-         {
-            body += String.Format("this.{1} = {0}.prototype.{1}.bind(this);\r\n",type.FullName,funcname);             
-         }
-         
-         // put call at the end so that methods are defined first
-         body+=String.Format("{0}.apply(this,arguments);\r\n",type.FullName);
-
-         // build controller function         
-         return new Function(body);
-      }
-      */
-
-      public static object DirectiveController(Type type)
-      {
-         Function cfun = AngularUtils.BuildFunction(type,false);
-         var inject = type.ReadInjection(); 
-         if(inject.Count==0) return cfun;         
-         return AngularUtils.CreateInjectionArray(inject,cfun);       
-      }
-
-      /*
-      public static void RegisterDirective3(this Module module, DirectiveDefinition dirob)
-      {
-         module.Directive(dirob.Name, dirob.CreateDefinitionObject());
-      }
-      */
+      #region Directives            
 
       public static void RegisterDirective(this Module module, DirectiveDefinition dirob)
       {
-         var defob = dirob.CreateDefinitionObject();
-         
-         module.Directive(dirob.Name, defob);
+         Function fun = CreateDirectiveFunction(dirob);
+         var parameters = Injector.Annotate(fun);          
+         var fcall = fun.CreateFunctionCall(parameters);       
+         module.Directive(dirob.Name, fcall);
       }
+
+      public static Function CreateDirectiveFunction(DirectiveDefinition def)
+      {         
+         object defob = def.CreateDefinitionObject();
+         
+         List<string> parameters = new List<string>();
+         List<string> fnames = new List<string>();
+
+         Type type = def.DirectiveController;
+
+         object SharedController = ((dynamic)defob).controller;
+
+         if(type!=null)
+         {
+            parameters = Injector.Annotate(type.GetConstructorFunction());
+            fnames = type.GetPublicInstanceMethodNames();
+         }       
+
+         string body = "";
+
+         body += "var $obdef = " + Json.Stringify(defob)+";\r\n";
+
+         if(type!=null && fnames.Contains("Link"))
+         {
+            body += "var $outer_arguments = arguments;\r\n";
+            body += "$obdef.link = function(_scope) { \r\n";
+         
+            foreach(string funcname in fnames)
+            {
+               body += String.Format("   _scope.{1} = {0}.prototype.{1}.bind(_scope);\r\n",type.FullName,funcname);             
+            }
+            
+            body += String.Format("   {0}.apply(_scope,$outer_arguments);\r\n",type.FullName);
+            body += "   _scope.Link.apply(_scope,arguments);\r\n";
+            body += "}\r\n";
+         }
+
+         if(SharedController!=null)
+         {
+            body+= "$obdef.controller = "+SharedController.ToString()+";";
+         }
+         
+         body += "return $obdef;\r\n";
+
+         return TypeExtensionMethods.CreateNewFunction(parameters,body);
+      }
+      
+      /*
+      public static void RegisterDirectiveAsFactory(this Module module, string nn, Type type)
+      {
+         Function fun = type.BuildControllerFunction(ThisMode.NewObject,"Link");
+         var parameteres = type.ReadInjection();
+         var fcall = fun.CreateFunctionCall(parameteres);
+         module.Directive2(nn, fcall);
+      }
+      */
 
       #endregion
    }

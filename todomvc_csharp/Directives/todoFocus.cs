@@ -25,38 +25,25 @@ namespace Todo
 
    public class todoFocusController : Scope
    {
-      public todoFocusController(Scope _scope, AngularJS.Element elem, Attributes attrs)
+      public Timeout timeout;          
+
+      public todoFocusController(Timeout _timeout)
       {
-         _scope.Watch<string>(attrs["todoFocus"], FocusTimeout);         
+         timeout = _timeout;        
       }
 
-      public void FocusTimeout(string newValue, string oldValue)
-      {
-			/* ###
-         if(newVal!=null) 
-         {
-				$timeout(function () 
+      public void Link(Scope _scope, /*AngularJS.Element*/ dynamic elem, Attributes attrs)
+      {                  
+         Watch<bool>(attrs["todoFocus"], (newValue, oldValue) =>
+         {            
+            if(newValue) 
             {
-					elem[0].focus();
-				}, 0, false);
-			}
-         */         
+               timeout.Function( ()=>{elem[0].focus();} , 0, false);   
+            }            
+         });         
       }
    }
 }
 
 
-/*
-todomvc.directive('todoFocus', function todoFocus($timeout) {
-	return function (scope, elem, attrs) {
-		scope.$watch(attrs.todoFocus, function (newVal) {
-			if (newVal) {
-				$timeout(function () {
-					elem[0].focus();
-				}, 0, false);
-			}
-		});
-	};
-});
-}
-*/
+

@@ -1,6 +1,6 @@
 ﻿using System;
 
-//using System.Html;
+using System.Html;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -15,8 +15,8 @@ namespace Todo
       public string title;
       public bool completed;
    }
-
-   public delegate List<TodoItem> filterFilterDelegate(List<TodoItem> array, dynamic expression);  
+                     
+   public delegate List<TodoItem> filterFilterDelegate(List<TodoItem> array, dynamic filterclause);  
    
    /**
     * The main controller for the app. The controller:
@@ -28,19 +28,20 @@ namespace Todo
       public List<TodoItem> todos;
       public string newTodo;
       public TodoItem editedTodo;
-
+      public object statusFilter;
       public int remainingCount;
       public int completedCount;
       public bool allChecked;
+      public AngularJS.Location location;
 
       TodoStorage todoStorage;
-      filterFilterDelegate filterFilter;
-      Location location;
+      filterFilterDelegate filterFilter;           
+      
 
-      public TodoCtrl(Scope _scope, Location _location, TodoStorage todoStorage, filterFilterDelegate filterFilter)
+      public TodoCtrl(Scope _scope, AngularJS.Location _location, TodoStorage todoStorage, filterFilterDelegate filterFilter)
       {
 	      this.todoStorage = todoStorage;
-         this.filterFilter = filterFilter;
+         this.filterFilter = filterFilter;         
          this.location = _location;
 
          todos = todoStorage.get();
@@ -48,19 +49,16 @@ namespace Todo
 	      newTodo = "";
 	      editedTodo = null;
 
-         Watch<object>("todos", update, true);
+         Watch<object>(()=>todos, update, true);
 
-	      if(location.Path == "") 
-         {
-		      location.Path = "/";
-	      }	
-
-	      Watch<string>("location.path()", pathchanged);
-      }
+	      if(location.Path == "") location.Path = "/";
+	      	      
+         Watch<string>(()=>location.Path, pathchanged);
+      }            
 
       public void update()
-      {
-		   remainingCount = filterFilter(todos, new { completed=false }).Count;
+      {		           
+         remainingCount = filterFilter(todos, new { completed=false }).Count;
 		   completedCount = todos.Count - remainingCount;
 		   allChecked = remainingCount==0;
 		   todoStorage.put(todos);
@@ -68,23 +66,20 @@ namespace Todo
 
       public void pathchanged(string path, string oldpath)
       {
-      /*  ###
-		$scope.statusFilter = (path === '/active') ?
-			{ completed: false } : (path === '/completed') ?
-			{ completed: true } : null;
-	}    */
+         statusFilter = (path == "/active")    ? new { completed=false } : 
+                        (path == "/completed") ? new { completed=true  } : null;	
       }
       
       public void addTodo() 
-      {
-		   string newTodo = this.newTodo.Trim();
+      {		  
+         string newTodo = this.newTodo.Trim();         
                   
 		   if(newTodo.Length==0) 
          {
 			   return;
          }
 
-         todos.Add(new TodoItem() { title=newTodo, completed=false });
+         todos.Insert(todos.Count,new TodoItem() { title=newTodo, completed=false });
          this.newTodo = "";
 		}
 

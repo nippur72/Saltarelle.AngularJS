@@ -72,12 +72,12 @@ namespace TestAngularJS
       }      
    }      
         
-   public static class ItemsFactory 
-   {                  
-      public static List<CartItem> Items()
+   public class ItemsFactory 
+   {                        
+      public List<CartItem> Items()
       {
          var items = new List<CartItem>();
-         items.Add( new CartItem() { title="AAAA", quantity= 1024, price= 44.95 } );
+         items.Add( new CartItem() { title="AaAa", quantity= 1024, price= 44.95 } );
          items.Add( new CartItem() { title="BBBB", quantity= 2048, price= 55.95 } );
          items.Add( new CartItem() { title="CCCC", quantity= 4096, price= 66.95 } );
          items.Add( new CartItem() { title="dddd", quantity= 1024, price= 44.95 } );
@@ -87,9 +87,9 @@ namespace TestAngularJS
       }
    }
          
-   public static class LabelsFactory 
+   public class LabelsFactory 
    {                  
-      public static string LabelEuro()
+      public string LabelEuro()
       {
          return "CHF";
       }

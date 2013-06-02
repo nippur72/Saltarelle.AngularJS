@@ -1,12 +1,23 @@
 ﻿(function() {
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.AccordionController
-	var $TestAngularJS_AccordionController = function(_scope, iElement, iAttrs, acontroller) {
-		//System.Diagnostics.Debug.Break();
+	var $TestAngularJS_AccordionController = function(Items) {
+		this.ppp = null;
+		this.Items = null;
+		//Debug.Break();
+		this.Items = Items;
 	};
 	$TestAngularJS_AccordionController.prototype = {
+		Link: function(_scope, iElement, iAttrs, acontroller) {
+			//Debug.Break();
+			this.ppp = 'fissa';
+		},
 		clickme: function() {
-			window.alert('clicked');
+			//Debug.Break();
+			//Http h = Angular.InjectorRead("$http");
+			// System.Diagnostics.Debug.Break();
+			window.alert('clicked to ' + this.ppp);
+			window.alert('Items[0] is ' + this.Items[0].title);
 		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +28,8 @@
 		this.Restrict = 3;
 		this.Replace = true;
 		this.Transclude = true;
-		this.Template = '<div><div ng-click=\'clickme()\'>CLICCAMI</div><div ng-transclude></div></div>';
+		this.ScopeMode = 2;
+		this.Template = '<div><div ng-click=\'clickme()\'>click me</div><div ng-transclude></div></div>';
 		//Template = @"<div ng-transclude></div>";
 		this.SharedController = $TestAngularJS_AccordionSharedController;
 		this.DirectiveController = $TestAngularJS_AccordionController;
@@ -27,15 +39,13 @@
 	var $TestAngularJS_AccordionSharedController = function() {
 		this.pppp = null;
 		this.expanders = [];
-		//Window.Alert("muuuu");
+		//System.Diagnostics.Debug.Break();
+		window.alert('Shared controller initialized');
 		this.pppp = 'constructor ok';
 	};
 	$TestAngularJS_AccordionSharedController.prototype = {
-		clickme: function() {
-			window.alert('clicked');
-		},
 		gotOpened: function(selectedExpander) {
-			//Window.Alert(pppp);
+			//  Window.Alert("gotOpened called ["+pppp+"]");
 			for (var $t1 = 0; $t1 < this.expanders.length; $t1++) {
 				var o = this.expanders[$t1];
 				if (!ss.referenceEquals(selectedExpander, o)) {
@@ -44,6 +54,7 @@
 			}
 		},
 		addExpander: function(expander) {
+			//  Window.Alert("addExpander called ["+pppp+"]");
 			ss.add(this.expanders, expander);
 		}
 	};
@@ -91,21 +102,28 @@
 	};
 	$TestAngularJS_DirectivesExample.Main = function() {
 		var app = angular.module('myApp', []);
+		//app.Debug("service","pippo");                  
+		//app.RegisterController( typeof(TestController) );         
+		//app.RegisterFactory( typeof(ItemsFactory) );
+		//app.RegisterDirectiveAsFactory("testdirective",typeof(testdirective));
+		AngularJS.AngularUtils.RegisterFactory(app, $TestAngularJS_ItemsFactory);
 		AngularJS.AngularUtils.RegisterDirective(app, new $TestAngularJS_AccordionDefinition());
 		AngularJS.AngularUtils.RegisterDirective(app, new $TestAngularJS_ExpanderDefinition());
 		AngularJS.AngularUtils.RegisterDirective(app, new $TestAngularJS_HelloDirective());
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.ExpanderController
-	var $TestAngularJS_ExpanderController = function(_scope, iElement, iAttrs, acontroller) {
+	var $TestAngularJS_ExpanderController = function() {
 		this.title = null;
 		this.showMe = false;
 		this.accordionController = null;
-		this.accordionController = acontroller;
-		this.showMe = false;
-		this.accordionController.addExpander(this);
 	};
 	$TestAngularJS_ExpanderController.prototype = {
+		Link: function(_scope, iElement, iAttrs, acontroller) {
+			this.accordionController = acontroller;
+			this.showMe = false;
+			this.accordionController.addExpander(this);
+		},
 		toggle: function() {
 			this.showMe = !this.showMe;
 			this.accordionController.gotOpened(this);
@@ -155,59 +173,56 @@
 		this.Restrict = 7;
 		this.Template = '<div>Hello <span ng-transclude></span>!</div>';
 		this.Replace = true;
-		this.ScopeMode = 2;
 		this.Transclude = true;
-		ss.add(this.ScopeAttributes, new AngularJS.ScopeBindings.$ctor1('title', 2));
-	};
-	$TestAngularJS_HelloDirective.prototype = {
-		Link: function(scope, iElement, iAttrs) {
-			//System.Diagnostics.Debug.Break();
-		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.ItemsFactory
 	var $TestAngularJS_ItemsFactory = function() {
 	};
-	$TestAngularJS_ItemsFactory.Items = function() {
-		var items = [];
-		var $t1 = new $TestAngularJS_CartItem();
-		$t1.title = 'AAAA';
-		$t1.quantity = 1024;
-		$t1.price = 44.95;
-		ss.add(items, $t1);
-		var $t2 = new $TestAngularJS_CartItem();
-		$t2.title = 'BBBB';
-		$t2.quantity = 2048;
-		$t2.price = 55.95;
-		ss.add(items, $t2);
-		var $t3 = new $TestAngularJS_CartItem();
-		$t3.title = 'CCCC';
-		$t3.quantity = 4096;
-		$t3.price = 66.95;
-		ss.add(items, $t3);
-		var $t4 = new $TestAngularJS_CartItem();
-		$t4.title = 'dddd';
-		$t4.quantity = 1024;
-		$t4.price = 44.95;
-		ss.add(items, $t4);
-		var $t5 = new $TestAngularJS_CartItem();
-		$t5.title = 'eeee';
-		$t5.quantity = 2048;
-		$t5.price = 55.95;
-		ss.add(items, $t5);
-		var $t6 = new $TestAngularJS_CartItem();
-		$t6.title = 'ffff';
-		$t6.quantity = 4096;
-		$t6.price = 66.95;
-		ss.add(items, $t6);
-		return items;
+	$TestAngularJS_ItemsFactory.prototype = {
+		Items: function() {
+			var items = [];
+			var $t1 = new $TestAngularJS_CartItem();
+			$t1.title = 'AaAa';
+			$t1.quantity = 1024;
+			$t1.price = 44.95;
+			ss.add(items, $t1);
+			var $t2 = new $TestAngularJS_CartItem();
+			$t2.title = 'BBBB';
+			$t2.quantity = 2048;
+			$t2.price = 55.95;
+			ss.add(items, $t2);
+			var $t3 = new $TestAngularJS_CartItem();
+			$t3.title = 'CCCC';
+			$t3.quantity = 4096;
+			$t3.price = 66.95;
+			ss.add(items, $t3);
+			var $t4 = new $TestAngularJS_CartItem();
+			$t4.title = 'dddd';
+			$t4.quantity = 1024;
+			$t4.price = 44.95;
+			ss.add(items, $t4);
+			var $t5 = new $TestAngularJS_CartItem();
+			$t5.title = 'eeee';
+			$t5.quantity = 2048;
+			$t5.price = 55.95;
+			ss.add(items, $t5);
+			var $t6 = new $TestAngularJS_CartItem();
+			$t6.title = 'ffff';
+			$t6.quantity = 4096;
+			$t6.price = 66.95;
+			ss.add(items, $t6);
+			return items;
+		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.LabelsFactory
 	var $TestAngularJS_LabelsFactory = function() {
 	};
-	$TestAngularJS_LabelsFactory.LabelEuro = function() {
-		return 'CHF';
+	$TestAngularJS_LabelsFactory.prototype = {
+		LabelEuro: function() {
+			return 'CHF';
+		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.PhoneConfig

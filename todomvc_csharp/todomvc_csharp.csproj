@@ -52,6 +52,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ConsoleApplicationSaltarelle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Siti Web New\ConsoleSaltarelle\ConsoleApplicationSaltarelle\bin\Debug\ConsoleApplicationSaltarelle.exe</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.2.2.0\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>

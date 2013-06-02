@@ -16,15 +16,14 @@
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// Todo.todoBlurController
-	var $Todo_todoBlurController = function(_scope, elem, attrs) {
-		this.$attrs = null;
+	var $Todo_todoBlurController = function() {
 		AngularJS.Scope.call(this);
-		this.$attrs = attrs;
-		elem.bind('blur', ss.mkdel(this, this.Blur));
 	};
 	$Todo_todoBlurController.prototype = {
-		Blur: function() {
-			this.$apply(this.$attrs['todoBlur']);
+		Link: function(_scope, elem, attrs) {
+			elem.bind('blur', ss.mkdel(this, function() {
+				this.$apply(attrs['todoBlur']);
+			}));
 		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
@@ -40,24 +39,29 @@
 		this.todos = null;
 		this.newTodo = null;
 		this.editedTodo = null;
+		this.statusFilter = null;
 		this.remainingCount = 0;
 		this.completedCount = 0;
 		this.allChecked = false;
+		this.location = null;
 		this.$todoStorage = null;
 		this.$filterFilter = null;
-		this.$location = null;
 		AngularJS.Scope.call(this);
 		this.$todoStorage = todoStorage;
 		this.$filterFilter = filterFilter;
-		this.$location = _location;
+		this.location = _location;
 		this.todos = todoStorage.get();
 		this.newTodo = '';
 		this.editedTodo = null;
-		this.$watch('todos', ss.mkdel(this, this.update));
-		if (this.$location.path() === '') {
-			this.$location.path('/');
+		this.$watch(ss.mkdel(this, function() {
+			return this.todos;
+		}), ss.mkdel(this, this.update), true);
+		if (this.location.path() === '') {
+			this.location.path('/');
 		}
-		this.$watch('location.path()', ss.mkdel(this, this.pathchanged));
+		this.$watch(ss.mkdel(this, function() {
+			return this.location.path();
+		}), ss.mkdel(this, this.pathchanged));
 	};
 	$Todo_TodoCtrl.prototype = {
 		update: function() {
@@ -67,11 +71,7 @@
 			this.$todoStorage.put(this.todos);
 		},
 		pathchanged: function(path, oldpath) {
-			//  ###
-			//  $scope.statusFilter = (path === '/active') ?
-			//  { completed: false } : (path === '/completed') ?
-			//  { completed: true } : null;
-			//  }
+			this.statusFilter = ((path === '/active') ? { completed: false } : ((path === '/completed') ? { completed: true } : null));
 		},
 		addTodo: function() {
 			var newTodo = this.newTodo.trim();
@@ -79,10 +79,11 @@
 				return;
 			}
 			var $t2 = this.todos;
+			var $t3 = this.todos.length;
 			var $t1 = new $Todo_TodoItem();
 			$t1.title = newTodo;
 			$t1.completed = false;
-			ss.add($t2, $t1);
+			ss.insert($t2, $t3, $t1);
 			this.newTodo = '';
 		},
 		editTodo: function(todo) {
@@ -112,20 +113,20 @@
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// Todo.todoFocusController
-	var $Todo_todoFocusController = function(_scope, elem, attrs) {
+	var $Todo_todoFocusController = function(_timeout) {
+		this.timeout = null;
 		AngularJS.Scope.call(this);
-		_scope.$watch(attrs['todoFocus'], ss.mkdel(this, this.FocusTimeout));
+		this.timeout = _timeout;
 	};
 	$Todo_todoFocusController.prototype = {
-		FocusTimeout: function(newValue, oldValue) {
-			// ###
-			// if(newVal!=null)
-			// {
-			// $timeout(function ()
-			// {
-			// elem[0].focus();
-			// }, 0, false);
-			// }
+		Link: function(_scope, elem, attrs) {
+			this.$watch(attrs['todoFocus'], ss.mkdel(this, function(newValue, oldValue) {
+				if (newValue) {
+					this.timeout(function() {
+						elem[0].focus();
+					}, 0, false);
+				}
+			}));
 		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
@@ -157,8 +158,10 @@
 	// Todo.todoStorageService
 	var $Todo_todoStorageService = function() {
 	};
-	$Todo_todoStorageService.todoStorage = function() {
-		return new $Todo_TodoStorage();
+	$Todo_todoStorageService.prototype = {
+		todoStorage: function() {
+			return new $Todo_TodoStorage();
+		}
 	};
 	ss.registerClass(global, 'Todo.TodoApp', $Todo_TodoApp);
 	ss.registerClass(global, 'Todo.todoBlurController', $Todo_todoBlurController, AngularJS.Scope);

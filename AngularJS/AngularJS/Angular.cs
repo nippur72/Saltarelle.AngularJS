@@ -25,6 +25,18 @@ namespace AngularJS
       {
          return null;
       }
+
+      [InlineCode("angular.injector(['ng']).get({name})")]
+      public static dynamic InjectorRead(string name)
+      {
+         return null;
+      }
+
+      [InlineCode("angular.injector([{modulename}]).get({name})")]
+      public static dynamic InjectorRead(string modulename, string name)
+      {
+         return null;
+      }
    }   
        
 }

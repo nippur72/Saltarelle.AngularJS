@@ -45,39 +45,78 @@ namespace AngularJS
       }
 
       [InlineCode("{this}.controller({Name},{func})")]
-      public void Controller(string Name, List<object> func)
+      public void Controller(string Name, object func)
       {
       } 
       
       [InlineCode("{this}.factory({Name},{func})")]
       public void Factory(string Name, object func)
       {
-      }
-
-      [InlineCode("{this}.filter({FilterName},function() {{ var {@FilterName} = {func}; return {@FilterName}; }})")]
-      public void Filter<T>(string FilterName, Filter<T> func)
-      {
-      }      
+      }          
 
       [InlineCode("{this}.filter({FilterName},{ob})")]
       public void Filter(string FilterName, object ob)
       {
       }      
-
-      [InlineCode("{this}.filter({FilterName},function() {{ var filter = {func}; return filter; }})")]
-      public void FilterAll(string FilterName, object func)
-      {
-      }            
       
       [InlineCode("{this}.config({func})")]
       public void Config(object func)
       {
       }    
 
-      [InlineCode("{this}.directive({Name},function() {{ return {func}; }})")]
+      [InlineCode("{this}.directive({Name},{defob})")]
+      public void Directive(string Name, object defob)
+      {
+      }
+
+      /*
+      [InlineCode("{this}.directive({Name},{func})")]
       public void Directive(string Name, object func)
       {
       }
+      */
+
+      [InlineCode("{this}.{@FuncName}(function(){{debugger;}})")]
+      public void Debug(string FuncName) {}       
+
+      [InlineCode("{this}.{@FuncName}({pars},function(){{debugger;}})")]
+      public void Debug(string FuncName, string pars) {}   
+      
+      /*
+      var myInjector = angular.injector(["ng"]);
+      var $http = myInjector.get("$http");
+      */                
    }     
 }
+
+
+
+/*
+   public class Directive : DirectiveBase
+   {
+      public object injection;
+
+      public Directive(injection)
+      {
+         Name = ....;
+         sss = ....;
+         this.injection = injection;
+      }
+
+      public void Link(Scope,....)
+      {
+      }
+   }
+
+   function(injection)
+   {
+      return 
+      {
+         Name = ...;
+         Link: typescoped
+      }            
+   }
+
+*/
+
 

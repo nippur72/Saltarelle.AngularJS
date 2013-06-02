@@ -1,26 +1,27 @@
 # Saltarelle.AngularJS
 
-An attempt to port AngularJS to C# and Saltarelle compiler.	
+This is an import library of AngularJS JavaScript framework for the C#-Saltarelle-compiler, allowing to write
+AngularJS applications in C# instead of javascript.
 
-This very first version is very rough and badly written due to several reason. The main obstacle is that 
-AngularJS is too inclined to exploit the dynamic nature of JavaScript, making it very difficult to write 
-an import library for a static language like C#.
+At this stage, only the very basic parts of the framework are covered. 
 
-At this stage, consider it as an experiment rather than anything useful for a real project.
+# Reserved names in AngularJS
+
+AngularJS unfortunately names all its object with the `$` prefix (e.g. `$scope`) thus making them not available in C#. To avoid this, 
+the `_` underscore character is used in placed of the `$` sign for known objects. The library takes care of translating it back to `$`.
+So for example in your C# code you'll write `_scope` instead of `$scope`.
 
 # How to use this library
 
-Saltarelle.AngularJS is not a pure metadata import library, there are some 
-helper functions that are written in C#, so it's necessary to link the
-file "Saltarelle.AngularJS.js". Copy "Saltarelle.AngularJS.js" 
-from this repo to the "Scripts/" directory and put a reference like this: 
+Saltarelle.AngularJS is not a pure metadata import library, there are some helper functions that are written in C#, so 
+it's necessary to link the file `Saltarelle.AngularJS.js`. Copy `Saltarelle.AngularJS.js` from this repo to the `Scripts/`
+directory and put a reference like this: 
 
 ```HTML
 <script src="Scritps/Saltarelle.AngularJS.js"></script>
 ```
 
-just after after the mscorlib.js reference. Also add a reference to
-"Saltarelle.AngularJS.dll" in your Saltarelle project references.
+just after after the `mscorlib.js` reference. Also add a reference to `Saltarelle.AngularJS.dll` in your Saltarelle project references.
 
 To make the AngularJS namespace available, in your C# source files add:
 
@@ -34,78 +35,72 @@ Create an Angular module to be referenced with the `ng-app` directive:
 
 ```C#
 Module app = new Module("myApp"); 
-app.Register();
 ```
 
 # Creating an AngularJS Controller
 
-An AngularJs controller in C# is a static method defined in a class-container. 
-The class and the method need to be tagged with the `[Reflectable]` attribute, because the library
-uses Reflection to manage dependecy injection, so your classes need to be reflectable (in Saltarelle,
-by default everything is not reflectable, you must specify it via the attribute).
+AngularJs controllers are mapped to C# classes and $scope is bound the the class istance itself, so it's very easy to implement a controller and 
+reference to $scope is not require. The only requirements are:
 
-The method name is the the name for the controller that can be later referenced in the
+- the controller class is derived from the base `Scope` class
+- the first parameter of the class constructor is `_scope`
+
+The class name is the the name for the controller that can be later referenced in the
 `ng-controller` directive. For example:
 
 ```C#
-[Reflectable]
-public class ShoppingCartControllers 
+public class ShoppingCartControllers : Scope
 {     
-    [Reflectable]      
-    public static void CartController(CartScope scope)
+    public static void CartController(Scope _scope, Timeout _timeout)
     {
 	}
 }
 ```
 
-to be able to reference the `scope` in your controller you need to derive a class from `Scope`:
+any other parameter in the class constructor will be treated as an injectable parameter 
+(in the example above the `$timeout` object is injected). If you want to use any injected 
+parameter outside of the constructor, save its reference to a field variable. `$scope`
+does not need to be referenced because the whole class is the scope itself (this==_scope)
+which makes the code much less verbose than the javascript counterpart.
+
+The class should also declare all objects that are put in the scope. What you refer from
+outside C# (e.g. HTML) should be declared with then `public` modifier. For example:
 
 ```C#
-public class CartScope : Scope
-{
+public class ShoppingCartControllers : Scope
+{     
     public List<CartItem> items;
-    public Action<int> remove;                 
-    public Func<double> totalCart;
-    public Func<double> subtotal;
     public double billDiscount;
-}      
+
+    public static void CartController(Scope _scope, Timeout _timeout)
+    {
+	}
+}
 ```
 
-After the controller is defined you need to register it within the application-module:
+After the class controller is defined you need to register it within the application-module:
 
 ```C#
-app.RegisterControllers(new ShoppingCartControllers());                                  
+app.RegisterControllers(typeof(ShoppingCartControllers));                                  
 ```
 
-all the static method contained in the `ShoppingCartControllers` class will be registered as
-angular controllers.
+# Implementing the controller logic
 
-# Dependency Injection
-
-Parameters in the controller method are injectables, e.g. you can write both:
+Controller functions are defined as methods, but you can also define them as `Action` or `Func`:
 
 ```C#
-public static void CartController(CartScope scope, Http http)
-public static void CartController(Http http, CartScope scope)
-```
-
-without taking care of actual parameter ordering. This is a peculiar feature of AngularJS called
-"Dependency Injection".
-
-The only requirement is that what you pass as parameter is a registered angular service. 
-
-Angular comes with a set of predefined services like "Scope", "Http", "Location" etc... that you can use in your controllers, configs and so on. Please note that in Javascript such predefined objects
-are named with the "$" prefix (e.g. "$scope") while in C# there is no prefix and the name is 
-capitalized ("$scope" becomes "Scope").
-
-# Implementing a controller
-
-Functions within a controller can be defined as `Action` or `Func` using the lamba expression syntax:
-
-```C#
-scope.remove = (index) => 
+public void remove(int index)
 {
-	scope.items.RemoveAt(index);
+	items.RemoveAt(index);
+}
+```
+
+or (within the constructor):
+
+```C#
+remove = (index) => 
+{
+	items.RemoveAt(index);
 };
 ```
 
@@ -113,48 +108,29 @@ scope.remove = (index) =>
 
 A watch keeps on listening to a function, and when its value changes another function is called. 
 
-First you define the monitoring function:
+Put the watch in the constructor:
 
 ```C#
-// defined inside the scope class
-public Func<double> subtotal;
+Watch<double>(()=>totalCart, calculateDiscount);
 ```
 
+and then define:
+
 ```C#
-// defined within the controller method
-scope.totalCart = () =>
+public double calculateDiscount(double newValue, double oldValue)
 {
-	// ...
-	return total;
+	billDiscount = newValue > 100 ? 10 : 0;
 };
-```
-
-then you define the callback method which is a function taking two parameters: newValue and oldValue.
-
-```C#
-WatchListener<double> calculateDiscount = (newValue,oldValue) =>
-{
-	scope.billDiscount = newValue > 100 ? 10 : 0;
-};
-```
-
-finally you add the actual watch:
-
-```C#
-scope.Watch<double>(scope.totalCart, calculateDiscount);
 ```
 
 # Defining a config function
 
-Configs are functions that are called on module initialization. As with controllers, they need to be 
-declared within a class container as static methods:
+Configs are functions that are called on module initialization. As with controllers, they are written as classes:
 
 ```C#
-[Reflectable]
-public class Configs
-{            
-    [Reflectable]
-    public static void MyConfig()
+public class MyConfigs
+{               
+    public MyConfig(/* injectables */)
     {
     }
 }                 
@@ -163,25 +139,25 @@ public class Configs
 and then registered with
 
 ```C#
-app.RegisterConfig(new Configs());
+app.RegisterConfig(typeof(MyConfigs));
 ```
-
-as for controllers, config function parameters are injectable.
-
 
 # Defining a Service (Factory)
 
 A service (factory) is a function that returns an object resource that can be used in controllers or other parts of Angular and 
-that is injected automatically using the service name. In C#, other than matching service name, the type of the service must match too.
+that is injected automatically using the service name. 
 
 In the following example the service called "Items" is defined
 
 ```C#
-[Reflectable]
-public class CartFactory 
-{            
-    [Reflectable]
-    public static List<CartItem> Items()
+public class ItemsFactory
+{                
+    public ItemsFactory(/* injectables */)
+	{
+
+	}
+
+	public List<CartItem> Items()
     {
         var items = new List<CartItem>();
         items.Add( new CartItem() { title="AAAA", quantity= 1024, price= 44.95 } );
@@ -194,27 +170,22 @@ public class CartFactory
 and then registered with:
 
 ```C#
-app.RegisterFactory(new CartFactory());
+app.RegisterFactory(typeof(ItemsFactory));
 ```
 
 once the factory is registered, it can be used in any angular function by refering its name ("Items"). For example you can define a controller:
 
-```C#
-public static void CartController(CartScope scope, List<CartItem> Items)
-```
-
-and have the Items object passed automagically thanks to dependency injection.
-
 # Defining a filter
 
-A filter is a function that formats data that is used in html templates. For example the following filter adds the word "dollars" to a numeric value:
+A filter is a function that formats data that is used in HTML templates. For example the following filter adds the word "dollars" to a numeric value:
 
 ```C#
-[Reflectable]
 public class CartFilters
-{            
-    [Reflectable]
-    public static string dollars(double input)
+{                
+    public Filters(/* injectables */)
+	{
+	}
+	public string dollars(double input)
     {
         return input.ToString() + " dollars";
     }
@@ -224,10 +195,10 @@ public class CartFilters
 and then registered with:
 
 ```C#
-app.RegisterFilters(new CartFilters());  
+app.RegisterFilters(typeof(CartFilters);  
 ```
 
-in html template:
+and in HTML template:
 
 ```HTML
 <span>{{amount | dollars }}<span>
@@ -237,32 +208,38 @@ in html template:
 
 Http is a pre-defined service ($http) that helps working with http requests, e.g. for RESTful services. There are methods for Get, Post, Put, Delete, Head and Jsonp. 
 
-The result of Http requests are `promise`s that can be chained:
+The result of Http requests are `HttpPromise`s that can be chained:
 
 ```C#
-[Reflectable]
-public static void PhoneListController(PhoneScope scope, Http http)
+public PhoneListController
 {
-    http.Get("items.json").Success((data,status)=> {
-		scope.items = data;
-    }).Error((data,status)=>{ 
-		Window.Alert("error!");
-    });
+	List<string> items;
+
+	public PhoneListController(PhoneScope _scope, Http _http)
+	{
+		http.Get("items.json").Success((data,status)=> {
+			items = data;
+		}).Error((data,status)=>{ 
+			Window.Alert("error!");
+		});
+	}
 }   
 ```
 
 # Working with the $route service to define application routing and views
 
-The RouteProvider service can be used to define the client-side application routings that are 
+The `RouteProvider` service can be used to define the client-side application routings that are 
 mapped to views that are rendered under the `ng-view` directive.
 
 ```C#
-[Reflectable]
-public static void ConfigRoute(RouteProvider routeProvider)
+public class ConfigRoute
 {
-    routeProvider.when("/phones"          , new RouteMap() { TemplateUrl = "phonemain.html"   })
-                 .when("/phones/:phoneId" , new RouteMap() { TemplateUrl = "phonedetail.html" })
-                 .otherwise(                new RouteMap() { RedirectTo  = "/phones"          });
+	public ConfigRoute(RouteProvider _routeProvider)
+	{
+		routeProvider.when("/phones"          , new RouteMap() { TemplateUrl = "phonemain.html"   })
+					 .when("/phones/:phoneId" , new RouteMap() { TemplateUrl = "phonedetail.html" })
+					 .otherwise(                new RouteMap() { RedirectTo  = "/phones"          });
+	}
 }
 ```
 
@@ -276,21 +253,34 @@ phonedetail.html contains only the partial view to be rendered within the `ng-vi
 
 # Working with directives
 
+Directive in AngularJS are the most difficult part to understand, but thanks to C# and to an helper function everything becomes very simple.
 
+Directives are defined by deriving an object from `DirectiveDefinition` and filling its content. For example:
 
+```C#
+public class HelloDirective : DirectiveDefinition
+{
+    public HelloDirective()
+    {                  
+        Name = "hello";
+        Restrict = RestrictFlags.Element;
+        Template = "<div>Hello <span ng-transclude></span>!</div>";
+        Replace = true;         
+        Transclude = true;         
+    }           
+}      
+```
 
+defines a directive called "hello", that applies to elements (result will be `<hello>`) with the given template.
 
+Some concepts about directives:
 
+- they can have their own scope, or inerhit from parent
+- they can have their own controller for implementing the logic of the directive
+- they can have a "shared" controller that other elements can reference (for example netsted elements can register into a common controller)
 
-
-
-
-
-
-
-
-
-
-
-
+(to be continued)
  
+# The C# paradigm
+
+(...)

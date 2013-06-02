@@ -53,16 +53,16 @@ namespace AngularJS
       }     
    }
    
-   public abstract class DirectiveDefinition
+   public class DirectiveDefinition
    {
       public string Name;
-      public RestrictFlags Restrict = RestrictFlags.Element;
+      public RestrictFlags Restrict = RestrictFlags.Attribute;
       public int? Priority;   
       public string Template;
       public string TemplateUrl;
       public bool Replace;
       public bool Transclude;
-      public ScopeModes ScopeMode;
+      public ScopeModes ScopeMode = ScopeModes.Existing;
       public List<ScopeBindings> ScopeAttributes = new List<ScopeBindings>();      
       public string Require;      
       public dynamic Compile;
@@ -128,17 +128,12 @@ namespace AngularJS
          // maps (shared) controller         
          if(SharedController != null)
          {
-            var contr = AngularUtils.DirectiveController(SharedController);            
-            result["controller"] = contr;                            
-         }                  
+            var scontr = SharedController.BuildControllerFunction(ThisMode.This);
+            result["controller"] = scontr;                            
+         }                                                    
 
-         // maps link function
-         if(DirectiveController != null)
-         {
-            var contr = AngularUtils.BuildFunction(DirectiveController,false,"Link");      
-            result["link"] = contr;                            
-         }                  
-
+         // directive controller ('link' function) is managed during the registration process
+                                                             
          // maps require
          if(Require!=null) result["require"] = Require;
 

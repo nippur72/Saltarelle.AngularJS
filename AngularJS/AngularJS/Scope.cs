@@ -46,14 +46,14 @@ namespace AngularJS
       #region Watch
 
       [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, Action listener) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, Action listener, bool objectEquality) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(string watchFunction, Action listener, bool objectEquality) {} 
       [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, Action<T> listener) {} 
       [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(string watchFunction, Action<T> listener, bool objectEquality) {}
       [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, WatchListener<T> listener) {} 
       [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(string watchFunction, WatchListener<T> listener, bool objectEquality) {}
 
       [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, Action listener) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, Action listener, bool objectEquality) {} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(Func<T> watchFunction, Action listener, bool objectEquality) {} 
       [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, Action<T> listener) {} 
       [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(Func<T> watchFunction, Action<T> listener, bool objectEquality) {}
       [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, WatchListener<T> listener) {} 

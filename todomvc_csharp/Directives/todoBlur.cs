@@ -19,36 +19,22 @@ namespace Todo
    {
       public todoBlurDefinition()
       {
-         Name = "todoBlur";
+         Name = "todoBlur";        
          DirectiveController = typeof(todoBlurController);
       }
    }
 
    public class todoBlurController : Scope
-   {
-      Attributes attrs;
-
-      public todoBlurController(Scope _scope, AngularJS.Element elem, Attributes attrs)
-      {
-         this.attrs = attrs;
-
-         elem.bind("blur",Blur);         
-      }
-
-      public void Blur()
-      {
-         this.Apply(attrs["todoBlur"]);
+   {      
+      public void Link(Scope _scope, AngularJS.Element elem, Attributes attrs)
+      {         
+         elem.bind("blur",()=>
+         {
+            this.Apply(attrs["todoBlur"]);
+         });         
       }
    }
 }
 
-/*
-   todomvc.directive('todoBlur', function () {
-	return function (scope, elem, attrs) {
-		elem.bind('blur', function () {
-			scope.$apply(attrs.todoBlur);
-		});
-	};
-});
-*/
+
 
