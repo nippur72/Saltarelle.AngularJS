@@ -3,21 +3,27 @@
 	// AngularJS.AngularUtils
 	var $AngularJS_AngularUtils = function() {
 	};
-	$AngularJS_AngularUtils.RegisterController = function(module, type) {
-		// TODO
-		// if(!type.IsSubClassOf(Scope)) throw new Exception("controller must be derived from Scope class");
-		var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 0, null, false);
-		var parameters = type.$inject;
-		var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
-		module.controller(ss.getTypeName(type), fcall);
+	$AngularJS_AngularUtils.Controller = function(T) {
+		return function(module) {
+			var type = T;
+			// TODO
+			// if(!type.IsSubClassOf(Scope)) throw new Exception("controller must be derived from Scope class");
+			var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 0, null, false);
+			var parameters = type.$inject;
+			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
+			module.controller(ss.getTypeName(type), fcall);
+		};
 	};
-	$AngularJS_AngularUtils.RegisterFactory = function(module, type) {
-		// register all public instance methods as filters                       
-		var $t1 = $AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type);
-		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
-			var funcname = $t1[$t2];
-			$AngularJS_AngularUtils.$RegisterFactory(module, type, funcname);
-		}
+	$AngularJS_AngularUtils.Factory = function(T) {
+		return function(module) {
+			var type = T;
+			// register all public instance methods as filters                       
+			var $t1 = $AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type);
+			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+				var funcname = $t1[$t2];
+				$AngularJS_AngularUtils.$RegisterFactory(module, type, funcname);
+			}
+		};
 	};
 	$AngularJS_AngularUtils.$RegisterFactory = function(module, type, funcname) {
 		var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 2, funcname, true);
@@ -25,30 +31,16 @@
 		var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
 		module.factory(funcname, fcall);
 	};
-	$AngularJS_AngularUtils.RegisterFactoryOld = function(module, type) {
-		// scan class static methods (contained in Object.keys)
-		var keys = Object.keys(type);
-		for (var $t1 = 0; $t1 < keys.length; $t1++) {
-			var funcname = keys[$t1];
-			// skips reserved and private methods
-			if (!ss.startsWithString(funcname, '__') && !ss.startsWithString(funcname, '$')) {
-				var fun = type[funcname];
-				// make sure it's a function
-				if (ss.referenceEquals(ss.getInstanceType(fun), Function)) {
-					var parameters = angular.injector().annotate(fun);
-					var injarr = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
-					module.factory(funcname, injarr);
-				}
+	$AngularJS_AngularUtils.Filter = function(T) {
+		return function(module) {
+			var type = T;
+			// register all public instance methods as filters                       
+			var $t1 = $AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type);
+			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+				var funcname = $t1[$t2];
+				$AngularJS_AngularUtils.$RegisterFilter(module, type, funcname);
 			}
-		}
-	};
-	$AngularJS_AngularUtils.RegisterFilter = function(module, type) {
-		// register all public instance methods as filters                       
-		var $t1 = $AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type);
-		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
-			var funcname = $t1[$t2];
-			$AngularJS_AngularUtils.$RegisterFilter(module, type, funcname);
-		}
+		};
 	};
 	$AngularJS_AngularUtils.$RegisterFilter = function(module, type, funcname) {
 		var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 3, funcname, false);
@@ -56,19 +48,28 @@
 		var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
 		module.filter(funcname, fcall);
 	};
-	$AngularJS_AngularUtils.RegisterConfig = function(module, type) {
-		var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 3, null, false);
-		var parameters = type.$inject;
-		var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
-		module.config(fcall);
+	$AngularJS_AngularUtils.Config = function(T) {
+		return function(module) {
+			var type = T;
+			var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 3, null, false);
+			var parameters = type.$inject;
+			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
+			module.config(fcall);
+		};
 	};
-	$AngularJS_AngularUtils.RegisterDirective = function(module, dirob) {
-		var fun = $AngularJS_AngularUtils.CreateDirectiveFunction(dirob);
-		var parameters = angular.injector().annotate(fun);
-		var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
-		module.directive(dirob.Name, fcall);
+	$AngularJS_AngularUtils.Directive = function(T) {
+		return function(module) {
+			var type = T;
+			// TODO when there will be IsSubClassOf
+			//if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
+			var dirob = ss.cast(ss.createInstance(type), $AngularJS_DirectiveDefinition);
+			var fun = $AngularJS_AngularUtils.$CreateDirectiveFunction(dirob);
+			var parameters = angular.injector().annotate(fun);
+			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
+			module.directive(dirob.Name, fcall);
+		};
 	};
-	$AngularJS_AngularUtils.CreateDirectiveFunction = function(def) {
+	$AngularJS_AngularUtils.$CreateDirectiveFunction = function(def) {
 		var defob = def.CreateDefinitionObject();
 		var parameters = [];
 		var fnames = [];

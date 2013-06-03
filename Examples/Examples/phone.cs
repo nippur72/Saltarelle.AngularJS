@@ -15,9 +15,9 @@ namespace TestAngularJS
       public static void Main()
       {
          Module app = new Module("myApp");
-         app.RegisterConfig(typeof(PhoneConfig));
-         app.RegisterController(typeof(PhoneListController));
-         app.RegisterController(typeof(PhoneListControllerDetail));
+         app.Config<PhoneConfig>();
+         app.Controller<PhoneListController>();
+         app.Controller<PhoneListControllerDetail>();
       }   
    }
 

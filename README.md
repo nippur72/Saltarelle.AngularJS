@@ -49,9 +49,9 @@ The class name is the the name for the controller that can be later referenced i
 `ng-controller` directive. For example:
 
 ```C#
-public class ShoppingCartControllers : Scope
+public class ShoppingCartController : Scope
 {     
-    public static void CartController(Scope _scope, Timeout _timeout)
+    public ShoppingCartController(Scope _scope, Timeout _timeout)
     {
 	}
 }
@@ -67,12 +67,12 @@ The class should also declare all objects that are put in the scope. What you re
 outside C# (e.g. HTML) should be declared with then `public` modifier. For example:
 
 ```C#
-public class ShoppingCartControllers : Scope
+public class ShoppingCartController : Scope
 {     
     public List<CartItem> items;
     public double billDiscount;
 
-    public static void CartController(Scope _scope, Timeout _timeout)
+    public ShoppingCartController(Scope _scope, Timeout _timeout)
     {
 	}
 }
@@ -81,7 +81,7 @@ public class ShoppingCartControllers : Scope
 After the class controller is defined you need to register it within the application-module:
 
 ```C#
-app.RegisterControllers(typeof(ShoppingCartControllers));                                  
+app.Controller<ShoppingCartController>();                                  
 ```
 
 # Implementing the controller logic
@@ -139,7 +139,7 @@ public class MyConfigs
 and then registered with
 
 ```C#
-app.RegisterConfig(typeof(MyConfigs));
+app.Config<MyConfigs>();
 ```
 
 # Defining a Service (Factory)
@@ -170,7 +170,7 @@ public class ItemsFactory
 and then registered with:
 
 ```C#
-app.RegisterFactory(typeof(ItemsFactory));
+app.Factory<ItemsFactory>();
 ```
 
 once the factory is registered, it can be used in any angular function by refering its name ("Items"). For example you can define a controller:
@@ -195,7 +195,7 @@ public class CartFilters
 and then registered with:
 
 ```C#
-app.RegisterFilters(typeof(CartFilters);  
+app.Filters<CartFilters>();  
 ```
 
 and in HTML template:
@@ -272,6 +272,10 @@ public class HelloDirective : DirectiveDefinition
 ```
 
 defines a directive called "hello", that applies to elements (result will be `<hello>`) with the given template.
+
+```C#
+app.Directive<HelloDirective>();  
+```
 
 Some concepts about directives:
 

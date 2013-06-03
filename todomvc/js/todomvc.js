@@ -7,12 +7,12 @@
 		// The main TodoMVC app module
 		var todoapp = angular.module('todomvc', []);
 		// directives
-		AngularJS.AngularUtils.RegisterDirective(todoapp, new $Todo_todoBlurDefinition());
-		AngularJS.AngularUtils.RegisterDirective(todoapp, new $Todo_todoFocusDefinition());
-		// services
-		AngularJS.AngularUtils.RegisterFactory(todoapp, $Todo_todoStorageService);
+		AngularJS.AngularUtils.Directive($Todo_todoBlurDefinition).call(null, todoapp);
+		AngularJS.AngularUtils.Directive($Todo_todoFocusDefinition).call(null, todoapp);
+		// services         
+		todoapp.service(ss.getTypeName($Todo_todoStorage), $Todo_todoStorage);
 		// controllers
-		AngularJS.AngularUtils.RegisterController(todoapp, $Todo_TodoCtrl);
+		AngularJS.AngularUtils.Controller($Todo_TodoCtrl).call(null, todoapp);
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// Todo.todoBlurController
@@ -143,24 +143,19 @@
 		this.completed = false;
 	};
 	////////////////////////////////////////////////////////////////////////////////
-	// Todo.TodoStorage
-	var $Todo_TodoStorage = function() {
+	// Todo.todoStorage
+	var $Todo_todoStorage = function() {
 	};
-	$Todo_TodoStorage.prototype = {
+	$Todo_todoStorage.prototype = {
 		get: function() {
-			return JSON.parse(ss.cast(window.localStorage.getItem($Todo_TodoStorage.$STORAGE_ID), String));
+			var items = JSON.parse(ss.cast(window.localStorage.getItem($Todo_todoStorage.$STORAGE_ID), String));
+			if (ss.isNullOrUndefined(items)) {
+				items = [];
+			}
+			return items;
 		},
 		put: function(todos) {
-			window.localStorage.setItem($Todo_TodoStorage.$STORAGE_ID, JSON.stringify(todos));
-		}
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// Todo.todoStorageService
-	var $Todo_todoStorageService = function() {
-	};
-	$Todo_todoStorageService.prototype = {
-		todoStorage: function() {
-			return new $Todo_TodoStorage();
+			window.localStorage.setItem($Todo_todoStorage.$STORAGE_ID, JSON.stringify(todos));
 		}
 	};
 	ss.registerClass(global, 'Todo.TodoApp', $Todo_TodoApp);
@@ -170,7 +165,6 @@
 	ss.registerClass(global, 'Todo.todoFocusController', $Todo_todoFocusController, AngularJS.Scope);
 	ss.registerClass(global, 'Todo.todoFocusDefinition', $Todo_todoFocusDefinition, AngularJS.DirectiveDefinition);
 	ss.registerClass(global, 'Todo.TodoItem', $Todo_TodoItem);
-	ss.registerClass(global, 'Todo.TodoStorage', $Todo_TodoStorage);
-	ss.registerClass(global, 'Todo.todoStorageService', $Todo_todoStorageService);
-	$Todo_TodoStorage.$STORAGE_ID = 'todos-angularjs';
+	ss.registerClass(global, 'Todo.todoStorage', $Todo_todoStorage);
+	$Todo_todoStorage.$STORAGE_ID = 'todos-angularjs';
 })();

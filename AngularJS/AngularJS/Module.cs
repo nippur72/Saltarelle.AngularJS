@@ -10,8 +10,6 @@ using System.Diagnostics;
 
 namespace AngularJS
 {    
-   public delegate string Filter<T>(T input);
-
    [Imported]
    public sealed class Module
    {
@@ -25,11 +23,7 @@ namespace AngularJS
       /// </summary>
       public string Name
       {
-         [InlineCode("{this}.name")]
-         get
-         {
-            return "";
-         }
+         [InlineCode("{this}.name")] get { return null; }
       }
 
       /// <summary>
@@ -37,18 +31,36 @@ namespace AngularJS
       /// </summary>      
       public string[] Requires
       {
-         [InlineCode("{this}.requires")]
-         get
-         {
-            return null;
-         }
+         [InlineCode("{this}.requires")] get { return null; }
       }
+
+      /// <summary>
+      /// Retrieves an already existing module by its name
+      /// </summary>      
+      [InlineCode("angular.module({Name})")] 
+      public Module GetModuleByName(string Name)
+      {
+         return null;
+      }   
+
+      /*
+      #region Convenience Methods
+
+      [InlineCode("{this}.config({func})")]
+      public void Config(object func)
+      {
+      }    
 
       [InlineCode("{this}.controller({Name},{func})")]
       public void Controller(string Name, object func)
       {
       } 
       
+      [InlineCode("{this}.directive({Name},{defob})")]
+      public void Directive(string Name, object defob)
+      {
+      }
+
       [InlineCode("{this}.factory({Name},{func})")]
       public void Factory(string Name, object func)
       {
@@ -57,23 +69,14 @@ namespace AngularJS
       [InlineCode("{this}.filter({FilterName},{ob})")]
       public void Filter(string FilterName, object ob)
       {
-      }      
-      
-      [InlineCode("{this}.config({func})")]
-      public void Config(object func)
-      {
-      }    
+      }            
 
-      [InlineCode("{this}.directive({Name},{defob})")]
-      public void Directive(string Name, object defob)
+      [InlineCode("{this}.factory({Name},{func})")]
+      public void Service(string Name, Type func)
       {
-      }
+      }          
 
-      /*
-      [InlineCode("{this}.directive({Name},{func})")]
-      public void Directive(string Name, object func)
-      {
-      }
+      #endregion
       */
 
       [InlineCode("{this}.{@FuncName}(function(){{debugger;}})")]
@@ -90,33 +93,5 @@ namespace AngularJS
 }
 
 
-
-/*
-   public class Directive : DirectiveBase
-   {
-      public object injection;
-
-      public Directive(injection)
-      {
-         Name = ....;
-         sss = ....;
-         this.injection = injection;
-      }
-
-      public void Link(Scope,....)
-      {
-      }
-   }
-
-   function(injection)
-   {
-      return 
-      {
-         Name = ...;
-         Link: typescoped
-      }            
-   }
-
-*/
 
 

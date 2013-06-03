@@ -15,7 +15,7 @@ namespace TestAngularJS
       public static void Main()
       {
          Module app = new Module("myApp");
-         app.RegisterController(typeof(StartUpController));
+         app.Controller<StartUpController>();
       }   
    }   
    

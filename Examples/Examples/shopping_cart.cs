@@ -15,10 +15,10 @@ namespace TestAngularJS
       public static void Main()
       {
          Module app = new Module("myApp");
-         app.RegisterFactory(typeof(ItemsFactory)); 
-         app.RegisterFactory(typeof(LabelsFactory)); 
-         app.RegisterFilter(typeof(Filters));        
-         app.RegisterController(typeof(CartController));
+         app.Factory<ItemsFactory>(); 
+         app.Factory<LabelsFactory>(); 
+         app.Filter<Filters>();        
+         app.Controller<CartController>();
       }   
    }
    

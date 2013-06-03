@@ -14,22 +14,27 @@ namespace Todo
    /**
     * Services that persists and retrieves TODOs from localStorage
     */
+   
+   /* we don't need the factory class, we can register directly the service "todoStorage"
 
    public class todoStorageService
    {
-      public TodoStorage todoStorage()
+      public todoStorage todoStorage()
       {
-         return new TodoStorage();   
+         return new todoStorage();   
       }  
    }
+   */
 
-   public class TodoStorage
+   public class todoStorage
    {
       private const string STORAGE_ID = "todos-angularjs";
 
       public List<TodoItem> get()
       {         
-         return Json.Parse<List<TodoItem>>((string) Window.LocalStorage.GetItem(STORAGE_ID));
+         List<TodoItem> items = Json.Parse<List<TodoItem>>((string) Window.LocalStorage.GetItem(STORAGE_ID));
+         if(items==null) items = new List<TodoItem>();
+         return items;
       }
 
       public void put(List<TodoItem> todos)

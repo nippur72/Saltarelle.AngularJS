@@ -106,10 +106,10 @@
 		//app.RegisterController( typeof(TestController) );         
 		//app.RegisterFactory( typeof(ItemsFactory) );
 		//app.RegisterDirectiveAsFactory("testdirective",typeof(testdirective));
-		AngularJS.AngularUtils.RegisterFactory(app, $TestAngularJS_ItemsFactory);
-		AngularJS.AngularUtils.RegisterDirective(app, new $TestAngularJS_AccordionDefinition());
-		AngularJS.AngularUtils.RegisterDirective(app, new $TestAngularJS_ExpanderDefinition());
-		AngularJS.AngularUtils.RegisterDirective(app, new $TestAngularJS_HelloDirective());
+		AngularJS.AngularUtils.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.AngularUtils.Directive($TestAngularJS_AccordionDefinition).call(null, app);
+		AngularJS.AngularUtils.Directive($TestAngularJS_ExpanderDefinition).call(null, app);
+		AngularJS.AngularUtils.Directive($TestAngularJS_HelloDirective).call(null, app);
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.ExpanderController
@@ -163,7 +163,7 @@
 	};
 	$TestAngularJS_FundingExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularUtils.RegisterController(app, $TestAngularJS_StartUpController);
+		AngularJS.AngularUtils.Controller($TestAngularJS_StartUpController).call(null, app);
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.HelloDirective
@@ -243,9 +243,9 @@
 	};
 	$TestAngularJS_PhoneExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularUtils.RegisterConfig(app, $TestAngularJS_PhoneConfig);
-		AngularJS.AngularUtils.RegisterController(app, $TestAngularJS_PhoneListController);
-		AngularJS.AngularUtils.RegisterController(app, $TestAngularJS_PhoneListControllerDetail);
+		AngularJS.AngularUtils.Config($TestAngularJS_PhoneConfig).call(null, app);
+		AngularJS.AngularUtils.Controller($TestAngularJS_PhoneListController).call(null, app);
+		AngularJS.AngularUtils.Controller($TestAngularJS_PhoneListControllerDetail).call(null, app);
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.PhoneListController
@@ -292,10 +292,10 @@
 	};
 	$TestAngularJS_ShoppingCartExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularUtils.RegisterFactory(app, $TestAngularJS_ItemsFactory);
-		AngularJS.AngularUtils.RegisterFactory(app, $TestAngularJS_LabelsFactory);
-		AngularJS.AngularUtils.RegisterFilter(app, $TestAngularJS_Filters);
-		AngularJS.AngularUtils.RegisterController(app, $TestAngularJS_CartController);
+		AngularJS.AngularUtils.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.AngularUtils.Factory($TestAngularJS_LabelsFactory).call(null, app);
+		AngularJS.AngularUtils.Filter($TestAngularJS_Filters).call(null, app);
+		AngularJS.AngularUtils.Controller($TestAngularJS_CartController).call(null, app);
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.StartUpController

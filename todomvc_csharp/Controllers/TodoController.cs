@@ -34,11 +34,11 @@ namespace Todo
       public bool allChecked;
       public AngularJS.Location location;
 
-      TodoStorage todoStorage;
+      todoStorage todoStorage;
       filterFilterDelegate filterFilter;           
       
 
-      public TodoCtrl(Scope _scope, AngularJS.Location _location, TodoStorage todoStorage, filterFilterDelegate filterFilter)
+      public TodoCtrl(Scope _scope, AngularJS.Location _location, todoStorage todoStorage, filterFilterDelegate filterFilter)
       {
 	      this.todoStorage = todoStorage;
          this.filterFilter = filterFilter;         

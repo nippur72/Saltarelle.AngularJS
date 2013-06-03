@@ -56,11 +56,11 @@ namespace TestAngularJS
          //app.RegisterController( typeof(TestController) );         
          //app.RegisterFactory( typeof(ItemsFactory) );
          //app.RegisterDirectiveAsFactory("testdirective",typeof(testdirective));
-         app.RegisterFactory( typeof(ItemsFactory) );
+         app.Factory<ItemsFactory>();
                  
-         app.RegisterDirective( new AccordionDefinition() );
-         app.RegisterDirective( new ExpanderDefinition() );         
-         app.RegisterDirective( new HelloDirective() );        
+         app.Directive<AccordionDefinition>();
+         app.Directive<ExpanderDefinition>();         
+         app.Directive<HelloDirective>();        
       }   
    }   
    

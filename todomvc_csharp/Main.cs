@@ -20,14 +20,14 @@ namespace Todo
          Module todoapp = new Module("todomvc");
          
          // directives
-         todoapp.RegisterDirective( new todoBlurDefinition() );         
-         todoapp.RegisterDirective( new todoFocusDefinition() );
+         todoapp.Directive<todoBlurDefinition>();         
+         todoapp.Directive<todoFocusDefinition>();        
                   
-         // services
-         todoapp.RegisterFactory(typeof(todoStorageService));
+         // services         
+         todoapp.Service<todoStorage>();  
 
          // controllers
-         todoapp.RegisterController(typeof(TodoCtrl));
+         todoapp.Controller<TodoCtrl>();
       }
    }
 }

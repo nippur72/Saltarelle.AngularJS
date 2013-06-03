@@ -175,8 +175,10 @@ namespace AngularJS
    {        
       #region Controllers
 
-      public static void RegisterController(this Module module, Type type)
-      {
+      public static void Controller<T>(this Module module)
+      {         
+         Type type = typeof(T);
+      
          // TODO
          // if(!type.IsSubClassOf(Scope)) throw new Exception("controller must be derived from Scope class");
          
@@ -184,15 +186,28 @@ namespace AngularJS
          
          var parameters = type.ReadInjection();         
          var fcall = fun.CreateFunctionCall(parameters);         
-         module.Controller(type.Name,fcall);
+         Controller(module,type.Name,fcall);
       }
       
       #endregion
 
+      #region Service
+
+      [InlineCode("{module}.service({$System.Script}.getTypeName({T}),{T})")]
+      public static void Service<T>(this Module module)
+      {         
+         string servicename = typeof(T).Name;
+         Service(module,servicename,typeof(T));
+      }
+
+      #endregion 
+
       #region Factory
 
-      public static void RegisterFactory(this Module module, Type type)
+      public static void Factory<T>(this Module module)
       {         
+         Type type = typeof(T);
+               
          // register all public instance methods as filters                       
          foreach(string funcname in type.GetPublicInstanceMethodNames())
          {
@@ -206,41 +221,17 @@ namespace AngularJS
          
          var parameters = type.ReadInjection();
          var fcall = fun.CreateFunctionCall(parameters);         
-         module.Factory(funcname,fcall);
+         Factory(module,funcname,fcall);
       }     
-
-      //
-      // Factor is a special case, it does use function builder (yet)
-      //
-
-      public static void RegisterFactoryOld(this Module module, Type type)
-      {         
-         // scan class static methods (contained in Object.keys)
-         var keys = Object.Keys(type);
-                           
-         foreach(string funcname in keys)
-         {
-            // skips reserved and private methods
-            if(!funcname.StartsWith("__") && !funcname.StartsWith("$"))
-            {
-               var fun = type.GetKey(funcname);
-               
-               // make sure it's a function
-               if(fun.GetType()==typeof(Function))
-               {                          
-                  var parameters = Injector.Annotate(fun);
-                  var injarr = fun.CreateFunctionCall(parameters);                   
-                  module.Factory(funcname,injarr);                  
-               }
-            }
-         }
-      }
+      
       #endregion
 
       #region Filters
      
-      public static void RegisterFilter(this Module module, Type type)
+      public static void Filter<T>(this Module module)
       {         
+         Type type = typeof(T);
+
          // register all public instance methods as filters                       
          foreach(string funcname in type.GetPublicInstanceMethodNames())
          {
@@ -254,34 +245,42 @@ namespace AngularJS
          
          var parameters = type.ReadInjection();
          var fcall = fun.CreateFunctionCall(parameters);         
-         module.Filter(funcname,fcall);
+         Filter(module,funcname,fcall);
       }
 
       #endregion
       
       #region Configs
 
-      public static void RegisterConfig(this Module module, Type type)
+      public static void Config<T>(this Module module)
       {
+         Type type = typeof(T);
          Function fun = type.BuildControllerFunction(ThisMode.NewObject);                
          var parameters = type.ReadInjection();         
          var fcall = fun.CreateFunctionCall(parameters);         
-         module.Config(fcall);
+         Config(module,fcall);
       }
 
       #endregion
 
       #region Directives            
 
-      public static void RegisterDirective(this Module module, DirectiveDefinition dirob)
-      {
+      public static void Directive<T>(this Module module)
+      {         
+         Type type = typeof(T);
+
+         // TODO when there will be IsSubClassOf
+         //if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
+
+         DirectiveDefinition dirob = (DirectiveDefinition) Activator.CreateInstance(type);
+
          Function fun = CreateDirectiveFunction(dirob);
          var parameters = Injector.Annotate(fun);          
          var fcall = fun.CreateFunctionCall(parameters);       
-         module.Directive(dirob.Name, fcall);
+         Directive(module, dirob.Name, fcall);
       }
 
-      public static Function CreateDirectiveFunction(DirectiveDefinition def)
+      private static Function CreateDirectiveFunction(DirectiveDefinition def)
       {         
          object defob = def.CreateDefinitionObject();
          
@@ -325,19 +324,44 @@ namespace AngularJS
          body += "return $obdef;\r\n";
 
          return TypeExtensionMethods.CreateNewFunction(parameters,body);
-      }
-      
-      /*
-      public static void RegisterDirectiveAsFactory(this Module module, string nn, Type type)
-      {
-         Function fun = type.BuildControllerFunction(ThisMode.NewObject,"Link");
-         var parameteres = type.ReadInjection();
-         var fcall = fun.CreateFunctionCall(parameteres);
-         module.Directive2(nn, fcall);
-      }
-      */
+      }           
 
       #endregion
+
+      #region Convenience Methods
+
+      [InlineCode("{module}.config({func})")]
+      public static void Config(Module module, object func)
+      {
+      }    
+
+      [InlineCode("{module}.controller({Name},{func})")]
+      public static void Controller(Module module, string Name, object func)
+      {
+      } 
+      
+      [InlineCode("{module}.directive({Name},{defob})")]
+      public static void Directive(Module module, string Name, object defob)
+      {
+      }
+
+      [InlineCode("{module}.factory({Name},{func})")]
+      public static void Factory(Module module, string Name, object func)
+      {
+      }          
+
+      [InlineCode("{module}.filter({FilterName},{ob})")]
+      public static void Filter(Module module, string FilterName, object ob)
+      {
+      }            
+
+      [InlineCode("{module}.factory({Name},{func})")]
+      public static void Service(Module module, string Name, Type func)
+      {
+      }          
+
+      #endregion
+
    }
 }
 
