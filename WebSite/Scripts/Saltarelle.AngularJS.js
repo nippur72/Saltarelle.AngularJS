@@ -84,11 +84,21 @@
 		if (ss.isValue(type) && ss.contains(fnames, 'Link')) {
 			body += 'var $outer_arguments = arguments;\r\n';
 			body += '$obdef.link = function(_scope) { \r\n';
-			for (var $t1 = 0; $t1 < fnames.length; $t1++) {
-				var funcname = fnames[$t1];
+			// save isolated scope bindings that would be overwritten by constructor initialization
+			for (var $t1 = 0; $t1 < def.ScopeAttributes.length; $t1++) {
+				var sb = def.ScopeAttributes[$t1];
+				body += ss.formatString('var $$saved_{0} = _scope.{0};\r\n', sb.AttributeName);
+			}
+			for (var $t2 = 0; $t2 < fnames.length; $t2++) {
+				var funcname = fnames[$t2];
 				body += ss.formatString('   _scope.{1} = {0}.prototype.{1}.bind(_scope);\r\n', ss.getTypeFullName(type), funcname);
 			}
 			body += ss.formatString('   {0}.apply(_scope,$outer_arguments);\r\n', ss.getTypeFullName(type));
+			// retrieves back saved isolated scope bindings
+			for (var $t3 = 0; $t3 < def.ScopeAttributes.length; $t3++) {
+				var sb1 = def.ScopeAttributes[$t3];
+				body += ss.formatString('_scope.{0} = $$saved_{0};\r\n', sb1.AttributeName);
+			}
 			body += '   _scope.Link.apply(_scope,arguments);\r\n';
 			body += '}\r\n';
 		}
@@ -116,7 +126,6 @@
 		this.ScopeMode = 0;
 		this.ScopeAttributes = [];
 		this.Require = null;
-		this.Compile = null;
 		this.SharedController = null;
 		this.DirectiveController = null;
 	};

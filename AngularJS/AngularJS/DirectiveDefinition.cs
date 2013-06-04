@@ -65,7 +65,7 @@ namespace AngularJS
       public ScopeModes ScopeMode = ScopeModes.Existing;
       public List<ScopeBindings> ScopeAttributes = new List<ScopeBindings>();      
       public string Require;      
-      public dynamic Compile;
+            
       public Type SharedController;
       public Type DirectiveController;
 

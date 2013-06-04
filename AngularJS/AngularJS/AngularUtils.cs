@@ -305,6 +305,12 @@ namespace AngularJS
          {
             body += "var $outer_arguments = arguments;\r\n";
             body += "$obdef.link = function(_scope) { \r\n";
+
+            // save isolated scope bindings that would be overwritten by constructor initialization
+            foreach(ScopeBindings sb in def.ScopeAttributes)
+            {
+               body += String.Format("var $$saved_{0} = _scope.{0};\r\n",sb.AttributeName);
+            }
          
             foreach(string funcname in fnames)
             {
@@ -312,6 +318,13 @@ namespace AngularJS
             }
             
             body += String.Format("   {0}.apply(_scope,$outer_arguments);\r\n",type.FullName);
+
+            // retrieves back saved isolated scope bindings
+            foreach(ScopeBindings sb in def.ScopeAttributes)
+            {
+               body += String.Format("_scope.{0} = $$saved_{0};\r\n",sb.AttributeName);
+            }
+
             body += "   _scope.Link.apply(_scope,arguments);\r\n";
             body += "}\r\n";
          }
