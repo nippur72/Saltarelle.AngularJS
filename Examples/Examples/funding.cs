@@ -47,7 +47,7 @@ namespace TestAngularJS
 
          Watch<double>( ()=>{ return fundingStartingEstimate; }, compneeded);
 
-         ExampleService.DoAlert();
+         ExampleService.DoAlert();         
       }
 
       public void computeNeeded() 

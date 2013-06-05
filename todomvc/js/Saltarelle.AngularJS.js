@@ -219,6 +219,16 @@
 		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.Event
+	var $AngularJS_Event = function() {
+		this.targetScope = null;
+		this.currentScope = null;
+		this.name = null;
+		this.stopPropagation = null;
+		this.preventDefault = null;
+		this.defaultPrevented = false;
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.FunctionExtensionMethods
 	var $AngularJS_FunctionExtensionMethods = function() {
 	};
@@ -377,6 +387,7 @@
 	ss.registerClass(global, 'AngularJS.AngularUtils', $AngularJS_AngularUtils);
 	ss.registerEnum(global, 'AngularJS.BindingStrategies', $AngularJS_BindingStrategies);
 	ss.registerClass(global, 'AngularJS.DirectiveDefinition', $AngularJS_DirectiveDefinition);
+	ss.registerClass(global, 'AngularJS.Event', $AngularJS_Event);
 	ss.registerClass(global, 'AngularJS.FunctionExtensionMethods', $AngularJS_FunctionExtensionMethods);
 	ss.registerEnum(global, 'AngularJS.RestrictFlags', $AngularJS_RestrictFlags, { enumFlags: true });
 	ss.registerClass(global, 'AngularJS.RouteParams', $AngularJS_RouteParams);
