@@ -18,7 +18,7 @@
 		return function(module) {
 			var type = T;
 			// register all public instance methods as filters                       
-			var $t1 = $AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type);
+			var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
 			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
 				var funcname = $t1[$t2];
 				$AngularJS_AngularUtils.$RegisterFactory(module, type, funcname);
@@ -35,7 +35,7 @@
 		return function(module) {
 			var type = T;
 			// register all public instance methods as filters                       
-			var $t1 = $AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type);
+			var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
 			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
 				var funcname = $t1[$t2];
 				$AngularJS_AngularUtils.$RegisterFilter(module, type, funcname);
@@ -77,7 +77,7 @@
 		var SharedController = defob.controller;
 		if (ss.isValue(type)) {
 			parameters = angular.injector().annotate($AngularJS_TypeExtensionMethods.GetConstructorFunction(type));
-			fnames = $AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type);
+			fnames = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
 		}
 		var body = '';
 		body += 'var $obdef = ' + JSON.stringify(defob) + ';\r\n';
@@ -298,13 +298,13 @@
 	// AngularJS.TypeExtensionMethods
 	var $AngularJS_TypeExtensionMethods = function() {
 	};
-	$AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames = function(type) {
+	$AngularJS_TypeExtensionMethods.GetInstanceMethodNames = function(type) {
 		var result = [];
 		var $t1 = ss.getEnumerator(Object.keys(type.prototype));
 		try {
 			while ($t1.moveNext()) {
 				var key = $t1.current();
-				if (key !== 'constructor' && !ss.startsWithString(key, '$')) {
+				if (key !== 'constructor') {
 					ss.add(result, key);
 				}
 			}
@@ -344,7 +344,7 @@
 			}
 		}
 		// takes method into $scope, binding "$scope" to "this"                 
-		var $t1 = $AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type);
+		var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
 		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
 			var funcname = $t1[$t2];
 			body += ss.formatString('{2}.{1} = {0}.prototype.{1}.bind({2});\r\n', ss.getTypeFullName(type), funcname, thisref);
@@ -358,7 +358,7 @@
 			else {
 				body += ss.formatString('return {1}.{0}  ;\r\n', return_function, thisref);
 			}
-			if (!ss.contains($AngularJS_TypeExtensionMethods.GetPublicInstanceMethodNames(type), return_function)) {
+			if (!ss.contains($AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type), return_function)) {
 				throw new ss.Exception('function \'' + return_function + '\' not defined in controller \'' + ss.getTypeName(type) + '\'');
 			}
 		}

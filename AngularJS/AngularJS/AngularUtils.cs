@@ -14,12 +14,12 @@ namespace AngularJS
 
    public static class TypeExtensionMethods
    {
-      public static List<string> GetPublicInstanceMethodNames(this Type type)
+      public static List<string> GetInstanceMethodNames(this Type type)
       {
          List<string> result = new List<string>();
          foreach(string key in type.Prototype.Keys)
          {
-            if(key!="constructor" && !key.StartsWith("$")) result.Add(key);
+            if(key!="constructor") result.Add(key);
          }   
          return result;
       }
@@ -68,7 +68,7 @@ namespace AngularJS
          }
                   
          // takes method into $scope, binding "$scope" to "this"                 
-         foreach(string funcname in type.GetPublicInstanceMethodNames())
+         foreach(string funcname in type.GetInstanceMethodNames())
          {
             body += String.Format("{2}.{1} = {0}.prototype.{1}.bind({2});\r\n",type.FullName,funcname,thisref);             
          }
@@ -81,7 +81,7 @@ namespace AngularJS
             if(return_function_call) body+=String.Format("return {1}.{0}();\r\n",return_function,thisref);   
             else                     body+=String.Format("return {1}.{0}  ;\r\n",return_function,thisref);   
             
-            if(!type.GetPublicInstanceMethodNames().Contains(return_function))
+            if(!type.GetInstanceMethodNames().Contains(return_function))
             {
                throw new Exception("function '"+return_function+"' not defined in controller '"+type.Name+"'");
             }
@@ -209,7 +209,7 @@ namespace AngularJS
          Type type = typeof(T);
                
          // register all public instance methods as filters                       
-         foreach(string funcname in type.GetPublicInstanceMethodNames())
+         foreach(string funcname in type.GetInstanceMethodNames())
          {
             module.RegisterFactory(type,funcname);
          }
@@ -233,7 +233,7 @@ namespace AngularJS
          Type type = typeof(T);
 
          // register all public instance methods as filters                       
-         foreach(string funcname in type.GetPublicInstanceMethodNames())
+         foreach(string funcname in type.GetInstanceMethodNames())
          {
             module.RegisterFilter(type,funcname);
          }
@@ -294,7 +294,7 @@ namespace AngularJS
          if(type!=null)
          {
             parameters = Injector.Annotate(type.GetConstructorFunction());
-            fnames = type.GetPublicInstanceMethodNames();
+            fnames = type.GetInstanceMethodNames();
          }       
 
          string body = "";
