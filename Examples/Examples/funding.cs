@@ -15,20 +15,39 @@ namespace TestAngularJS
       public static void Main()
       {
          Module app = new Module("myApp");
+         app.Factory<ItemsFactory>();
+         app.Service<ExampleService>();
          app.Controller<StartUpController>();
       }   
-   }   
+   }  
+   
+   public class ExampleService
+   {
+      List<CartItem> Items;
+
+      public ExampleService(List<CartItem> Items, Http _http)
+      {
+         this.Items = Items;   
+      }
+
+      public void DoAlert()
+      {
+         Window.Alert(Items[0].title);
+      }
+   } 
    
    public class StartUpController : Scope
    {                    	                                                                                               
       public double fundingStartingEstimate;
       public double fundingNeeded;
 
-      public StartUpController(Scope _scope)
+      public StartUpController(Scope _scope, ExampleService ExampleService)
       {
          fundingStartingEstimate = 0;
 
          Watch<double>( ()=>{ return fundingStartingEstimate; }, compneeded);
+
+         ExampleService.DoAlert();
       }
 
       public void computeNeeded() 

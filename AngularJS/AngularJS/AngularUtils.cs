@@ -35,6 +35,12 @@ namespace AngularJS
          return null;
       }      
 
+      [InlineCode("{type}")]      
+      public static Function ToFunction(this Type type)
+      {
+         return null;
+      }         
+
       [InlineCode("{type}[{funcname}]")]
       public static Function GetKey(this Type type, string funcname) { return null; }
 
@@ -100,7 +106,7 @@ namespace AngularJS
          // if no parameters, takes function out of the array
          if(parameters.Count==0) return fun;
 
-         // builds array
+         // builds array, but also FIX $injection in the type
          List<object> result = new List<object>();
          for(int t=0;t<parameters.Count;t++)
          {
@@ -191,13 +197,16 @@ namespace AngularJS
       
       #endregion
 
-      #region Service
+      #region Services
 
-      [InlineCode("{module}.service({$System.Script}.getTypeName({T}),{T})")]
+      //[InlineCode("{module}.service({$System.Script}.getTypeName({T}),{T})")]
       public static void Service<T>(this Module module)
       {         
-         string servicename = typeof(T).Name;
-         Service(module,servicename,typeof(T));
+         Type type = typeof(T);
+         var parameters = Injector.Annotate(type.GetConstructorFunction());         
+         type.ToFunction().CreateFunctionCall(parameters); // only used to fix the "_" to "$" in type.$inject
+         string servicename = typeof(T).Name;        
+         Service(module,servicename,type);
       }
 
       #endregion 
@@ -218,7 +227,7 @@ namespace AngularJS
       private static void RegisterFactory(this Module module, Type type, string funcname)
       {
          Function fun = type.BuildControllerFunction(ThisMode.This,funcname,true);         
-         
+                  
          var parameters = type.ReadInjection();
          var fcall = fun.CreateFunctionCall(parameters);         
          Factory(module,funcname,fcall);
@@ -368,7 +377,7 @@ namespace AngularJS
       {
       }            
 
-      [InlineCode("{module}.factory({Name},{func})")]
+      [InlineCode("{module}.service({Name},{func})")]
       public static void Service(Module module, string Name, Type func)
       {
       }          

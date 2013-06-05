@@ -1,0 +1,5 @@
+﻿TODO:
+
+- controllers output to .js for minification
+- services not properly injected
+- unit tests and e2e tests, how?

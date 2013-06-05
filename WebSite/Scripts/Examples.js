@@ -112,6 +112,17 @@
 		AngularJS.AngularUtils.Directive($TestAngularJS_HelloDirective).call(null, app);
 	};
 	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.ExampleService
+	var $TestAngularJS_ExampleService = function(Items, _http) {
+		this.$Items = null;
+		this.$Items = Items;
+	};
+	$TestAngularJS_ExampleService.prototype = {
+		DoAlert: function() {
+			window.alert(this.$Items[0].title);
+		}
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.ExpanderController
 	var $TestAngularJS_ExpanderController = function() {
 		this.title = null;
@@ -163,6 +174,8 @@
 	};
 	$TestAngularJS_FundingExample.Main = function() {
 		var app = angular.module('myApp', []);
+		AngularJS.AngularUtils.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.AngularUtils.Service($TestAngularJS_ExampleService).call(null, app);
 		AngularJS.AngularUtils.Controller($TestAngularJS_StartUpController).call(null, app);
 	};
 	////////////////////////////////////////////////////////////////////////////////
@@ -299,7 +312,7 @@
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.StartUpController
-	var $TestAngularJS_StartUpController = function(_scope) {
+	var $TestAngularJS_StartUpController = function(_scope, ExampleService) {
 		this.fundingStartingEstimate = 0;
 		this.fundingNeeded = 0;
 		AngularJS.Scope.call(this);
@@ -307,6 +320,7 @@
 		this.$watch(ss.mkdel(this, function() {
 			return this.fundingStartingEstimate;
 		}), ss.mkdel(this, this.compneeded));
+		ExampleService.DoAlert();
 	};
 	$TestAngularJS_StartUpController.prototype = {
 		computeNeeded: function() {
@@ -328,6 +342,7 @@
 	ss.registerClass(global, 'TestAngularJS.CartController', $TestAngularJS_CartController, AngularJS.Scope);
 	ss.registerClass(global, 'TestAngularJS.CartItem', $TestAngularJS_CartItem);
 	ss.registerClass(global, 'TestAngularJS.DirectivesExample', $TestAngularJS_DirectivesExample);
+	ss.registerClass(global, 'TestAngularJS.ExampleService', $TestAngularJS_ExampleService);
 	ss.registerClass(global, 'TestAngularJS.ExpanderController', $TestAngularJS_ExpanderController);
 	ss.registerClass(global, 'TestAngularJS.ExpanderDefinition', $TestAngularJS_ExpanderDefinition, AngularJS.DirectiveDefinition);
 	ss.registerClass(global, 'TestAngularJS.Filters', $TestAngularJS_Filters);

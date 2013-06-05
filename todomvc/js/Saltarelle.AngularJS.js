@@ -14,6 +14,16 @@
 			module.controller(ss.getTypeName(type), fcall);
 		};
 	};
+	$AngularJS_AngularUtils.Service = function(T) {
+		return function(module) {
+			var type = T;
+			var parameters = angular.injector().annotate($AngularJS_TypeExtensionMethods.GetConstructorFunction(type));
+			$AngularJS_FunctionExtensionMethods.CreateFunctionCall(type, parameters);
+			// only used to fix the "_" to "$" in type.$inject
+			var servicename = ss.getTypeName(T);
+			module.service(servicename, type);
+		};
+	};
 	$AngularJS_AngularUtils.Factory = function(T) {
 		return function(module) {
 			var type = T;
@@ -217,7 +227,7 @@
 		if (parameters.length === 0) {
 			return fun;
 		}
-		// builds array
+		// builds array, but also FIX $injection in the type
 		var result = [];
 		for (var t = 0; t < parameters.length; t++) {
 			if (ss.startsWithString(parameters[t], '_')) {
