@@ -1,5 +1,18 @@
 ﻿(function() {
 	////////////////////////////////////////////////////////////////////////////////
+	// AngularTests
+	var $AngularTests = function() {
+	};
+	$AngularTests.prototype = {
+		runTests: function() {
+			test('OneIsOne', ss.mkdel(this, function() {
+				deepEqual(1, 1, 'one is one');
+				ok(true, 'uno è uno');
+				ok(false, 'uno è due');
+			}));
+		}
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.AccordionController
 	var $TestAngularJS_AccordionController = function(Items) {
 		this.ppp = null;
@@ -337,6 +350,7 @@
 			this.fundingNeeded = this.fundingStartingEstimate * 10;
 		}
 	};
+	ss.registerClass(global, 'AngularTests', $AngularTests);
 	ss.registerClass(global, 'TestAngularJS.AccordionController', $TestAngularJS_AccordionController);
 	ss.registerClass(global, 'TestAngularJS.AccordionDefinition', $TestAngularJS_AccordionDefinition, AngularJS.DirectiveDefinition);
 	ss.registerClass(global, 'TestAngularJS.AccordionSharedController', $TestAngularJS_AccordionSharedController);

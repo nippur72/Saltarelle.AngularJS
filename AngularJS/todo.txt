@@ -2,14 +2,12 @@
 
 - controllers output to .js for minification
 - unit tests and e2e tests, how?
-- filters shipped with angular
 - cookieStore
 - module dependencies?
 - httpprovider
 - complete $http
 - $resource (angular-resource.js)
 - localization/internationalization
-- complete location
 - angularjs element
 - compiling directive?
 - $q
