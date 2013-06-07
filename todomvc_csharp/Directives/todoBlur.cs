@@ -30,7 +30,7 @@ namespace Todo
       {         
          elem.bind("blur",()=>
          {
-            this.Apply(attrs["todoBlur"]);
+            Apply<string>(attrs["todoBlur"]);
          });         
       }
    }

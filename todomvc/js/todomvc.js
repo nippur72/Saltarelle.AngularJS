@@ -1,5 +1,9 @@
 ﻿(function() {
 	////////////////////////////////////////////////////////////////////////////////
+	// Todo.ArrayExtensions2
+	var $Todo_ArrayExtensions2 = function() {
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// Todo.TodoApp
 	var $Todo_TodoApp = function() {
 	};
@@ -10,7 +14,7 @@
 		AngularJS.AngularUtils.Directive($Todo_todoBlurDefinition).call(null, todoapp);
 		AngularJS.AngularUtils.Directive($Todo_todoFocusDefinition).call(null, todoapp);
 		// services         
-		todoapp.service(ss.getTypeName($Todo_todoStorage), $Todo_todoStorage);
+		AngularJS.AngularUtils.Service($Todo_todoStorage).call(null, todoapp);
 		// controllers
 		AngularJS.AngularUtils.Controller($Todo_TodoCtrl).call(null, todoapp);
 	};
@@ -44,13 +48,13 @@
 		this.completedCount = 0;
 		this.allChecked = false;
 		this.location = null;
-		this.$todoStorage = null;
-		this.$filterFilter = null;
+		this.Storage = null;
+		this.filter = null;
 		AngularJS.Scope.call(this);
-		this.$todoStorage = todoStorage;
-		this.$filterFilter = filterFilter;
+		this.Storage = todoStorage;
+		this.filter = filterFilter;
 		this.location = _location;
-		this.todos = todoStorage.get();
+		this.todos = this.Storage.get();
 		this.newTodo = '';
 		this.editedTodo = null;
 		this.$watch(ss.mkdel(this, function() {
@@ -65,10 +69,10 @@
 	};
 	$Todo_TodoCtrl.prototype = {
 		update: function() {
-			this.remainingCount = this.$filterFilter(this.todos, { completed: false }).length;
+			this.remainingCount = this.filter(this.todos, { completed: false }).length;
 			this.completedCount = this.todos.length - this.remainingCount;
 			this.allChecked = this.remainingCount === 0;
-			this.$todoStorage.put(this.todos);
+			this.Storage.put(this.todos);
 		},
 		pathchanged: function(path, oldpath) {
 			this.statusFilter = ((path === '/active') ? { completed: false } : ((path === '/completed') ? { completed: true } : null));
@@ -79,11 +83,10 @@
 				return;
 			}
 			var $t2 = this.todos;
-			var $t3 = this.todos.length;
 			var $t1 = new $Todo_TodoItem();
 			$t1.title = newTodo;
 			$t1.completed = false;
-			ss.insert($t2, $t3, $t1);
+			$t2.push($t1);
 			this.newTodo = '';
 		},
 		editTodo: function(todo) {
@@ -97,7 +100,7 @@
 			}
 		},
 		removeTodo: function(todo) {
-			ss.remove(this.todos, todo);
+			this.todos.splice(ss.indexOf(this.todos, todo), 1);
 		},
 		clearCompletedTodos: function() {
 			this.todos = this.todos.filter(function(val) {
@@ -158,6 +161,7 @@
 			window.localStorage.setItem($Todo_todoStorage.$STORAGE_ID, JSON.stringify(todos));
 		}
 	};
+	ss.registerClass(global, 'Todo.ArrayExtensions2', $Todo_ArrayExtensions2);
 	ss.registerClass(global, 'Todo.TodoApp', $Todo_TodoApp);
 	ss.registerClass(global, 'Todo.todoBlurController', $Todo_todoBlurController, AngularJS.Scope);
 	ss.registerClass(global, 'Todo.todoBlurDefinition', $Todo_todoBlurDefinition, AngularJS.DirectiveDefinition);

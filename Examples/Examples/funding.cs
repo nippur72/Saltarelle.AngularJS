@@ -18,6 +18,9 @@ namespace TestAngularJS
          app.Factory<ItemsFactory>();
          app.Service<ExampleService>();
          app.Controller<StartUpController>();
+
+         Window.Alert("'"+(string) Script.Eval("typeof new Date()")+"'");
+         
       }   
    }  
    

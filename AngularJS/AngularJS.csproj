@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Saltarelle.AngularJS.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,6 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AngularJS\Attributes.cs" />
+    <Compile Include="AngularJS\Filters\Filters.cs" />
     <Compile Include="AngularJS\Promise.cs" />
     <Compile Include="AngularJS\Services\Timeout.cs" />
     <Compile Include="AngularJS\Element.cs" />

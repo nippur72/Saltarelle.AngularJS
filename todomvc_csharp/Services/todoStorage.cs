@@ -30,14 +30,14 @@ namespace Todo
    {
       private const string STORAGE_ID = "todos-angularjs";
 
-      public List<TodoItem> get()
-      {         
-         List<TodoItem> items = Json.Parse<List<TodoItem>>((string) Window.LocalStorage.GetItem(STORAGE_ID));
-         if(items==null) items = new List<TodoItem>();
+      public TodoItem[] get()
+      {                  
+         TodoItem[] items = Json.Parse<TodoItem[]>((string) Window.LocalStorage.GetItem(STORAGE_ID));
+         if(items==null) items = new TodoItem[]{ };
          return items;
       }
 
-      public void put(List<TodoItem> todos)
+      public void put(TodoItem[] todos)
       {
          Window.LocalStorage.SetItem(STORAGE_ID, Json.Stringify(todos));
       }

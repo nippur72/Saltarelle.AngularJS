@@ -177,6 +177,7 @@
 		AngularJS.AngularUtils.Factory($TestAngularJS_ItemsFactory).call(null, app);
 		AngularJS.AngularUtils.Service($TestAngularJS_ExampleService).call(null, app);
 		AngularJS.AngularUtils.Controller($TestAngularJS_StartUpController).call(null, app);
+		window.alert('\'' + ss.cast(eval('typeof new Date()'), String) + '\'');
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.HelloDirective
