@@ -7,8 +7,23 @@
 		runTests: function() {
 			test('OneIsOne', ss.mkdel(this, function() {
 				deepEqual(1, 1, 'one is one');
-				ok(true, 'uno è uno');
-				ok(false, 'uno è due');
+				ok(true, 'one is still one');
+				ok(!false, 'one is not two');
+			}));
+		}
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// JasmineTests
+	var $JasmineTests = function() {
+		JasmineSuite.call(this);
+	};
+	$JasmineTests.prototype = {
+		SpecRunner: function() {
+			describe('Javascript variables', ss.mkdel(this, function() {
+				it('assigments should work', ss.mkdel(this, function() {
+					var a = 5;
+					expect(a).not.toBe(6);
+				}));
 			}));
 		}
 	};
@@ -351,6 +366,7 @@
 		}
 	};
 	ss.registerClass(global, 'AngularTests', $AngularTests);
+	ss.registerClass(global, 'JasmineTests', $JasmineTests, JasmineSuite);
 	ss.registerClass(global, 'TestAngularJS.AccordionController', $TestAngularJS_AccordionController);
 	ss.registerClass(global, 'TestAngularJS.AccordionDefinition', $TestAngularJS_AccordionDefinition, AngularJS.DirectiveDefinition);
 	ss.registerClass(global, 'TestAngularJS.AccordionSharedController', $TestAngularJS_AccordionSharedController);

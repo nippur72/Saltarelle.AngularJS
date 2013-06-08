@@ -17,8 +17,7 @@ public class AngularTests
    public void OneIsOne()
    {
       Assert.AreEqual(1,1,"one is one");         
-      Assert.IsTrue(1==1,"uno è uno");
-      Assert.IsTrue(1==2,"uno è due");
+      Assert.IsTrue(1==1,"one is still one");
+      Assert.IsFalse(1==2,"one is not two");
    }
 }   
-

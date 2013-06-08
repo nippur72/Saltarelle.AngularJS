@@ -47,7 +47,8 @@
     <Compile Include="Examples\shopping_cart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Examples\Directives\accordion.cs" />
-    <Compile Include="Tests\tests.cs" />
+    <Compile Include="Tests\JasmineTests.cs" />
+    <Compile Include="Tests\QUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -58,6 +59,9 @@
   <ItemGroup>
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.2.2.0\tools\Assemblies\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Saltarelle.Jasmine">
+      <HintPath>..\..\Saltarelle.Jasmine\Jasmine\bin\Debug\Saltarelle.Jasmine.dll</HintPath>
     </Reference>
     <Reference Include="Saltarelle.QUnit">
       <HintPath>..\packages\Saltarelle.QUnit.1.9.2\lib\Saltarelle.QUnit.dll</HintPath>
