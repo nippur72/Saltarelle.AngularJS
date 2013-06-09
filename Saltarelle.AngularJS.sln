@@ -31,32 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Exampl
 		{67CCC814-5E88-49A1-BF39-9555D27E8748} = {67CCC814-5E88-49A1-BF39-9555D27E8748}
 	EndProjectSection
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "todomvc", "todomvc\", "{02BAEC34-AD1A-4AE7-AF5C-EE2109803808}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/todomvc"
-		Debug.AspNetCompiler.PhysicalPath = "todomvc\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\todomvc\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/todomvc"
-		Release.AspNetCompiler.PhysicalPath = "todomvc\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\todomvc\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "1848"
-	EndProjectSection
-	ProjectSection(ProjectDependencies) = postProject
-		{67CCC814-5E88-49A1-BF39-9555D27E8748} = {67CCC814-5E88-49A1-BF39-9555D27E8748}
-		{24735F79-B0E1-4215-8D8C-DCEBA6BA9004} = {24735F79-B0E1-4215-8D8C-DCEBA6BA9004}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todomvc_csharp", "todomvc_csharp\todomvc_csharp.csproj", "{24735F79-B0E1-4215-8D8C-DCEBA6BA9004}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,14 +49,6 @@ Global
 		{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00A8CA91-7F42-4E77-ABB3-EB14EB1D2BFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02BAEC34-AD1A-4AE7-AF5C-EE2109803808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02BAEC34-AD1A-4AE7-AF5C-EE2109803808}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02BAEC34-AD1A-4AE7-AF5C-EE2109803808}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{02BAEC34-AD1A-4AE7-AF5C-EE2109803808}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{24735F79-B0E1-4215-8D8C-DCEBA6BA9004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24735F79-B0E1-4215-8D8C-DCEBA6BA9004}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24735F79-B0E1-4215-8D8C-DCEBA6BA9004}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24735F79-B0E1-4215-8D8C-DCEBA6BA9004}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

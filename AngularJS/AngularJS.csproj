@@ -81,8 +81,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.2.2.0\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.2.2.0\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.2.2.0\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)$(TargetName).js" "$(SolutionDir)\WebSite\Scripts"
-copy "$(TargetDir)$(TargetName).js" "$(SolutionDir)\todomvc\js"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetDir)$(TargetName).js" "$(SolutionDir)\WebSite\Scripts"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

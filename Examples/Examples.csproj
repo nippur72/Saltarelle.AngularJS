@@ -60,8 +60,9 @@
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.2.2.0\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="Saltarelle.Jasmine">
-      <HintPath>..\..\Saltarelle.Jasmine\Jasmine\bin\Debug\Saltarelle.Jasmine.dll</HintPath>
+    <Reference Include="Saltarelle.Jasmine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Saltarelle.Jasmine\Saltarelle.Jasmine.dll</HintPath>
     </Reference>
     <Reference Include="Saltarelle.QUnit">
       <HintPath>..\packages\Saltarelle.QUnit.1.9.2\lib\Saltarelle.QUnit.dll</HintPath>
