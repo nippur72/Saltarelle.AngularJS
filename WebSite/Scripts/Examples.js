@@ -15,14 +15,32 @@
 	////////////////////////////////////////////////////////////////////////////////
 	// JasmineTests
 	var $JasmineTests = function() {
-		JasmineSuite.call(this);
+		ss.shallowCopy(null, this);
 	};
 	$JasmineTests.prototype = {
 		SpecRunner: function() {
-			describe('Javascript variables', ss.mkdel(this, function() {
-				it('assigments should work', ss.mkdel(this, function() {
-					var a = 5;
-					expect(a).not.toBe(6);
+			describe('Currency filter', ss.mkdel(this, function() {
+				it('should format numbers to dollar amounts', ss.mkdel(this, function() {
+					var f = angular.injector(['ng']).get('$filter')('currency');
+					expect(f(0)).toBe('$0.00');
+					expect(f(5.75)).toBe('$5.75');
+					expect(f(1000000)).toBe('$1,000,000.00');
+					expect(f(-5.75)).toBe('($5.75)');
+					expect(f(5.753)).toBe('$5.75');
+					expect(f(5.75, '€')).toBe('€5.75');
+				}));
+			}));
+			describe('Date filter', ss.mkdel(this, function() {
+				var f1 = angular.injector(['ng']).get('$filter')('date');
+				var d = new Date(1972, 4, 3);
+				it('should format dates to U.S. format', ss.mkdel(this, function() {
+					expect(f1(d)).toBe('May 3, 1972');
+				}));
+				it('should format short dates', ss.mkdel(this, function() {
+					expect(f1(d, 'dd/MM/yy')).toBe('03/05/72');
+				}));
+				it('should format long dates', ss.mkdel(this, function() {
+					expect(f1(d, 'dd/MM/yyyy')).toBe('03/05/1972');
 				}));
 			}));
 		}
@@ -366,7 +384,7 @@
 		}
 	};
 	ss.registerClass(global, 'AngularTests', $AngularTests);
-	ss.registerClass(global, 'JasmineTests', $JasmineTests, JasmineSuite);
+	ss.registerClass(global, 'JasmineTests', $JasmineTests, Object);
 	ss.registerClass(global, 'TestAngularJS.AccordionController', $TestAngularJS_AccordionController);
 	ss.registerClass(global, 'TestAngularJS.AccordionDefinition', $TestAngularJS_AccordionDefinition, AngularJS.DirectiveDefinition);
 	ss.registerClass(global, 'TestAngularJS.AccordionSharedController', $TestAngularJS_AccordionSharedController);

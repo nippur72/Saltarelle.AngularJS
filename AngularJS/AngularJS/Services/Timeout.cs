@@ -14,13 +14,13 @@ namespace AngularJS
    public sealed class Timeout
    {
       [InlineCode("{this}({function})")]
-      public Promise Function(Action function) { return null; }
+      public Promise Set(Action function) { return null; }
 
       [InlineCode("{this}({function}, {delay})")]
-      public Promise Function(Action function, int delay) { return null; }
+      public Promise Set(Action function, int delay) { return null; }
 
       [InlineCode("{this}({function}, {delay}, {InvokeApply})")]
-      public Promise Function(Action function, int delay, bool InvokeApply) { return null; } 
+      public Promise Set(Action function, int delay, bool InvokeApply) { return null; } 
            
       /// <summary>
       /// Cancels a task associated with the promise. As a result of this, the promise will be resolved with a rejection.

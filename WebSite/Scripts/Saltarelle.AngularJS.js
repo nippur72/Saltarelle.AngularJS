@@ -1,5 +1,9 @@
 ﻿(function() {
 	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.Angular.BuiltinFilters
+	var $angular_Angular$BuiltinFilters = function() {
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.AngularUtils
 	var $AngularJS_AngularUtils = function() {
 	};
@@ -384,6 +388,7 @@
 		}
 		return new Function(parameters, body);
 	};
+	ss.registerClass(global, 'angular.Angular$BuiltinFilters', $angular_Angular$BuiltinFilters);
 	ss.registerClass(global, 'AngularJS.AngularUtils', $AngularJS_AngularUtils);
 	ss.registerEnum(global, 'AngularJS.BindingStrategies', $AngularJS_BindingStrategies);
 	ss.registerClass(global, 'AngularJS.DirectiveDefinition', $AngularJS_DirectiveDefinition);

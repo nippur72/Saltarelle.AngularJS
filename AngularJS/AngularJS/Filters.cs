@@ -75,6 +75,6 @@ namespace AngularJS
    public sealed class uppercaseFilter
    {
       [InlineCode("{this}({s})")] public string Filter(string s) { return null; }      
-   }
+   }  
 }
 

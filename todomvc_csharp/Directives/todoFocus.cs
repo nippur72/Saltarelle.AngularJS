@@ -38,7 +38,7 @@ namespace Todo
          {            
             if(newValue) 
             {
-               timeout.Function( ()=>{elem[0].focus();} , 0, false);   
+               timeout.Set( ()=>{elem[0].focus();} , 0, false);   
             }            
          });         
       }
