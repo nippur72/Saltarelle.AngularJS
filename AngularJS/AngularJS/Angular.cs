@@ -15,11 +15,19 @@ namespace AngularJS
    [Imported, ScriptNamespace("angular")]
    public static class Angular
    {
+      /*
       [InlineCode("angular.module({ModuleName},[])")]
       public static Module Module(string ModuleName)
       {
          return null;
       }
+
+      [InlineCode("angular.module({ModuleName},{Requires})")]
+      public static Module Module(string ModuleName, params string[] Requires)
+      {
+         return null;
+      }
+      */
 
       [InlineCode("angular.module({ModuleName},{Requires})")]
       public static Module Module(string ModuleName, object[] Requires)

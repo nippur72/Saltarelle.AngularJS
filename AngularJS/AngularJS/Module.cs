@@ -17,6 +17,11 @@ namespace AngularJS
       public Module(string Name)
       {
       }
+
+      [InlineCode("angular.module({ModuleName},{Requires})")]
+      public Module(string ModuleName, params string[] Requires)
+      {         
+      }
       
       /// <summary>
       /// Name of the module

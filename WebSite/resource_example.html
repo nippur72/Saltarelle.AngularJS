@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <title></title>
+   <script type="text/javascript" src="Scripts/angular.js"></script>
+   <script type="text/javascript" src="Scripts/angular-resource.js"></script>
+   <script type="text/javascript" src="Scripts/mscorlib.js"></script>
+   <script type="text/javascript" src="Scripts/Saltarelle.AngularJS.js?1500"></script>
+   <script type="text/javascript" src="Scripts/Examples.js?1500"></script>
+   <script type="text/javascript">TestAngularJS.ResourceExample.Main();</script>                            
+</head>
+<body ng-app="myApp">    
+   <div ng-controller="ResourceExampleController">
+      <p>All is ok: {{all_is_ok}}</p>
+      <p>Person id: {{persona.id}}</p>
+      <p>Person name: {{persona.name}}</p>
+
+      <button ng-click="prova()">Prova</button>
+   </div>
+
+</body>
+</html>
+
+
+

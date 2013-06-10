@@ -20,6 +20,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebSite", "WebSite\", "{7B8
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "14533"
+		VWDVirtualPath = "/"
 	EndProjectSection
 	ProjectSection(ProjectDependencies) = postProject
 		{67CCC814-5E88-49A1-BF39-9555D27E8748} = {67CCC814-5E88-49A1-BF39-9555D27E8748}

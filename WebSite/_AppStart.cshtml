@@ -1,4 +1,4 @@
 ﻿@{    
-   System.Web.Routing.RouteTable.Routes.MapWebPageRoute("api/{methodname}",      "~/api.cshtml", constraints: new { methodname = @"^[^\d\W]\w*\Z" } );
-   System.Web.Routing.RouteTable.Routes.MapWebPageRoute("api/{methodname}/{id}", "~/api.cshtml", constraints: new { methodname = @"^[^\d\W]\w*\Z", id = @"\w*\Z" });
+   System.Web.Routing.RouteTable.Routes.MapWebPageRoute("api/{resource}",      "~/api.cshtml", constraints: new { resource = @"^[^\d\W]\w*\Z" } );
+   System.Web.Routing.RouteTable.Routes.MapWebPageRoute("api/{resource}/{id}", "~/api.cshtml", constraints: new { resource = @"^[^\d\W]\w*\Z", id = @"\w*\Z" });
 }

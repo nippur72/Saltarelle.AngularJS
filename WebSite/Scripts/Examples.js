@@ -285,6 +285,12 @@
 		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.Person
+	var $TestAngularJS_Person = function() {
+		this.id = 0;
+		this.name = null;
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.PhoneConfig
 	var $TestAngularJS_PhoneConfig = function(_routeProvider) {
 		var $t1 = {};
@@ -347,6 +353,45 @@
 		AngularJS.RouteParams.call(this);
 	};
 	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.ResourceExample
+	var $TestAngularJS_ResourceExample = function() {
+	};
+	$TestAngularJS_ResourceExample.Main = function() {
+		var app = angular.module('myApp', ['ngResource']);
+		AngularJS.AngularUtils.Controller($TestAngularJS_ResourceExampleController).call(null, app);
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.ResourceExampleController
+	var $TestAngularJS_ResourceExampleController = function(_scope, _resource) {
+		this.resource = null;
+		this.all_is_ok = null;
+		this.persona = null;
+		this.myres = null;
+		// save injectables
+		this.resource = _resource;
+		var parms = { userId: '@id' };
+		var actions = {};
+		actions['fetch'] = { method: 'GET', isArray: false };
+		this.myres = this.resource('/api/person/:userId', null, actions);
+		this.all_is_ok = 'OK!';
+	};
+	$TestAngularJS_ResourceExampleController.prototype = {
+		prova: function() {
+			//persona = myres.Get<Person>(new {userId=10}, succ, err);
+			this.persona = this.myres.fetch({ userId: 10 }, ss.mkdel(this, this.succ), ss.mkdel(this, this.err));
+			this.persona.$fetch();
+		},
+		getok: function() {
+			debugger;
+		},
+		succ: function(p, rh) {
+			window.alert(p.name);
+		},
+		err: function(rh) {
+			window.alert(rh.status);
+		}
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.ShoppingCartExample
 	var $TestAngularJS_ShoppingCartExample = function() {
 	};
@@ -399,11 +444,14 @@
 	ss.registerClass(global, 'TestAngularJS.HelloDirective', $TestAngularJS_HelloDirective, AngularJS.DirectiveDefinition);
 	ss.registerClass(global, 'TestAngularJS.ItemsFactory', $TestAngularJS_ItemsFactory);
 	ss.registerClass(global, 'TestAngularJS.LabelsFactory', $TestAngularJS_LabelsFactory);
+	ss.registerClass(global, 'TestAngularJS.Person', $TestAngularJS_Person, null, [AngularJS.IResourceObject]);
 	ss.registerClass(global, 'TestAngularJS.PhoneConfig', $TestAngularJS_PhoneConfig);
 	ss.registerClass(global, 'TestAngularJS.PhoneExample', $TestAngularJS_PhoneExample);
 	ss.registerClass(global, 'TestAngularJS.PhoneListController', $TestAngularJS_PhoneListController);
 	ss.registerClass(global, 'TestAngularJS.PhoneListControllerDetail', $TestAngularJS_PhoneListControllerDetail);
 	ss.registerClass(global, 'TestAngularJS.PhoneRouteParams', $TestAngularJS_PhoneRouteParams, AngularJS.RouteParams);
+	ss.registerClass(global, 'TestAngularJS.ResourceExample', $TestAngularJS_ResourceExample);
+	ss.registerClass(global, 'TestAngularJS.ResourceExampleController', $TestAngularJS_ResourceExampleController);
 	ss.registerClass(global, 'TestAngularJS.ShoppingCartExample', $TestAngularJS_ShoppingCartExample);
 	ss.registerClass(global, 'TestAngularJS.StartUpController', $TestAngularJS_StartUpController, AngularJS.Scope);
 })();

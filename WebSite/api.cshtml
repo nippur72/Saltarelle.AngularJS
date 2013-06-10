@@ -1,29 +1,17 @@
 ﻿@{      
-   var methodname = Context.GetRouteValue("methodname");          
+   var resource = Context.GetRouteValue("resource");          
    var id = Context.GetRouteValue("id");  
-   
-   HttpMethods verb = (HttpMethods) Enum.Parse(typeof(HttpMethods), Request.HttpMethod, true);
-   
-   if(methodname=="Login" && verb==HttpMethods.Post)
-   {      
-      Context.Session["Logged"] = true;
+      
+   if(resource=="person")
+   {
+      if(Request.HttpMethod=="GET" && id!=null)
+      {
+         var ob = new { id=10, name="Ham!" };
+         Response.Write(Json.Encode(ob));        
+      }
+   }
+   else
+   {
+      Response.SetStatus(404);
    }
 }
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>URLData</title>
-    </head>
-    <body>
-      <br />Method: @Request.HttpMethod
-      <br />Name: @methodname
-      <br />Id: @id
-      <br />
-      <br />Customer ID: @UrlData[0].ToString()
-      <br />Customer ID: @UrlData[1].ToString()
-      <br />Customer ID: @UrlData[2].ToString()
-      <br />Customer ID: @UrlData[3].ToString()
-      <br />Customer ID: @UrlData[4].ToString()
-    </body>
-</html>

@@ -56,5 +56,37 @@ namespace AngularJS
       public dynamic defaults;
       public dynamic pendingRequests;
    }
+
+   [Imported]
+   public class HttpResponseHeaders
+   {
+      //[IntrinsicProperty]
+      public string this[string key] 
+      { 
+         [InlineCode("{this}({key})")]
+         get {return null;}           
+      } 
+
+      public JsDictionary<string, string> Items
+      {
+         [InlineCode("{this}()")]
+         get {return null;}           
+      }
+   }
+
+   [Imported]
+   public class HttpResponse
+   {
+      [ScriptName("data")]     public object Data;
+      [ScriptName("status")]   public int Status;
+      [ScriptName("headers")]  public HttpResponseHeaders Headers;
+
+      [InlineCode("{this}.data")]
+      public T DataAs<T>()
+      {
+         return default(T);
+      }
+   }
+
 }
 

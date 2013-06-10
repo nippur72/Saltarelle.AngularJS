@@ -253,6 +253,14 @@
 		return result;
 	};
 	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.IResourceObject
+	var $AngularJS_IResourceObject = function() {
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.ResourceObjectExtensions
+	var $AngularJS_ResourceObjectExtensions = function() {
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.RestrictFlags
 	var $AngularJS_RestrictFlags = function() {
 	};
@@ -394,6 +402,8 @@
 	ss.registerClass(global, 'AngularJS.DirectiveDefinition', $AngularJS_DirectiveDefinition);
 	ss.registerClass(global, 'AngularJS.Event', $AngularJS_Event);
 	ss.registerClass(global, 'AngularJS.FunctionExtensionMethods', $AngularJS_FunctionExtensionMethods);
+	ss.registerInterface(global, 'AngularJS.IResourceObject', $AngularJS_IResourceObject);
+	ss.registerClass(global, 'AngularJS.ResourceObjectExtensions', $AngularJS_ResourceObjectExtensions);
 	ss.registerEnum(global, 'AngularJS.RestrictFlags', $AngularJS_RestrictFlags, { enumFlags: true });
 	ss.registerClass(global, 'AngularJS.RouteParams', $AngularJS_RouteParams);
 	ss.registerClass(global, 'AngularJS.Scope', $AngularJS_Scope);
