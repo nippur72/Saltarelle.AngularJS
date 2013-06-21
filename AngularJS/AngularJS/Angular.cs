@@ -12,41 +12,9 @@ using System.Diagnostics;
 
 namespace AngularJS
 {             
-   [Imported, ScriptNamespace("angular")]
+   [Imported, ScriptName("angular"), ScriptNamespace("")]
    public static class Angular
    {
-      /*
-      [InlineCode("angular.module({ModuleName},[])")]
-      public static Module Module(string ModuleName)
-      {
-         return null;
-      }
-
-      [InlineCode("angular.module({ModuleName},{Requires})")]
-      public static Module Module(string ModuleName, params string[] Requires)
-      {
-         return null;
-      }
-      */
-
-      [InlineCode("angular.module({ModuleName},{Requires})")]
-      public static Module Module(string ModuleName, object[] Requires)
-      {
-         return null;
-      }
-
-      [InlineCode("angular.injector(['ng']).get({name})")]
-      public static dynamic InjectorRead(string name)
-      {
-         return null;
-      }
-
-      [InlineCode("angular.injector([{modulename}]).get({name})")]
-      public static dynamic InjectorRead(string modulename, string name)
-      {
-         return null;
-      }
-   
       public static class BuiltinFilters
       {
          public static currencyFilter  currencyFilter  { [InlineCode("angular.injector(['ng']).get('$filter')('currency')" )] get {return null; } }
@@ -59,6 +27,44 @@ namespace AngularJS
          public static orderByFilter   orderByFilter   { [InlineCode("angular.injector(['ng']).get('$filter')('orderBy')"  )] get {return null; } }
          public static uppercaseFilter uppercaseFilter { [InlineCode("angular.injector(['ng']).get('$filter')('uppercase')")] get {return null; } }
       }
+
+
+      #region Global api
+
+      /// <summary>
+      /// Retrieves an already existing module by its name
+      /// </summary>      
+      [ScriptName("module")] public static Module Module(string Name) { return null; }   
+
+      // bind
+      // bootstrap
+      // copy 
+      // element
+      // equals
+      // extend
+      // foreach
+      [ScriptName("fromJson")] public static T FromJson<T>(string value) { return default(T); } 
+      [ScriptName("identity")] public static object Identity(object value) { return null; } 
+      [ScriptName("injector")] public static Injector Injector() { return null; } 
+      [ScriptName("injector")] public static Injector Injector(string[] ob) { return null; } 
+      [ScriptName("isArray")] public static bool IsArray(object ob) { return false; }
+      [ScriptName("isDate")] public static bool IsDate(object ob) { return false; }
+      [ScriptName("isDefined")] public static bool IsDefined(object ob) { return false; }
+      [ScriptName("isElement")] public static bool IsElement(object ob) { return false; }
+      [ScriptName("isFunction")] public static bool IsFunction(object ob) { return false; }
+      [ScriptName("isNumber")] public static bool IsNumber(object ob) { return false; }
+      [ScriptName("isObject")] public static bool IsObject(object ob) { return false; }
+      [ScriptName("isString")] public static bool IsString(object ob) { return false; }
+      [ScriptName("isUndefined")] public static bool IsUndefined(object ob) { return false; }
+      [ScriptName("lowercase")] public static string LowerCase(string s) { return null; }
+      [ScriptName("noConflict")] public static void NoConflict() { }
+      [ScriptName("noop")] public static Action NoOp() { return null; }
+      [ScriptName("toJson")] public static string ToJson(string s) { return null; }
+      [ScriptName("toJson")] public static string ToJson(string s, bool pretty) { return null; }
+      [ScriptName("uppercase")] public static string UpperCase(string s) { return null; }
+      [ScriptName("version"), IntrinsicProperty] public static JsDictionary Version { get { return null; } }
+
+      #endregion
    }   
        
 }

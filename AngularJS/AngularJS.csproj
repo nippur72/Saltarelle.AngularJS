@@ -42,6 +42,7 @@
     <Compile Include="AngularJS\Attributes.cs" />
     <Compile Include="AngularJS\Filters.cs" />
     <Compile Include="AngularJS\Promise.cs" />
+    <Compile Include="AngularJS\Services\Animator.cs" />
     <Compile Include="AngularJS\Services\Resource.cs" />
     <Compile Include="AngularJS\Services\Timeout.cs" />
     <Compile Include="AngularJS\Element.cs" />

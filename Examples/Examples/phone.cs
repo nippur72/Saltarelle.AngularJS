@@ -48,12 +48,12 @@ namespace TestAngularJS
          risp.Success((data,status,header)=> 
          {            
             person = (JsDictionary) data;
-            Window.Alert(person["name"].ToString());
+           // Window.Alert(person["name"].ToString());
          });
 
          risp.Error((data,status)=>
          { 
-            Window.Alert("errore!");
+         //   Window.Alert("errore!");
          });                
       }
    }

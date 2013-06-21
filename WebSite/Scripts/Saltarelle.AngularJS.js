@@ -1,7 +1,7 @@
 ﻿(function() {
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.Angular.BuiltinFilters
-	var $angular_Angular$BuiltinFilters = function() {
+	var $angular$BuiltinFilters = function() {
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.AngularUtils
@@ -120,6 +120,37 @@
 			body += '$obdef.controller = ' + SharedController.toString() + ';';
 		}
 		body += 'return $obdef;\r\n';
+		return new Function(parameters, body);
+	};
+	$AngularJS_AngularUtils.Animation = function(T) {
+		return function(module, name) {
+			var type = T;
+			// TODO when there will be IsSubClassOf
+			//if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
+			var fun = $AngularJS_AngularUtils.$CreateAnimationFunction(type);
+			var parameters = angular.injector().annotate(fun);
+			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
+			module.animation((ss.isNullOrUndefined(name) ? ss.getTypeName(type) : name), fcall);
+		};
+	};
+	$AngularJS_AngularUtils.$CreateAnimationFunction = function(type) {
+		var body = '';
+		var thisref = 'this';
+		body += 'var $animob = {};\r\n';
+		// gets and annotate constructor parameter; annotations are stored in type.$inject                                             
+		var parameters = angular.injector().annotate($AngularJS_TypeExtensionMethods.GetConstructorFunction(type));
+		// takes method into $scope, binding "$scope" to "this"                 
+		var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var funcname = $t1[$t2];
+			body += ss.formatString('{2}.{1} = {0}.prototype.{1}.bind({2});\r\n', ss.getTypeFullName(type), funcname, thisref);
+			if (funcname === 'Start' || funcname === 'Setup' || funcname === 'Cancel') {
+				body += ss.formatString('$animob.{0} = {2}.{1};\r\n', funcname.toLowerCase(), funcname, thisref);
+			}
+		}
+		// put call at the end so that methods are defined first
+		body += ss.formatString('{0}.apply({1},arguments);\r\n', ss.getTypeFullName(type), thisref);
+		body += ss.formatString('return $animob;\r\n');
 		return new Function(parameters, body);
 	};
 	////////////////////////////////////////////////////////////////////////////////
@@ -261,6 +292,34 @@
 	var $AngularJS_ResourceObjectExtensions = function() {
 	};
 	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.ResourceRequest
+	var $AngularJS_ResourceRequest$1 = function(T) {
+		var $type = function(resob) {
+			this.resource = null;
+			this.Action = null;
+			this.Parameters = null;
+			this.PostData = null;
+			this.Success = null;
+			this.Error = null;
+			this.resource = resob;
+		};
+		$type.prototype = {
+			ExecuteRequest: function() {
+				return ss.getDefaultValue(T);
+			},
+			ExecuteRequestArray: function() {
+				return null;
+			}
+		};
+		ss.registerGenericClassInstance($type, $AngularJS_ResourceRequest$1, [T], function() {
+			return null;
+		}, function() {
+			return [];
+		});
+		return $type;
+	};
+	ss.registerGenericClass(global, 'AngularJS.ResourceRequest$1', $AngularJS_ResourceRequest$1, 1);
+	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.RestrictFlags
 	var $AngularJS_RestrictFlags = function() {
 	};
@@ -396,7 +455,7 @@
 		}
 		return new Function(parameters, body);
 	};
-	ss.registerClass(global, 'angular.Angular$BuiltinFilters', $angular_Angular$BuiltinFilters);
+	ss.registerClass(global, 'angular$BuiltinFilters', $angular$BuiltinFilters);
 	ss.registerClass(global, 'AngularJS.AngularUtils', $AngularJS_AngularUtils);
 	ss.registerEnum(global, 'AngularJS.BindingStrategies', $AngularJS_BindingStrategies);
 	ss.registerClass(global, 'AngularJS.DirectiveDefinition', $AngularJS_DirectiveDefinition);

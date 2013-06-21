@@ -13,15 +13,15 @@ namespace AngularJS
    [Imported]   
    public class Resource
    {
-      [InlineCode("{this}({url},{paramDefaults},{actions})")] public ResourceObject Create(string url, object paramDefaults, ResourceActions actions) { return null; }
+      [InlineCode("{this}({url},{paramDefaults},{actions})")] public ResourceObject Create(string url, object paramDefaults, ResourceActionDefinition actions) { return null; }
       [InlineCode("{this}({url},{paramDefaults},{actions})")] public ResourceObject Create(string url, object paramDefaults, object          actions) { return null; }
    }
 
    [Imported]
-   public class ResourceActions
+   public class ResourceActionDefinition
    {
       [InlineCode("{}")]
-      public ResourceActions()
+      public ResourceActionDefinition()
       {
       }
 
@@ -56,6 +56,7 @@ namespace AngularJS
       {                  
       }
 
+      // generic "GET" class actions
       [InlineCode("{this}.{@action}({ob})")]                   public T Action<T>(string action, object ob) { return default(T); }
       [InlineCode("{this}.{@action}({ob},{success})")]         public T Action<T>(string action, object ob, Action success) { return default(T); }
       [InlineCode("{this}.{@action}({ob},{success})")]         public T Action<T>(string action, object ob, Action<T,HttpResponseHeaders> success) { return default(T); }
@@ -63,12 +64,28 @@ namespace AngularJS
       [InlineCode("{this}.{@action}({ob},{success},{error})")] public T Action<T>(string action, object ob, Action success, Action<HttpResponse> error) { return default(T); }
       [InlineCode("{this}.{@action}({ob},{success},{error})")] public T Action<T>(string action, object ob, Action success, Action error) { return default(T); }
 
+      [InlineCode("{this}.{@action}({ob})")]                   public T[] ActionArray<T>(string action, object ob) { return null; }
+      [InlineCode("{this}.{@action}({ob},{success})")]         public T[] ActionArray<T>(string action, object ob, Action success) { return null; }
+      [InlineCode("{this}.{@action}({ob},{success})")]         public T[] ActionArray<T>(string action, object ob, Action<T,HttpResponseHeaders> success) { return null; }
+      [InlineCode("{this}.{@action}({ob},{success},{error})")] public T[] ActionArray<T>(string action, object ob, Action<T,HttpResponseHeaders> success, Action<HttpResponse> error) { return null; }
+      [InlineCode("{this}.{@action}({ob},{success},{error})")] public T[] ActionArray<T>(string action, object ob, Action success, Action<HttpResponse> error) { return null; }
+      [InlineCode("{this}.{@action}({ob},{success},{error})")] public T[] ActionArray<T>(string action, object ob, Action success, Action error) { return null; }
+
+      // get "GET" class action
       [InlineCode("{this}.get({ob})")]                   public T Get<T>(object ob) { return default(T);}
       [InlineCode("{this}.get({ob},{success})")]         public T Get<T>(object ob, Action success) { return default(T); }
       [InlineCode("{this}.get({ob},{success})")]         public T Get<T>(object ob, Action<T,HttpResponseHeaders> success) { return default(T); }
       [InlineCode("{this}.get({ob},{success},{error})")] public T Get<T>(object ob, Action<T,HttpResponseHeaders> success, Action<HttpResponse> error) { return default(T); }
       [InlineCode("{this}.get({ob},{success},{error})")] public T Get<T>(object ob, Action success, Action<HttpResponse> error) { return default(T); }
       [InlineCode("{this}.get({ob},{success},{error})")] public T Get<T>(object ob, Action success, Action error) { return default(T); }
+
+      // query "GET" class action
+      [InlineCode("{this}.query({ob})")]                   public T[] Query<T>(object ob) { return null;}
+      [InlineCode("{this}.query({ob},{success})")]         public T[] Query<T>(object ob, Action success) { return null; }
+      [InlineCode("{this}.query({ob},{success})")]         public T[] Query<T>(object ob, Action<T,HttpResponseHeaders> success) { return null; }
+      [InlineCode("{this}.query({ob},{success},{error})")] public T[] Query<T>(object ob, Action<T,HttpResponseHeaders> success, Action<HttpResponse> error) { return null; }
+      [InlineCode("{this}.query({ob},{success},{error})")] public T[] Query<T>(object ob, Action success, Action<HttpResponse> error) { return null; }
+      [InlineCode("{this}.query({ob},{success},{error})")] public T[] Query<T>(object ob, Action success, Action error) { return null; }
 
       [InlineCode("{this}.save({ob})")]
       public object Save(object ob)
@@ -99,7 +116,32 @@ namespace AngularJS
       {
          return null;
       }
-   }         
+   }   
+   
+   public class ResourceRequest<T>
+   {
+      public ResourceObject resource;
+      public string Action;
+      public JsDictionary Parameters;
+      public object PostData;
+      public Action<T,HttpResponseHeaders> Success;
+      public Action<HttpResponse> Error;
+
+      public ResourceRequest(ResourceObject resob)
+      {
+         this.resource = resob;         
+      }
+
+      public T ExecuteRequest()
+      {
+         return default(T);
+      }
+
+      public T[] ExecuteRequestArray()
+      {
+         return null;
+      }
+   }      
 
 }
 

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Serialization;
 
 using AngularJS;
+using System.Threading.Tasks;
 
 namespace TestAngularJS
 {                           
@@ -36,6 +37,17 @@ namespace TestAngularJS
                 
       public ResourceObject myres;
 
+      public async Task<int> Prova()
+      {
+         int z = await dostuff();
+         return z;
+      }
+
+      public async Task<int> dostuff()
+      {
+         return 55;
+      }
+
       public ResourceExampleController(Scope _scope, Resource _resource)
       {
          // save injectables
@@ -43,7 +55,7 @@ namespace TestAngularJS
          
          var parms = new { userId="@id" };
         
-         ResourceActions actions = new ResourceActions();
+         ResourceActionDefinition actions = new ResourceActionDefinition();
          actions.Add("fetch","GET",false);
         
          myres = resource.Create("/api/person/:userId",null,actions);
@@ -54,9 +66,20 @@ namespace TestAngularJS
       public void prova()
       {
          //persona = myres.Get<Person>(new {userId=10}, succ, err);
-         persona = myres.Action<Person>("fetch", new {userId=10}, succ, err);
+         
+         //persona = myres.Action<Person>("fetch", new {userId=10}, succ, err);
 
-         persona.Action("fetch");
+         //persona.Action("fetch");
+        
+         ResourceRequest<Person> r = new ResourceRequest<Person>(myres);         
+         r.Action = "fetch";
+         r.Parameters["userId"] = 10;
+         r.PostData = null;
+         r.Success = succ;
+         r.Error = err;
+         persona = r.ExecuteRequest();
+
+         persona.Action("save");
       }
 
       public void getok()
@@ -75,3 +98,4 @@ namespace TestAngularJS
       }
    }
 }
+

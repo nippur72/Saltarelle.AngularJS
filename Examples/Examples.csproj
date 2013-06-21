@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assembly.cs" />
+    <Compile Include="Examples\animation.cs" />
     <Compile Include="Examples\resource_example.cs" />
     <Compile Include="Examples\directives.cs" />
     <Compile Include="Examples\Directives\expander.cs" />
@@ -64,6 +65,10 @@
     <Reference Include="Saltarelle.Jasmine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Saltarelle.Jasmine\Saltarelle.Jasmine.dll</HintPath>
+    </Reference>
+    <Reference Include="Saltarelle.jQuery, Version=1.9.0.0, Culture=neutral, PublicKeyToken=a4048e8fcc593f14, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Saltarelle.jQuery.1.9.0\lib\Saltarelle.jQuery.dll</HintPath>
     </Reference>
     <Reference Include="Saltarelle.QUnit">
       <HintPath>..\packages\Saltarelle.QUnit.1.9.2\lib\Saltarelle.QUnit.dll</HintPath>

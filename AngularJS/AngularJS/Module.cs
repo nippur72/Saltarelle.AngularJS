@@ -39,15 +39,6 @@ namespace AngularJS
          [InlineCode("{this}.requires")] get { return null; }
       }
 
-      /// <summary>
-      /// Retrieves an already existing module by its name
-      /// </summary>      
-      [InlineCode("angular.module({Name})")] 
-      public Module GetModuleByName(string Name)
-      {
-         return null;
-      }   
-
       /*
       #region Convenience Methods
 

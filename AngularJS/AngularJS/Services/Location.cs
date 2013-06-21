@@ -75,9 +75,18 @@ namespace AngularJS
       /// <summary>
       /// Sets or returns path of current url 
       /// </summary>
-      public string Search
+      public JsDictionary<string,string> Search
       {         
-         [InlineCode("{this}.search()")]        get { return ""; }                  
+         [InlineCode("{this}.search()")] 
+         get 
+         { 
+            return null; 
+         }  
+         [InlineCode("{this}.search({value})")] 
+         set
+         {
+            
+         }                
       }
 
       [InlineCode("{this}.search({search})")] public string SetSearch(string search) { return null; }

@@ -179,19 +179,31 @@ namespace AngularJS
       
       #region Watch
 
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, Action listener) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(string watchFunction, Action listener, bool objectEquality) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, Action<T> listener) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(string watchFunction, Action<T> listener, bool objectEquality) {}
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(string watchFunction, WatchListener<T> listener) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(string watchFunction, WatchListener<T> listener, bool objectEquality) {}
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public Action Watch<T>(string watchFunction, Action listener) {return null;} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public Action Watch<T>(string watchFunction, Action listener, bool objectEquality) {return null;} 
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public Action Watch<T>(string watchFunction, Action<T> listener) {return null;} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public Action Watch<T>(string watchFunction, Action<T> listener, bool objectEquality) {return null;}
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public Action Watch<T>(string watchFunction, WatchListener<T> listener) {return null;} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public Action Watch<T>(string watchFunction, WatchListener<T> listener, bool objectEquality) {return null;}
 
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, Action listener) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(Func<T> watchFunction, Action listener, bool objectEquality) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, Action<T> listener) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(Func<T> watchFunction, Action<T> listener, bool objectEquality) {}
-      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public void Watch<T>(Func<T> watchFunction, WatchListener<T> listener) {} 
-      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public void Watch<T>(Func<T> watchFunction, WatchListener<T> listener, bool objectEquality) {}
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public Action Watch<T>(Func<T> watchFunction, Action listener) {return null;} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public Action Watch<T>(Func<T> watchFunction, Action listener, bool objectEquality) {return null;} 
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public Action Watch<T>(Func<T> watchFunction, Action<T> listener) {return null;} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public Action Watch<T>(Func<T> watchFunction, Action<T> listener, bool objectEquality) {return null;}
+      [InlineCode("{this}.$watch({watchFunction},{listener})")]                    public Action Watch<T>(Func<T> watchFunction, WatchListener<T> listener) {return null;} 
+      [InlineCode("{this}.$watch({watchFunction},{listener},{objectEquality})")]   public Action Watch<T>(Func<T> watchFunction, WatchListener<T> listener, bool objectEquality) {return null;}
+      
+      #endregion 
+
+      #region WatchCollection
+
+      [InlineCode("{this}.$watchCollection({obj},{listener})")] public Action WatchCollection<T>(string obj, Action listener) {return null;}       
+      [InlineCode("{this}.$watchCollection({obj},{listener})")] public Action WatchCollection<T>(string obj, Action<T> listener) {return null;} 
+      [InlineCode("{this}.$watchCollection({obj},{listener})")] public Action WatchCollection<T>(string obj, WatchListener<T> listener) {return null;} 
+
+      [InlineCode("{this}.$watchCollection({obj},{listener})")] public Action WatchCollection<T>(Func<T> obj, Action listener) {return null;} 
+      [InlineCode("{this}.$watchCollection({obj},{listener})")] public Action WatchCollection<T>(Func<T> obj, Action<T> listener) {return null;} 
+      [InlineCode("{this}.$watchCollection({obj},{listener})")] public Action WatchCollection<T>(Func<T> obj, WatchListener<T> listener) {return null;} 
       
       #endregion 
    } 

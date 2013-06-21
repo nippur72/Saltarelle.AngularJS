@@ -62,7 +62,7 @@ namespace AngularJS
          if(this_mode == ThisMode.NewObject) body+="var $self = new Object();"; 
          
          // gets and annotate constructor parameter; annotations are stored in type.$inject                                             
-         var parameters = Injector.Annotate(type.GetConstructorFunction());
+         var parameters = Angular.Injector().Annotate(type.GetConstructorFunction());
                   
          if(this_mode == ThisMode.ScopeStrict)
          {
@@ -203,7 +203,7 @@ namespace AngularJS
       public static void Service<T>(this Module module)
       {         
          Type type = typeof(T);
-         var parameters = Injector.Annotate(type.GetConstructorFunction());         
+         var parameters = Angular.Injector().Annotate(type.GetConstructorFunction());         
          type.ToFunction().CreateFunctionCall(parameters); // only used to fix the "_" to "$" in type.$inject
          string servicename = typeof(T).Name;        
          Service(module,servicename,type);
@@ -284,7 +284,7 @@ namespace AngularJS
          DirectiveDefinition dirob = (DirectiveDefinition) Activator.CreateInstance(type);
 
          Function fun = CreateDirectiveFunction(dirob);
-         var parameters = Injector.Annotate(fun);          
+         var parameters = Angular.Injector().Annotate(fun);          
          var fcall = fun.CreateFunctionCall(parameters);       
          Directive(module, dirob.Name, fcall);
       }
@@ -302,7 +302,7 @@ namespace AngularJS
 
          if(type!=null)
          {
-            parameters = Injector.Annotate(type.GetConstructorFunction());
+            parameters = Angular.Injector().Annotate(type.GetConstructorFunction());
             fnames = type.GetInstanceMethodNames();
          }       
 
@@ -350,6 +350,50 @@ namespace AngularJS
 
       #endregion
 
+      #region Animations            
+
+      public static void Animation<T>(this Module module, string name=null)
+      {         
+         Type type = typeof(T);
+
+         // TODO when there will be IsSubClassOf
+         //if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
+
+         Function fun = CreateAnimationFunction(type);
+         var parameters = Angular.Injector().Annotate(fun);          
+         var fcall = fun.CreateFunctionCall(parameters);       
+         Animation(module, name==null ? type.Name : name, fcall);
+      }
+
+      private static Function CreateAnimationFunction(Type type)
+      {
+         string body = "";
+         string thisref = "this";  
+         
+         body+="var $animob = {};\r\n"; 
+         
+         // gets and annotate constructor parameter; annotations are stored in type.$inject                                             
+         var parameters = Angular.Injector().Annotate(type.GetConstructorFunction());
+                                    
+         // takes method into $scope, binding "$scope" to "this"                 
+         foreach(string funcname in type.GetInstanceMethodNames())
+         {
+            body += String.Format("{2}.{1} = {0}.prototype.{1}.bind({2});\r\n",type.FullName,funcname,thisref);             
+
+            if(funcname=="Start" || funcname=="Setup" || funcname=="Cancel" )
+            {
+               body += String.Format("$animob.{0} = {2}.{1};\r\n",funcname.ToLower(),funcname,thisref);                
+            }
+         }
+                  
+         // put call at the end so that methods are defined first
+         body+=String.Format("{0}.apply({1},arguments);\r\n",type.FullName,thisref);
+         body+=String.Format("return $animob;\r\n");   
+         return TypeExtensionMethods.CreateNewFunction(parameters,body);
+      }
+                
+      #endregion
+
       #region Convenience Methods
 
       [InlineCode("{module}.config({func})")]
@@ -379,6 +423,11 @@ namespace AngularJS
 
       [InlineCode("{module}.service({Name},{func})")]
       public static void Service(Module module, string Name, Type func)
+      {
+      }          
+
+      [InlineCode("{module}.animation({Name},{func})")]
+      public static void Animation(Module module, string Name, object func)
       {
       }          
 

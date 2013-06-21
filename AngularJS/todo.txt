@@ -3,7 +3,6 @@
 - controllers output to .js for minification
 - unit tests and e2e tests, how?
 - cookieStore
-- module dependencies?
 - httpprovider
 - complete $http
 - $resource (angular-resource.js)
@@ -12,7 +11,7 @@
 - compiling directive?
 - $q
 - subviews, ng-include?
-- awaitables?
+- awaitables? js threading?
 
 
 			    

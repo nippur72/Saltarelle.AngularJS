@@ -105,6 +105,36 @@
 		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.AnimationController
+	var $TestAngularJS_AnimationController = function(_scope) {
+		this.show_block = true;
+		this.names = null;
+		this.names = [];
+		ss.add(this.names, 'pippo');
+		ss.add(this.names, 'pluto');
+		ss.add(this.names, angular.uppercase(angular.injector(['ng']).get('$filter')('json')(angular.version)));
+	};
+	$TestAngularJS_AnimationController.prototype = {
+		switch_show: function() {
+			this.show_block = !this.show_block;
+		},
+		add: function() {
+			ss.insert(this.names, 0, 'item ' + this.names.length.toString());
+		},
+		remove: function(index) {
+			ss.removeAt(this.names, index);
+		}
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.AnimationExample
+	var $TestAngularJS_AnimationExample = function() {
+	};
+	$TestAngularJS_AnimationExample.Main = function() {
+		var app = angular.module('myApp', []);
+		AngularJS.AngularUtils.Animation($TestAngularJS_CoolAnimation).call(null, app, 'cool-animation-show');
+		AngularJS.AngularUtils.Controller($TestAngularJS_AnimationController).call(null, app);
+	};
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.CartController
 	var $TestAngularJS_CartController = function(_scope, Items) {
 		this.items = null;
@@ -141,6 +171,25 @@
 		this.title = null;
 		this.quantity = 0;
 		this.price = 0;
+	};
+	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.CoolAnimation
+	var $TestAngularJS_CoolAnimation = function(_rootScope) {
+		//System.Diagnostics.Debug.Break();
+	};
+	$TestAngularJS_CoolAnimation.prototype = {
+		Setup: function(element) {
+			//this is called before the animation
+			$(element).css('opacity', 0);
+		},
+		Start: function(element, done, memo) {
+			var ob = ss.mkdict(['opacity', 1]);
+			$(element).animate(ob, new Object(), 'linear', function() {
+				done();
+			});
+		},
+		Cancel: function(element, done) {
+		}
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.DirectivesExample
@@ -332,10 +381,10 @@
 		var risp = _http.get('data.json');
 		risp.success(ss.mkdel(this, function(data, status, header) {
 			this.person = data;
-			window.alert(this.person['name'].toString());
+			// Window.Alert(person["name"].ToString());
 		}));
 		risp.error(function(data1, status1) {
-			window.alert('errore!');
+			//   Window.Alert("errore!");
 		});
 	};
 	////////////////////////////////////////////////////////////////////////////////
@@ -376,10 +425,76 @@
 		this.all_is_ok = 'OK!';
 	};
 	$TestAngularJS_ResourceExampleController.prototype = {
+		Prova: function() {
+			var $state = 0, $tcs = new ss.TaskCompletionSource(), $t1, z;
+			var $sm = ss.mkdel(this, function() {
+				try {
+					$sm1:
+					for (;;) {
+						switch ($state) {
+							case 0: {
+								$state = -1;
+								$t1 = this.dostuff();
+								$state = 1;
+								$t1.continueWith($sm);
+								return;
+							}
+							case 1: {
+								$state = -1;
+								z = $t1.getResult();
+								$tcs.setResult(z);
+								return;
+							}
+							default: {
+								break $sm1;
+							}
+						}
+					}
+				}
+				catch ($t2) {
+					$tcs.setException(ss.Exception.wrap($t2));
+				}
+			});
+			$sm();
+			return $tcs.task;
+		},
+		dostuff: function() {
+			var $state = 0, $tcs = new ss.TaskCompletionSource();
+			var $sm = function() {
+				try {
+					$sm1:
+					for (;;) {
+						switch ($state) {
+							case 0: {
+								$state = -1;
+								$tcs.setResult(55);
+								return;
+							}
+							default: {
+								break $sm1;
+							}
+						}
+					}
+				}
+				catch ($t1) {
+					$tcs.setException(ss.Exception.wrap($t1));
+				}
+			};
+			$sm();
+			return $tcs.task;
+		},
 		prova: function() {
 			//persona = myres.Get<Person>(new {userId=10}, succ, err);
-			this.persona = this.myres.fetch({ userId: 10 }, ss.mkdel(this, this.succ), ss.mkdel(this, this.err));
-			this.persona.$fetch();
+			//persona = myres.Action<Person>("fetch", new {userId=10}, succ, err);
+			//persona.Action("fetch");
+			var r = new (ss.makeGenericType(AngularJS.ResourceRequest$1, [$TestAngularJS_Person]))(this.myres);
+			r.Action = 'fetch';
+			r.Parameters['userId'] = 10;
+			r.PostData = null;
+			r.Success = ss.mkdel(this, this.succ);
+			r.Error = ss.mkdel(this, this.err);
+			this.persona = r.ExecuteRequest();
+			this.persona.$save();
 		},
 		getok: function() {
 			debugger;
@@ -433,8 +548,11 @@
 	ss.registerClass(global, 'TestAngularJS.AccordionController', $TestAngularJS_AccordionController);
 	ss.registerClass(global, 'TestAngularJS.AccordionDefinition', $TestAngularJS_AccordionDefinition, AngularJS.DirectiveDefinition);
 	ss.registerClass(global, 'TestAngularJS.AccordionSharedController', $TestAngularJS_AccordionSharedController);
+	ss.registerClass(global, 'TestAngularJS.AnimationController', $TestAngularJS_AnimationController);
+	ss.registerClass(global, 'TestAngularJS.AnimationExample', $TestAngularJS_AnimationExample);
 	ss.registerClass(global, 'TestAngularJS.CartController', $TestAngularJS_CartController, AngularJS.Scope);
 	ss.registerClass(global, 'TestAngularJS.CartItem', $TestAngularJS_CartItem);
+	ss.registerClass(global, 'TestAngularJS.CoolAnimation', $TestAngularJS_CoolAnimation);
 	ss.registerClass(global, 'TestAngularJS.DirectivesExample', $TestAngularJS_DirectivesExample);
 	ss.registerClass(global, 'TestAngularJS.ExampleService', $TestAngularJS_ExampleService);
 	ss.registerClass(global, 'TestAngularJS.ExpanderController', $TestAngularJS_ExpanderController);
