@@ -28,21 +28,26 @@ namespace AngularJS
          public static uppercaseFilter uppercaseFilter { [InlineCode("angular.injector(['ng']).get('$filter')('uppercase')")] get {return null; } }
       }
 
-
       #region Global api
 
       /// <summary>
       /// Retrieves an already existing module by its name
       /// </summary>      
       [ScriptName("module")] public static Module Module(string Name) { return null; }   
-
-      // bind
-      // bootstrap
-      // copy 
-      // element
-      // equals
-      // extend
-      // foreach
+      
+      [ScriptName("bind")] public static Function Bind(object self, Function fn, object args) { return null; } 
+      [ScriptName("bootstrap")] public static Injector Bootstrap(Element element) { return null; } 
+      [ScriptName("bootstrap")] public static Injector Bootstrap(Element element, string[] modules) { return null; } 
+      [ScriptName("copy")] public static object Copy(object source, object destination) { return null; } 
+      [ScriptName("copy")] public static object Copy(object source) { return null; } 
+      [ScriptName("element")] public static AngularJS.Element Element(string ob) { return null; } 
+      [ScriptName("element")] public static AngularJS.Element Element(object ob) { return null; } 
+      [ScriptName("equals")] public static bool AreEquals(object ob1, object ob2) { return false; } 
+      [ScriptName("extend")] public static object Extend(object dest, object src) { return null; } 
+      [ScriptName("forEach")] public static JsDictionary ForEach<T>(JsDictionary ob, Action<object,string> iterator) { return null; } 
+      [ScriptName("forEach")] public static JsDictionary ForEach<T>(JsDictionary ob, Action<object,string> iterator, object Context) { return null; }       
+      [ScriptName("forEach")] public static T[] ForEach<T>(T[] ob, Action<T,int> iterator) { return null; } 
+      [ScriptName("forEach")] public static T[] ForEach<T>(T[] ob, Action<T,int> iterator, object Context) { return null; } 
       [ScriptName("fromJson")] public static T FromJson<T>(string value) { return default(T); } 
       [ScriptName("identity")] public static object Identity(object value) { return null; } 
       [ScriptName("injector")] public static Injector Injector() { return null; } 
