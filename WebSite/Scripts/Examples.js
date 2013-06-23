@@ -133,6 +133,9 @@
 		var app = angular.module('myApp', []);
 		AngularJS.AngularUtils.Animation($TestAngularJS_CoolAnimation).call(null, app, 'cool-animation-show');
 		AngularJS.AngularUtils.Controller($TestAngularJS_AnimationController).call(null, app);
+		var br = angular.injector(['ng']).get('$browser');
+		//Window.Alert(br.ToString());
+		br.url('ciao', false);
 	};
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.CartController
