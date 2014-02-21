@@ -74,3 +74,66 @@ namespace TestAngularJS
       }            
    }   
 }
+
+namespace Test
+    {
+
+    public class TestMain
+    {
+    public static void Main()
+    {
+        new SubClass();
+        new SubClass2().Type = ((EnumType)(0));
+
+    }
+    }
+    public enum EnumType
+        {
+        Zero,
+        One
+        }
+    public partial class SubClass : BaseClass
+        {
+        public SubClass()
+            {
+            base.Type.ToString();
+            base.Type = ((EnumType)(0));
+            }
+        }
+    public class SubClass2 : BaseClass
+    {
+       EnumType subType;
+       public override EnumType Type
+            {
+            get
+                {
+                return this.subType;
+                }
+            set
+                {
+                this.subType = value;
+                }
+            }
+
+    }
+
+    public abstract partial class BaseClass
+        {
+        private EnumType type;
+        public BaseClass()
+            {
+            this.type = ((EnumType)(0));
+            }
+        public virtual EnumType Type
+            {
+            get
+                {
+                return this.type;
+                }
+            set
+                {
+                this.type = value;
+                }
+            }
+        }
+    }

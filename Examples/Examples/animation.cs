@@ -7,7 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Serialization;
 
 using AngularJS;
-using jQueryApi;
 
 
 namespace TestAngularJS
@@ -62,13 +61,13 @@ namespace TestAngularJS
       public void Setup(System.Html.Element element)
       {
          //this is called before the animation
-         jQuery.FromElement(element).CSS("opacity",0);
+         //jQuery.FromElement(element).CSS("opacity",0);
       }
 
       public void Start(System.Html.Element element, Action done, object memo)
       {
          var ob = new JsDictionary("opacity",1);
-         jQuery.FromElement(element).Animate(ob, new TypeOption<int,EffectDuration>(), EffectEasing.Linear, ()=>{done();});
+         //jQuery.FromElement(element).Animate(ob, new TypeOption<int,EffectDuration>(), EffectEasing.Linear, ()=>{done();});
       }
 
       public void Cancel(System.Html.Element element, Action done)

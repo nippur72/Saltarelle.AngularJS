@@ -94,7 +94,7 @@ namespace TestAngularJS
 
       public void err(HttpResponse rh)
       {         
-         Window.Alert(rh.Status);
+         Window.Alert(rh.Status.ToString());
       }
    }
 }

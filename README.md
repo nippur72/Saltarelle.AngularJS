@@ -1,33 +1,151 @@
 # Saltarelle.AngularJS
 
-This is an import library of AngularJS JavaScript framework for the C#-Saltarelle-compiler, allowing to write
-AngularJS applications in C# instead of javascript.
+Angular.JS for C#
 
-At this stage, only the very basic parts of the framework are covered. 
+## Contents
 
-# Reserved names in AngularJS
+- [What is](#whatis)
+- [Current state](#currentstate)
+- [Requirements](#requirements)
+- [Getting started](#gettingstarted)
+- [Member casing](#membercasing)
+- [Differences between C# and Javascript](#differences)
+   - Reserved names ($)
+   - Dependency injection
+   - Creating a module
+- Creating a controller
+- Creating a config
+- Creating a factory
+- Creating a service
+- Creating a filter
+- Creating an animation
+- Creating a directive
+- Using routes
+- Using the http object
+- Using watches
+- Using resources
 
-AngularJS unfortunately names all its object with the `$` prefix (e.g. `$scope`) thus making them not available in C#. To avoid this, 
-the `_` underscore character is used in placed of the `$` sign for known objects. The library takes care of translating it back to `$`.
-So for example in your C# code you'll write `_scope` instead of `$scope`.
+<a name="whatis"></a>
+## What is
 
-# How to use this library
+Saltarelle.AngularJS is a library written for the [Saltarelle](www.saltarelle-compiler.com) C#-to-javascript compiler that allows to 
+use the [AngularJS](angularjs.org) framework from the C# language, making it possible to write modern C# client side web applications.
 
-Saltarelle.AngularJS is not a pure metadata import library, there are some helper functions that are written in C#, so 
-it's necessary to link the file `Saltarelle.AngularJS.js`. Copy `Saltarelle.AngularJS.js` from this repo to the `Scripts/`
-directory and put a reference like this: 
+Other than providing an interface to AngularJS, the library also makes Angular more C# friendly, trying to make it look
+as if it was designed for C# and not Javascript.
 
-```HTML
-<script src="Scritps/Saltarelle.AngularJS.js"></script>
+<a name="currentstate"></a>
+## Current state
+
+As of now, the latest Angular 1.1.5 is supported. Unfortunately only the main features of 
+Angular are covered yet, tough more and more are costantly added. If you want to contribute, 
+write a pull request or file a request under the issue section.
+
+<a name="requirements"></a>
+## Requirements
+
+In this documentation it's assumed a basic knowledge of Angular (at least of the basic concepts), and
+of the Saltarelle C#-to-Javascript compiler. The HTML-side of Angular remains unchanged and
+works the same as for Javascript.
+
+<a name="gettingstarted"></a>
+## Getting started
+
+To start using the library in your projects (Visual Studio assumed) do the following steps: 
+
+- add a reference to `Saltarelle.AngularJS.dll` (contained in this repo) in your C#-Saltarelle project.
+- put the file `Saltarelle.AngularJS.js` (contained in this repo) in your website script folder (as long as `angular.js` or `angular.min.js`).
+- Put a `<script>` reference to `Saltarelle.AngularJS.js` in your HTML page, just after the `mscorlib.js` reference.
+
+Differently from Javascript, the Angular application needs to be called explicitly, that is, you have to call
+the method that contains the app initialization. For example if you have defined a static method called `Main()`, 
+in your HTML page add something like this:
+
+```
+<script type="text/javascript">MyAppNameSpace.MyApp.Main();</script>     
 ```
 
-just after after the `mscorlib.js` reference. Also add a reference to `Saltarelle.AngularJS.dll` in your Saltarelle project references.
-
-To make the AngularJS namespace available, in your C# source files add:
+Don't forget make the AngularJS namespace available in your C# code by adding:
 
 ```C#
 using AngularJS;
 ```
+
+<a name="membercasing"></a>
+## Member casing
+
+By default the Saltarelle compiler is configured to translate to Javascript casing (eg "ToString()" is converted into "toString()"),
+which can be source of mistakes when you reference your C# objects from the HTML markup. To avoid case mismatches, it's suggested to add the
+following global attribute declaration in your `Assembly.cs` file:
+
+```
+[assembly: PreserveMemberCase]
+```
+
+<a name="differences"></a>
+## Differences between C# and Javascript
+
+There are some differences between the AngularJS C# implementation and its Javascript counterpart, mostly due to inherent differences between the two languages, 
+C# and Javascript. 
+
+### Classes instead of nested functions
+
+Angular makes intensive use of nested functions (functions containing functions) which are used to manage dependency injection in controllers, services 
+and other components. Typically an outer function receives injected objects as function's parameters which are thus available to be referenced withing
+inner functions. 
+
+Unfortunately the C# equivalent of this schema results in a clumsy use of function delegates and lambda expressions that is
+too impractical for real coding. 
+
+For this reason a different approach is used in C#: 
+- controllers, services and all other angular components are written as classes instead of functions
+- the class constructor receives the injectable objects as parameters (the same way the "outer" function does in javascript)
+- to make injectable objects available to the methods of the class, the constructor needs to save them in field members
+
+Example:
+
+in Javascript:
+
+```Javascript
+function outer($scope,$http)
+{
+	function inner()
+	{
+	   // use $http here
+	}
+}
+```
+
+in C#:
+
+```C#
+public class outer
+{
+	// save injectables
+	Http http;
+
+	public outer(Scope _scope, Http _http)
+	{
+		this.http = _http;	// since _http is referenced in "inner" we save it locally
+	}
+
+	public void inner()
+	{
+	   // use http here 
+	}
+}
+```
+
+### Scope aumatically bound to controllers
+
+In C# the `$scope` object is bound to the controller class (in other words, it's `this`) so there is no need to make direct reference to the scope. 
+This is a good advantage that makes code much more readable than its Javascript equivalent.
+
+# Reserved names in AngularJS
+
+AngularJS unfortunately names all its object with the `$` prefix (e.g. `$scope`) thus making them not available in C#. To avoid this, 
+the `_` underscore character is used in placed of the `$` sign when declaring parameters for dependency injection. The library takes care 
+of translating it back to `$`. So for example in your C# code you'll write `_scope` instead of `$scope`.
 
 # Creating an AngularJS module
 
@@ -284,7 +402,23 @@ Some concepts about directives:
 - they can have a "shared" controller that other elements can reference (for example netsted elements can register into a common controller)
 
 (to be continued)
- 
-# The C# paradigm
+ 						  
 
-(...)
+## Creating an animation
+
+
+## Using resources ($resource)
+
+Resource is an external Angular module (named `ngResource`) that makes easy to work with HTTP RESTful services. 
+
+Since is an external module it needs to be referenced in the markup by adding a script reference to `angular-resource.js` or `angular-resource-min.js`.
+
+Also don't forget to specify that your module depends on `ngResource`:
+
+```C#
+Module app = new Module("myApp","ngResource");
+```
+
+
+	
+

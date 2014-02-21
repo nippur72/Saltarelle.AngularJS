@@ -1,12 +1,19 @@
 ﻿(function() {
+	'use strict';
+	var $asm = {};
+	global.AngularJS = global.AngularJS || {};
+	ss.initAssembly($asm, 'Saltarelle.AngularJS');
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.Angular.BuiltinFilters
 	var $angular$BuiltinFilters = function() {
 	};
+	$angular$BuiltinFilters.__typeName = 'angular$BuiltinFilters';
+	global.angular$BuiltinFilters = $angular$BuiltinFilters;
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.AngularUtils
 	var $AngularJS_AngularUtils = function() {
 	};
+	$AngularJS_AngularUtils.__typeName = 'AngularJS.AngularUtils';
 	$AngularJS_AngularUtils.Controller = function(T) {
 		return function(module) {
 			var type = T;
@@ -158,11 +165,13 @@
 		body += ss.formatString('return $animob;\r\n');
 		return new Function(parameters, body);
 	};
+	global.AngularJS.AngularUtils = $AngularJS_AngularUtils;
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.BindingStrategies
 	var $AngularJS_BindingStrategies = function() {
 	};
-	$AngularJS_BindingStrategies.prototype = { AsString: 0, AsProperty: 1, AsFunction: 2 };
+	$AngularJS_BindingStrategies.__typeName = 'AngularJS.BindingStrategies';
+	global.AngularJS.BindingStrategies = $AngularJS_BindingStrategies;
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.DirectiveDefinition
 	var $AngularJS_DirectiveDefinition = function() {
@@ -179,7 +188,215 @@
 		this.SharedController = null;
 		this.DirectiveController = null;
 	};
-	$AngularJS_DirectiveDefinition.prototype = {
+	$AngularJS_DirectiveDefinition.__typeName = 'AngularJS.DirectiveDefinition';
+	global.AngularJS.DirectiveDefinition = $AngularJS_DirectiveDefinition;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.Event
+	var $AngularJS_Event = function() {
+		this.targetScope = null;
+		this.currentScope = null;
+		this.name = null;
+		this.stopPropagation = null;
+		this.preventDefault = null;
+		this.defaultPrevented = false;
+	};
+	$AngularJS_Event.__typeName = 'AngularJS.Event';
+	global.AngularJS.Event = $AngularJS_Event;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.FunctionExtensionMethods
+	var $AngularJS_FunctionExtensionMethods = function() {
+	};
+	$AngularJS_FunctionExtensionMethods.__typeName = 'AngularJS.FunctionExtensionMethods';
+	$AngularJS_FunctionExtensionMethods.CreateFunctionCall = function(fun, parameters) {
+		// if no parameters, takes function out of the array
+		if (parameters.length === 0) {
+			return fun;
+		}
+		// builds array, but also FIX $injection in the type
+		var result = [];
+		for (var t = 0; t < parameters.length; t++) {
+			if (ss.startsWithString(parameters[t], '_')) {
+				parameters[t] = '$' + parameters[t].substring(1);
+			}
+			ss.add(result, parameters[t]);
+		}
+		ss.add(result, fun);
+		return result;
+	};
+	global.AngularJS.FunctionExtensionMethods = $AngularJS_FunctionExtensionMethods;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.IResourceObject
+	var $AngularJS_IResourceObject = function() {
+	};
+	$AngularJS_IResourceObject.__typeName = 'AngularJS.IResourceObject';
+	global.AngularJS.IResourceObject = $AngularJS_IResourceObject;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.ResourceObjectExtensions
+	var $AngularJS_ResourceObjectExtensions = function() {
+	};
+	$AngularJS_ResourceObjectExtensions.__typeName = 'AngularJS.ResourceObjectExtensions';
+	global.AngularJS.ResourceObjectExtensions = $AngularJS_ResourceObjectExtensions;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.ResourceRequest
+	var $AngularJS_ResourceRequest$1 = function(T) {
+		var $type = function(resob) {
+			this.resource = null;
+			this.Action = null;
+			this.Parameters = null;
+			this.PostData = null;
+			this.Success = null;
+			this.Error = null;
+			this.resource = resob;
+		};
+		ss.registerGenericClassInstance($type, $AngularJS_ResourceRequest$1, [T], {
+			ExecuteRequest: function() {
+				return ss.getDefaultValue(T);
+			},
+			ExecuteRequestArray: function() {
+				return null;
+			}
+		}, function() {
+			return null;
+		}, function() {
+			return [];
+		});
+		return $type;
+	};
+	$AngularJS_ResourceRequest$1.__typeName = 'AngularJS.ResourceRequest$1';
+	ss.initGenericClass($AngularJS_ResourceRequest$1, $asm, 1);
+	global.AngularJS.ResourceRequest$1 = $AngularJS_ResourceRequest$1;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.RestrictFlags
+	var $AngularJS_RestrictFlags = function() {
+	};
+	$AngularJS_RestrictFlags.__typeName = 'AngularJS.RestrictFlags';
+	global.AngularJS.RestrictFlags = $AngularJS_RestrictFlags;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.RouteParams
+	var $AngularJS_RouteParams = function() {
+	};
+	$AngularJS_RouteParams.__typeName = 'AngularJS.RouteParams';
+	global.AngularJS.RouteParams = $AngularJS_RouteParams;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.Scope
+	var $AngularJS_Scope = function() {
+	};
+	$AngularJS_Scope.__typeName = 'AngularJS.Scope';
+	global.AngularJS.Scope = $AngularJS_Scope;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.ScopeBindings
+	var $AngularJS_ScopeBindings = function(AttributeName) {
+		this.AttributeName = null;
+		this.Strategy = 0;
+		this.TemplateAttributeName = null;
+		this.AttributeName = AttributeName;
+		this.Strategy = 0;
+	};
+	$AngularJS_ScopeBindings.__typeName = 'AngularJS.ScopeBindings';
+	$AngularJS_ScopeBindings.$ctor1 = function(AttributeName, Strategy) {
+		this.AttributeName = null;
+		this.Strategy = 0;
+		this.TemplateAttributeName = null;
+		this.AttributeName = AttributeName;
+		this.Strategy = Strategy;
+	};
+	$AngularJS_ScopeBindings.$ctor2 = function(AttributeAlias, Strategy, TemplateAttributeName) {
+		this.AttributeName = null;
+		this.Strategy = 0;
+		this.TemplateAttributeName = null;
+		this.AttributeName = AttributeAlias;
+		this.Strategy = Strategy;
+		this.TemplateAttributeName = TemplateAttributeName;
+	};
+	global.AngularJS.ScopeBindings = $AngularJS_ScopeBindings;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.ScopeModes
+	var $AngularJS_ScopeModes = function() {
+	};
+	$AngularJS_ScopeModes.__typeName = 'AngularJS.ScopeModes';
+	global.AngularJS.ScopeModes = $AngularJS_ScopeModes;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.ThisMode
+	var $AngularJS_ThisMode = function() {
+	};
+	$AngularJS_ThisMode.__typeName = 'AngularJS.ThisMode';
+	global.AngularJS.ThisMode = $AngularJS_ThisMode;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.TypeExtensionMethods
+	var $AngularJS_TypeExtensionMethods = function() {
+	};
+	$AngularJS_TypeExtensionMethods.__typeName = 'AngularJS.TypeExtensionMethods';
+	$AngularJS_TypeExtensionMethods.GetInstanceMethodNames = function(type) {
+		var result = [];
+		var $t1 = ss.getEnumerator(Object.keys(type.prototype));
+		try {
+			while ($t1.moveNext()) {
+				var key = $t1.current();
+				if (key !== 'constructor') {
+					ss.add(result, key);
+				}
+			}
+		}
+		finally {
+			$t1.dispose();
+		}
+		return result;
+	};
+	$AngularJS_TypeExtensionMethods.GetConstructorFunction = function(type) {
+		return ss.cast(type.prototype['constructor'], Function);
+	};
+	$AngularJS_TypeExtensionMethods.BuildControllerFunction = function(type, this_mode, return_function, return_function_call) {
+		var body = '';
+		var thisref = '';
+		if (this_mode === 3) {
+			thisref = '$self';
+		}
+		else if (this_mode === 0) {
+			thisref = '_scope';
+		}
+		else if (this_mode === 1) {
+			thisref = '_scope';
+		}
+		else if (this_mode === 2) {
+			thisref = 'this';
+		}
+		if (this_mode === 3) {
+			body += 'var $self = new Object();';
+		}
+		// gets and annotate constructor parameter; annotations are stored in type.$inject                                             
+		var parameters = angular.injector().annotate($AngularJS_TypeExtensionMethods.GetConstructorFunction(type));
+		if (this_mode === 0) {
+			// verifies that "scope" is the first parameter in constructor
+			if (parameters.length < 1 || parameters[0] !== '_scope') {
+				throw new ss.Exception(ss.formatString("Controller {0} must specify '_scope' as first parameter in its constructor", ss.getTypeName(type)));
+			}
+		}
+		// takes method into $scope, binding "$scope" to "this"                 
+		var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var funcname = $t1[$t2];
+			body += ss.formatString('{2}.{1} = {0}.prototype.{1}.bind({2});\r\n', ss.getTypeFullName(type), funcname, thisref);
+		}
+		// put call at the end so that methods are defined first
+		body += ss.formatString('{0}.apply({1},arguments);\r\n', ss.getTypeFullName(type), thisref);
+		if (ss.isValue(return_function)) {
+			if (return_function_call) {
+				body += ss.formatString('return {1}.{0}();\r\n', return_function, thisref);
+			}
+			else {
+				body += ss.formatString('return {1}.{0}  ;\r\n', return_function, thisref);
+			}
+			if (!ss.contains($AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type), return_function)) {
+				throw new ss.Exception("function '" + return_function + "' not defined in controller '" + ss.getTypeName(type) + "'");
+			}
+		}
+		return new Function(parameters, body);
+	};
+	global.AngularJS.TypeExtensionMethods = $AngularJS_TypeExtensionMethods;
+	ss.initClass($angular$BuiltinFilters, $asm, {});
+	ss.initClass($AngularJS_AngularUtils, $asm, {});
+	ss.initEnum($AngularJS_BindingStrategies, $asm, { AsString: 0, AsProperty: 1, AsFunction: 2 });
+	ss.initClass($AngularJS_DirectiveDefinition, $asm, {
 		$RestrictString: function() {
 			var s = '';
 			if ((this.Restrict & 1) === 1) {
@@ -213,7 +430,7 @@
 				result['name'] = this.Name;
 			}
 			// maps priority
-			if (ss.Nullable.ne(this.Priority, null)) {
+			if (ss.isValue(this.Priority)) {
 				result['priority'] = this.Priority;
 			}
 			// maps restrict
@@ -257,96 +474,15 @@
 			}
 			return result;
 		}
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.Event
-	var $AngularJS_Event = function() {
-		this.targetScope = null;
-		this.currentScope = null;
-		this.name = null;
-		this.stopPropagation = null;
-		this.preventDefault = null;
-		this.defaultPrevented = false;
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.FunctionExtensionMethods
-	var $AngularJS_FunctionExtensionMethods = function() {
-	};
-	$AngularJS_FunctionExtensionMethods.CreateFunctionCall = function(fun, parameters) {
-		// if no parameters, takes function out of the array
-		if (parameters.length === 0) {
-			return fun;
-		}
-		// builds array, but also FIX $injection in the type
-		var result = [];
-		for (var t = 0; t < parameters.length; t++) {
-			if (ss.startsWithString(parameters[t], '_')) {
-				parameters[t] = '$' + parameters[t].substring(1);
-			}
-			ss.add(result, parameters[t]);
-		}
-		ss.add(result, fun);
-		return result;
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.IResourceObject
-	var $AngularJS_IResourceObject = function() {
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.ResourceObjectExtensions
-	var $AngularJS_ResourceObjectExtensions = function() {
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.ResourceRequest
-	var $AngularJS_ResourceRequest$1 = function(T) {
-		var $type = function(resob) {
-			this.resource = null;
-			this.Action = null;
-			this.Parameters = null;
-			this.PostData = null;
-			this.Success = null;
-			this.Error = null;
-			this.resource = resob;
-		};
-		$type.prototype = {
-			ExecuteRequest: function() {
-				return ss.getDefaultValue(T);
-			},
-			ExecuteRequestArray: function() {
-				return null;
-			}
-		};
-		ss.registerGenericClassInstance($type, $AngularJS_ResourceRequest$1, [T], function() {
-			return null;
-		}, function() {
-			return [];
-		});
-		return $type;
-	};
-	ss.registerGenericClass(global, 'AngularJS.ResourceRequest$1', $AngularJS_ResourceRequest$1, 1);
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.RestrictFlags
-	var $AngularJS_RestrictFlags = function() {
-	};
-	$AngularJS_RestrictFlags.prototype = { Element: 1, Attribute: 2, Class: 4, Comment: 8 };
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.RouteParams
-	var $AngularJS_RouteParams = function() {
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.Scope
-	var $AngularJS_Scope = function() {
-	};
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.ScopeBindings
-	var $AngularJS_ScopeBindings = function(AttributeName) {
-		this.AttributeName = null;
-		this.Strategy = 0;
-		this.TemplateAttributeName = null;
-		this.AttributeName = AttributeName;
-		this.Strategy = 0;
-	};
-	$AngularJS_ScopeBindings.prototype = {
+	});
+	ss.initClass($AngularJS_Event, $asm, {});
+	ss.initClass($AngularJS_FunctionExtensionMethods, $asm, {});
+	ss.initInterface($AngularJS_IResourceObject, $asm, {});
+	ss.initClass($AngularJS_ResourceObjectExtensions, $asm, {});
+	ss.initEnum($AngularJS_RestrictFlags, $asm, { Element: 1, Attribute: 2, Class: 4, Comment: 8 });
+	ss.initClass($AngularJS_RouteParams, $asm, {});
+	ss.initClass($AngularJS_Scope, $asm, {});
+	ss.initClass($AngularJS_ScopeBindings, $asm, {
 		ScopeBindingString: function() {
 			var s = '';
 			if (this.Strategy === 0) {
@@ -363,116 +499,10 @@
 			}
 			return s;
 		}
-	};
-	$AngularJS_ScopeBindings.$ctor1 = function(AttributeName, Strategy) {
-		this.AttributeName = null;
-		this.Strategy = 0;
-		this.TemplateAttributeName = null;
-		this.AttributeName = AttributeName;
-		this.Strategy = Strategy;
-	};
-	$AngularJS_ScopeBindings.$ctor2 = function(AttributeAlias, Strategy, TemplateAttributeName) {
-		this.AttributeName = null;
-		this.Strategy = 0;
-		this.TemplateAttributeName = null;
-		this.AttributeName = AttributeAlias;
-		this.Strategy = Strategy;
-		this.TemplateAttributeName = TemplateAttributeName;
-	};
+	});
 	$AngularJS_ScopeBindings.$ctor1.prototype = $AngularJS_ScopeBindings.$ctor2.prototype = $AngularJS_ScopeBindings.prototype;
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.ScopeModes
-	var $AngularJS_ScopeModes = function() {
-	};
-	$AngularJS_ScopeModes.prototype = { Existing: 0, New: 1, Isolate: 2 };
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.ThisMode
-	var $AngularJS_ThisMode = function() {
-	};
-	$AngularJS_ThisMode.prototype = { ScopeStrict: 0, Scope: 1, This: 2, NewObject: 3 };
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.TypeExtensionMethods
-	var $AngularJS_TypeExtensionMethods = function() {
-	};
-	$AngularJS_TypeExtensionMethods.GetInstanceMethodNames = function(type) {
-		var result = [];
-		var $t1 = ss.getEnumerator(Object.keys(type.prototype));
-		try {
-			while ($t1.moveNext()) {
-				var key = $t1.current();
-				if (key !== 'constructor') {
-					ss.add(result, key);
-				}
-			}
-		}
-		finally {
-			$t1.dispose();
-		}
-		return result;
-	};
-	$AngularJS_TypeExtensionMethods.GetConstructorFunction = function(type) {
-		return ss.cast(type.prototype['constructor'], Function);
-	};
-	$AngularJS_TypeExtensionMethods.BuildControllerFunction = function(type, this_mode, return_function, return_function_call) {
-		var body = '';
-		var thisref = '';
-		if (this_mode === 3) {
-			thisref = '$self';
-		}
-		else if (this_mode === 0) {
-			thisref = '_scope';
-		}
-		else if (this_mode === 1) {
-			thisref = '_scope';
-		}
-		else if (this_mode === 2) {
-			thisref = 'this';
-		}
-		if (this_mode === 3) {
-			body += 'var $self = new Object();';
-		}
-		// gets and annotate constructor parameter; annotations are stored in type.$inject                                             
-		var parameters = angular.injector().annotate($AngularJS_TypeExtensionMethods.GetConstructorFunction(type));
-		if (this_mode === 0) {
-			// verifies that "scope" is the first parameter in constructor
-			if (parameters.length < 1 || parameters[0] !== '_scope') {
-				throw new ss.Exception(ss.formatString('Controller {0} must specify \'_scope\' as first parameter in its constructor', ss.getTypeName(type)));
-			}
-		}
-		// takes method into $scope, binding "$scope" to "this"                 
-		var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
-		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
-			var funcname = $t1[$t2];
-			body += ss.formatString('{2}.{1} = {0}.prototype.{1}.bind({2});\r\n', ss.getTypeFullName(type), funcname, thisref);
-		}
-		// put call at the end so that methods are defined first
-		body += ss.formatString('{0}.apply({1},arguments);\r\n', ss.getTypeFullName(type), thisref);
-		if (ss.isValue(return_function)) {
-			if (return_function_call) {
-				body += ss.formatString('return {1}.{0}();\r\n', return_function, thisref);
-			}
-			else {
-				body += ss.formatString('return {1}.{0}  ;\r\n', return_function, thisref);
-			}
-			if (!ss.contains($AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type), return_function)) {
-				throw new ss.Exception('function \'' + return_function + '\' not defined in controller \'' + ss.getTypeName(type) + '\'');
-			}
-		}
-		return new Function(parameters, body);
-	};
-	ss.registerClass(global, 'angular$BuiltinFilters', $angular$BuiltinFilters);
-	ss.registerClass(global, 'AngularJS.AngularUtils', $AngularJS_AngularUtils);
-	ss.registerEnum(global, 'AngularJS.BindingStrategies', $AngularJS_BindingStrategies);
-	ss.registerClass(global, 'AngularJS.DirectiveDefinition', $AngularJS_DirectiveDefinition);
-	ss.registerClass(global, 'AngularJS.Event', $AngularJS_Event);
-	ss.registerClass(global, 'AngularJS.FunctionExtensionMethods', $AngularJS_FunctionExtensionMethods);
-	ss.registerInterface(global, 'AngularJS.IResourceObject', $AngularJS_IResourceObject);
-	ss.registerClass(global, 'AngularJS.ResourceObjectExtensions', $AngularJS_ResourceObjectExtensions);
-	ss.registerEnum(global, 'AngularJS.RestrictFlags', $AngularJS_RestrictFlags, { enumFlags: true });
-	ss.registerClass(global, 'AngularJS.RouteParams', $AngularJS_RouteParams);
-	ss.registerClass(global, 'AngularJS.Scope', $AngularJS_Scope);
-	ss.registerClass(global, 'AngularJS.ScopeBindings', $AngularJS_ScopeBindings);
-	ss.registerEnum(global, 'AngularJS.ScopeModes', $AngularJS_ScopeModes);
-	ss.registerEnum(global, 'AngularJS.ThisMode', $AngularJS_ThisMode);
-	ss.registerClass(global, 'AngularJS.TypeExtensionMethods', $AngularJS_TypeExtensionMethods);
+	ss.initEnum($AngularJS_ScopeModes, $asm, { Existing: 0, New: 1, Isolate: 2 });
+	ss.initEnum($AngularJS_ThisMode, $asm, { ScopeStrict: 0, Scope: 1, This: 2, NewObject: 3 });
+	ss.initClass($AngularJS_TypeExtensionMethods, $asm, {});
+	ss.setMetadata($AngularJS_RestrictFlags, { enumFlags: true });
 })();
