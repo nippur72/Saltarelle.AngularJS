@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <title></title>
+   <script type="text/javascript" src="/libs/angular.js"></script>
+   <script type="text/javascript" src="/libs/angular-ui-router.js"></script>
+   <script type="text/javascript" src="/libs/mscorlib.js"></script>
+   <script type="text/javascript" src="/Scripts/Saltarelle.AngularJS.js?1500"></script>
+   <script type="text/javascript" src="/Scripts/Examples.js?1500"></script>
+   <script type="text/javascript">TestAngularJS.UiRouterExample.Main();</script>                            
+</head>
+
+<body ng-app="UiRouterExample" ng-controller="MyController">    
+    <h1>UI Router example</h1>   
+    
+    <div ui-view>
+
+    </div>
+    
+    <hr>
+    
+    <a ui-sref="state1">State 1</a>
+    <a ui-sref="state2">State 2</a>
+    <a ui-sref="state2.inner">State 2 inner</a>
+    <button ng-click="VaiStato2()">Vai allo stato 2 inner</button>
+</body>
+
+</html>
+
+
+

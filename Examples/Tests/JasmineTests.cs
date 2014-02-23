@@ -15,7 +15,7 @@ public class JasmineTests : JasmineSuite
    {
       describe("Currency filter",()=>
       {
-         it("should format numbers to dollar amounts",()=>
+         it("should format numbers to money amounts",()=>
          {
             currencyFilter f = Angular.BuiltinFilters.currencyFilter;
             expect(f.Filter(0))       .toBe("$0.00");
@@ -33,13 +33,9 @@ public class JasmineTests : JasmineSuite
          JsDate d = new JsDate(1972,4,3);
 
          it("should format dates to U.S. format",()=>{ expect(f.Filter(d)).toBe("May 3, 1972"); });
-
          it("should format short dates",()=>{ expect(f.Filter(d,"dd/MM/yy")).toBe("03/05/72"); });
-
          it("should format long dates",()=>{ expect(f.Filter(d,"dd/MM/yyyy")).toBe("03/05/1972"); });
       });
-
-
    }
 }
 

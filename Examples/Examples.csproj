@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Assembly.cs" />
     <Compile Include="Examples\animation.cs" />
+    <Compile Include="Examples\uirouter.cs" />
     <Compile Include="Examples\resource_example.cs" />
     <Compile Include="Examples\directives.cs" />
     <Compile Include="Examples\Directives\expander.cs" />

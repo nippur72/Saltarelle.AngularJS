@@ -242,6 +242,14 @@
 	$TestAngularJS_LabelsFactory.__typeName = 'TestAngularJS.LabelsFactory';
 	global.TestAngularJS.LabelsFactory = $TestAngularJS_LabelsFactory;
 	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.MyController
+	var $TestAngularJS_MyController = function(_scope, _state) {
+		this.$state = null;
+		this.$state = _state;
+	};
+	$TestAngularJS_MyController.__typeName = 'TestAngularJS.MyController';
+	global.TestAngularJS.MyController = $TestAngularJS_MyController;
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.Person
 	var $TestAngularJS_Person = function() {
 		this.id = 0;
@@ -375,6 +383,48 @@
 	};
 	$TestAngularJS_StartUpController.__typeName = 'TestAngularJS.StartUpController';
 	global.TestAngularJS.StartUpController = $TestAngularJS_StartUpController;
+	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.State1Controller
+	var $TestAngularJS_State1Controller = function(_scope, _stateParams) {
+		this.MyValue = null;
+		this.id = null;
+		this.MyValue = 'hjhh';
+		this.id = _stateParams['id'];
+	};
+	$TestAngularJS_State1Controller.__typeName = 'TestAngularJS.State1Controller';
+	global.TestAngularJS.State1Controller = $TestAngularJS_State1Controller;
+	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.UiRouterConfig
+	var $TestAngularJS_UiRouterConfig = function(_stateProvider) {
+		var state1 = {};
+		state1.name = 'state1';
+		state1.url = '/state1/{id}';
+		//state1.Controller = "State1Controller";
+		state1.templateUrl = 'state1.html';
+		var state2 = {};
+		state2.name = 'state2';
+		state2.url = '/state2';
+		state2.templateUrl = 'state2.html';
+		var state2inner = {};
+		state2inner.name = 'state2.inner';
+		state2inner.url = '/state2inner';
+		state2inner.templateUrl = 'state2.inner.html';
+		_stateProvider.state(state1).state(state2).state(state2inner);
+	};
+	$TestAngularJS_UiRouterConfig.__typeName = 'TestAngularJS.UiRouterConfig';
+	global.TestAngularJS.UiRouterConfig = $TestAngularJS_UiRouterConfig;
+	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.UiRouterExample
+	var $TestAngularJS_UiRouterExample = function() {
+	};
+	$TestAngularJS_UiRouterExample.__typeName = 'TestAngularJS.UiRouterExample';
+	$TestAngularJS_UiRouterExample.Main = function() {
+		var app = angular.module('UiRouterExample', ['ui.router']);
+		AngularJS.AngularUtils.Config($TestAngularJS_UiRouterConfig).call(null, app);
+		AngularJS.AngularUtils.Controller($TestAngularJS_MyController).call(null, app);
+		AngularJS.AngularUtils.Controller($TestAngularJS_State1Controller).call(null, app);
+	};
+	global.TestAngularJS.UiRouterExample = $TestAngularJS_UiRouterExample;
 	ss.initClass($AngularTests, $asm, {
 		runTests: function() {
 			test('OneIsOne', ss.mkdel(this, function() {
@@ -387,7 +437,7 @@
 	ss.initClass($JasmineTests, $asm, {
 		SpecRunner: function() {
 			describe('Currency filter', ss.mkdel(this, function() {
-				it('should format numbers to dollar amounts', ss.mkdel(this, function() {
+				it('should format numbers to money amounts', ss.mkdel(this, function() {
 					var f = angular.injector(['ng']).get('$filter')('currency');
 					expect(f(0)).toBe('$0.00');
 					expect(f(5.75)).toBe('$5.75');
@@ -575,6 +625,12 @@
 			return 'CHF';
 		}
 	});
+	ss.initClass($TestAngularJS_MyController, $asm, {
+		VaiStato2: function() {
+			//Window.Alert("KK");
+			this.$state.go('state2.inner');
+		}
+	});
 	ss.initClass($TestAngularJS_Person, $asm, {}, null, [AngularJS.IResourceObject]);
 	ss.initClass($TestAngularJS_PhoneConfig, $asm, {});
 	ss.initClass($TestAngularJS_PhoneExample, $asm, {});
@@ -679,4 +735,7 @@
 			this.fundingNeeded = this.fundingStartingEstimate * 10;
 		}
 	}, AngularJS.Scope);
+	ss.initClass($TestAngularJS_State1Controller, $asm, {});
+	ss.initClass($TestAngularJS_UiRouterConfig, $asm, {});
+	ss.initClass($TestAngularJS_UiRouterExample, $asm, {});
 })();

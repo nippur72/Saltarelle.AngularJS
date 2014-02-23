@@ -50,7 +50,7 @@ namespace TestAngularJS
    {      
       public static void Main()
       {
-         Module app = new Module("myApp");
+         Module app = new Module("myApp");   
                 
          //app.Debug("service","pippo");                  
          //app.RegisterController( typeof(TestController) );         

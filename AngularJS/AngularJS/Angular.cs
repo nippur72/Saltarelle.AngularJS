@@ -71,7 +71,6 @@ namespace AngularJS
       [ScriptName("version"), IntrinsicProperty] public static JsDictionary Version { get { return null; } }
 
       #endregion
-   }   
-       
+   }  
 }
 
