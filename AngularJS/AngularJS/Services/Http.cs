@@ -10,10 +10,6 @@ using System.Diagnostics;
 
 namespace AngularJS
 {       
-   public delegate void HttpDelegate2(object data, object status);
-   public delegate void HttpDelegate3(object data, object status, object header);
-   public delegate void HttpDelegate4(object data, object status, object header, object config);
-
    [Imported]
    public sealed class HttpPromise
    {
@@ -23,13 +19,17 @@ namespace AngularJS
          return this;
       }
 
-      [ScriptName("success")] public HttpPromise Success(HttpDelegate2 function) { return this; }
-      [ScriptName("success")] public HttpPromise Success(HttpDelegate3 function) { return this; }
-      [ScriptName("success")] public HttpPromise Success(HttpDelegate4 function) { return this; }
-
-      [ScriptName("error")] public HttpPromise Error(HttpDelegate2 function) { return this; }
-      [ScriptName("error")] public HttpPromise Error(HttpDelegate3 function) { return this; }
-      [ScriptName("error")] public HttpPromise Error(HttpDelegate4 function) { return this; }
+      [ScriptName("success")] public HttpPromise Success(Action                              SuccessFunction) { return this; }
+      [ScriptName("success")] public HttpPromise Success(Action<object>                      SuccessFunction) { return this; }
+      [ScriptName("success")] public HttpPromise Success(Action<object,object>               SuccessFunction) { return this; }
+      [ScriptName("success")] public HttpPromise Success(Action<object,object,object>        SuccessFunction) { return this; }
+      [ScriptName("success")] public HttpPromise Success(Action<object,object,object,object> SuccessFunction) { return this; }
+          
+      [ScriptName("error")] public HttpPromise Error(Action                              ErrorFunction) { return this; }
+      [ScriptName("error")] public HttpPromise Error(Action<object>                      ErrorFunction) { return this; }
+      [ScriptName("error")] public HttpPromise Error(Action<object,object>               ErrorFunction) { return this; }
+      [ScriptName("error")] public HttpPromise Error(Action<object,object,object>        ErrorFunction) { return this; }
+      [ScriptName("error")] public HttpPromise Error(Action<object,object,object,object> ErrorFunction) { return this; }
    }
 
    [Imported]
