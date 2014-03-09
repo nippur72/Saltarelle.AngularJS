@@ -395,21 +395,24 @@
 	global.TestAngularJS.State1Controller = $TestAngularJS_State1Controller;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.UiRouterConfig
-	var $TestAngularJS_UiRouterConfig = function(_stateProvider) {
-		var state1 = {};
-		state1.name = 'state1';
-		state1.url = '/state1/{id}';
-		//state1.Controller = "State1Controller";
-		state1.templateUrl = 'state1.html';
-		var state2 = {};
-		state2.name = 'state2';
-		state2.url = '/state2';
-		state2.templateUrl = 'state2.html';
-		var state2inner = {};
-		state2inner.name = 'state2.inner';
-		state2inner.url = '/state2inner';
-		state2inner.templateUrl = 'state2.inner.html';
-		_stateProvider.state(state1).state(state2).state(state2inner);
+	var $TestAngularJS_UiRouterConfig = function(_stateProvider, _urlRouterProvider, _locationProvider) {
+		_urlRouterProvider.otherwise('state1');
+		var $t1 = {};
+		$t1.name = 'state1';
+		$t1.url = '/state1/{id}';
+		$t1.templateUrl = 'state1.html';
+		_stateProvider.state($t1);
+		var $t2 = {};
+		$t2.name = 'state2';
+		$t2.url = '/state2';
+		$t2.templateUrl = 'state2.html';
+		_stateProvider.state($t2);
+		var $t3 = {};
+		$t3.name = 'state2.inner';
+		$t3.url = '/state2inner';
+		$t3.templateUrl = 'state2.inner.html';
+		_stateProvider.state($t3);
+		_locationProvider.html5Mode(true);
 	};
 	$TestAngularJS_UiRouterConfig.__typeName = 'TestAngularJS.UiRouterConfig';
 	global.TestAngularJS.UiRouterConfig = $TestAngularJS_UiRouterConfig;

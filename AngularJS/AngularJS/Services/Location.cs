@@ -11,6 +11,13 @@ using System.Diagnostics;
 namespace AngularJS
 {       
    [Imported]
+   public sealed class LocationProvider
+   {
+      [InlineCode("{this}.html5Mode({mode})")]    public LocationProvider Html5Mode(bool mode)      { return null; }
+      [InlineCode("{this}.hashPrefix({prefix})")] public LocationProvider HashPrefix(string prefix) { return null; }
+   }
+
+   [Imported]
    public sealed class Location
    {
       /// <summary>

@@ -55,27 +55,31 @@ namespace TestAngularJS
 
    public class UiRouterConfig
    {
-      public UiRouterConfig(StateProvider _stateProvider)
-      {                  
-         var state1 = new StateConfig();
-         state1.Name = "state1";
-         state1.Url = "/state1/{id}";
-         //state1.Controller = "State1Controller";
-         state1.TemplateUrl = "state1.html";
+      public UiRouterConfig(StateProvider _stateProvider, UrlRouterProvider _urlRouterProvider, LocationProvider _locationProvider)
+      {                           
+         _urlRouterProvider.Otherwise("state1");
 
-         var state2 = new StateConfig();
-         state2.Name = "state2";
-         state2.Url = "/state2";
-         state2.TemplateUrl = "state2.html";
+         _stateProvider.State( new StateConfig()
+         {
+            Name = "state1",
+            Url = "/state1/{id}",
+            //Controller = "State1Controller";
+            TemplateUrl = "state1.html"
+         });
 
-         var state2inner = new StateConfig();
-         state2inner.Name = "state2.inner";
-         state2inner.Url = "/state2inner";
-         state2inner.TemplateUrl = "state2.inner.html";
+         _stateProvider.State( new StateConfig()
+         {
+            Name = "state2",
+            Url = "/state2",
+            TemplateUrl = "state2.html"
+         });
 
-         _stateProvider.State(state1)
-                       .State(state2)
-                       .State(state2inner);
+         _stateProvider.State( new StateConfig()
+         {
+            Name = "state2.inner",
+            Url = "/state2inner",
+            TemplateUrl = "state2.inner.html"
+         });                 
       }      
    }
 }

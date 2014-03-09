@@ -67,5 +67,40 @@ namespace AngularJS.UiRouter
       {
       }
    }
+
+   [Imported]
+   public sealed class UrlRouterProvider
+   {
+      [InlineCode("{this}.otherwise({rule})")]
+      public UrlRouterProvider Otherwise(string rule)
+      {
+         return this;
+      }
+
+      /*[InlineCode("{this}.when({path},{route})")]
+      public RouteProvider when(string path, RouteMap route)
+      {
+         return this;
+      }*/
+   }
+
+   /*
+   [Imported]
+   public sealed class Rule
+   {
+      [ScriptName("controller")]     public string Controller;
+      [ScriptName("template")]       public string Template;
+      [ScriptName("templateUrl")]    public string TemplateUrl;
+      [ScriptName("resolve")]        public JsDictionary<string,object> Resolve;
+      [ScriptName("redirectTo")]     public dynamic RedirectTo;
+      [ScriptName("reloadOnSearch")] public bool ReloadOnSearch;
+
+      [InlineCode("{}")]
+      public RouteMap()
+      {
+      }
+   }
+   */
+
 }
 
