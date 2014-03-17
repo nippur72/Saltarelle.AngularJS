@@ -77,11 +77,11 @@ namespace AngularJS.UiRouter
          return this;
       }
 
-      /*[InlineCode("{this}.when({path},{route})")]
-      public RouteProvider when(string path, RouteMap route)
+      [InlineCode("{this}.when({path},{route})")]
+      public UrlRouterProvider When(string path, string route)
       {
          return this;
-      }*/
+      }
    }
 
    /*
@@ -102,5 +102,12 @@ namespace AngularJS.UiRouter
    }
    */
 
+   public static class UiRouterExtensions
+   {
+      public static void OnStateChangeStart(this RootScope _rootscope, Action<Event,StateConfig,object,StateConfig,Object> Function)
+      {
+         _rootscope.On("$stateChangeStart",Function);
+      }
+   }
 }
 

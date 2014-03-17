@@ -2,6 +2,7 @@
 	'use strict';
 	var $asm = {};
 	global.AngularJS = global.AngularJS || {};
+	global.AngularJS.UiRouter = global.AngularJS.UiRouter || {};
 	ss.initAssembly($asm, 'Saltarelle.AngularJS');
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.Angular.BuiltinFilters
@@ -76,6 +77,15 @@
 			var parameters = type.$inject;
 			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
 			module.config(fcall);
+		};
+	};
+	$AngularJS_AngularUtils.Run = function(T) {
+		return function(module) {
+			var type = T;
+			var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 3, null, false);
+			var parameters = type.$inject;
+			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
+			module.run(fcall);
 		};
 	};
 	$AngularJS_AngularUtils.Directive = function(T) {
@@ -393,6 +403,15 @@
 		return new Function(parameters, body);
 	};
 	global.AngularJS.TypeExtensionMethods = $AngularJS_TypeExtensionMethods;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.UiRouter.UiRouterExtensions
+	var $AngularJS_UiRouter_UiRouterExtensions = function() {
+	};
+	$AngularJS_UiRouter_UiRouterExtensions.__typeName = 'AngularJS.UiRouter.UiRouterExtensions';
+	$AngularJS_UiRouter_UiRouterExtensions.OnStateChangeStart = function(_rootscope, Function) {
+		_rootscope.$on('$stateChangeStart', Function);
+	};
+	global.AngularJS.UiRouter.UiRouterExtensions = $AngularJS_UiRouter_UiRouterExtensions;
 	ss.initClass($angular$BuiltinFilters, $asm, {});
 	ss.initClass($AngularJS_AngularUtils, $asm, {});
 	ss.initEnum($AngularJS_BindingStrategies, $asm, { AsString: 0, AsProperty: 1, AsFunction: 2 });
@@ -504,5 +523,6 @@
 	ss.initEnum($AngularJS_ScopeModes, $asm, { Existing: 0, New: 1, Isolate: 2 });
 	ss.initEnum($AngularJS_ThisMode, $asm, { ScopeStrict: 0, Scope: 1, This: 2, NewObject: 3 });
 	ss.initClass($AngularJS_TypeExtensionMethods, $asm, {});
+	ss.initClass($AngularJS_UiRouter_UiRouterExtensions, $asm, {});
 	ss.setMetadata($AngularJS_RestrictFlags, { enumFlags: true });
 })();

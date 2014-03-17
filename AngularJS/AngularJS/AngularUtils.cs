@@ -272,6 +272,19 @@ namespace AngularJS
 
       #endregion
 
+      #region Runs
+
+      public static void Run<T>(this Module module)
+      {
+         Type type = typeof(T);
+         Function fun = type.BuildControllerFunction(ThisMode.NewObject);                
+         var parameters = type.ReadInjection();         
+         var fcall = fun.CreateFunctionCall(parameters);         
+         Run(module,fcall);
+      }
+
+      #endregion
+
       #region Directives            
 
       public static void Directive<T>(this Module module)
@@ -432,6 +445,11 @@ namespace AngularJS
       public static void Service(Module module, string Name, Type func)
       {
       }          
+
+      [InlineCode("{module}.run({func})")]
+      public static void Run(Module module, object func)
+      {
+      }    
 
       [InlineCode("{module}.animation({Name},{func})")]
       public static void Animation(Module module, string Name, object func)

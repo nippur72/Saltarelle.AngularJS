@@ -412,7 +412,6 @@
 		$t3.url = '/state2inner';
 		$t3.templateUrl = 'state2.inner.html';
 		_stateProvider.state($t3);
-		_locationProvider.html5Mode(true);
 	};
 	$TestAngularJS_UiRouterConfig.__typeName = 'TestAngularJS.UiRouterConfig';
 	global.TestAngularJS.UiRouterConfig = $TestAngularJS_UiRouterConfig;
