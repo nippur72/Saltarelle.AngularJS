@@ -39,12 +39,18 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AngularJS\Angular.UI-Router\UrlRouterProvider.cs" />
+    <Compile Include="AngularJS\Angular.UI-Router\StateParams.cs" />
+    <Compile Include="AngularJS\Angular.UI-Router\StateProvider.cs" />
+    <Compile Include="AngularJS\Angular.UI-Router\StateEvents.cs" />
+    <Compile Include="AngularJS\Angular.UI-Router\State.cs" />
+    <Compile Include="AngularJS\Angular.UI-Router\StateConfig.cs" />
     <Compile Include="AngularJS\Attributes.cs" />
     <Compile Include="AngularJS\Event.cs" />
     <Compile Include="AngularJS\Filters.cs" />
     <Compile Include="AngularJS\Promise.cs" />
     <Compile Include="AngularJS\Services\Animator.cs" />
-    <Compile Include="AngularJS\Services\UI-Router.cs" />
+    <Compile Include="AngularJS\Angular.UI-Router\UiRouter.cs" />
     <Compile Include="AngularJS\Services\Resource.cs" />
     <Compile Include="AngularJS\Services\Timeout.cs" />
     <Compile Include="AngularJS\Element.cs" />

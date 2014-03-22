@@ -404,14 +404,20 @@
 	};
 	global.AngularJS.TypeExtensionMethods = $AngularJS_TypeExtensionMethods;
 	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.UiRouter.UiRouterExtensions
-	var $AngularJS_UiRouter_UiRouterExtensions = function() {
+	// AngularJS.UiRouter.StateEventsExtensions
+	var $AngularJS_UiRouter_StateEventsExtensions = function() {
 	};
-	$AngularJS_UiRouter_UiRouterExtensions.__typeName = 'AngularJS.UiRouter.UiRouterExtensions';
-	$AngularJS_UiRouter_UiRouterExtensions.OnStateChangeStart = function(_rootscope, Function) {
+	$AngularJS_UiRouter_StateEventsExtensions.__typeName = 'AngularJS.UiRouter.StateEventsExtensions';
+	$AngularJS_UiRouter_StateEventsExtensions.OnStateChangeStart = function(_rootscope, Function) {
 		_rootscope.$on('$stateChangeStart', Function);
 	};
-	global.AngularJS.UiRouter.UiRouterExtensions = $AngularJS_UiRouter_UiRouterExtensions;
+	$AngularJS_UiRouter_StateEventsExtensions.OnViewContentLoading = function(_scope, Function) {
+		_scope.$on('$viewContentLoading', Function);
+	};
+	$AngularJS_UiRouter_StateEventsExtensions.OnViewContentLoaded = function(_scope, Function) {
+		_scope.$on('$viewContentLoaded', Function);
+	};
+	global.AngularJS.UiRouter.StateEventsExtensions = $AngularJS_UiRouter_StateEventsExtensions;
 	ss.initClass($angular$BuiltinFilters, $asm, {});
 	ss.initClass($AngularJS_AngularUtils, $asm, {});
 	ss.initEnum($AngularJS_BindingStrategies, $asm, { AsString: 0, AsProperty: 1, AsFunction: 2 });
@@ -523,6 +529,6 @@
 	ss.initEnum($AngularJS_ScopeModes, $asm, { Existing: 0, New: 1, Isolate: 2 });
 	ss.initEnum($AngularJS_ThisMode, $asm, { ScopeStrict: 0, Scope: 1, This: 2, NewObject: 3 });
 	ss.initClass($AngularJS_TypeExtensionMethods, $asm, {});
-	ss.initClass($AngularJS_UiRouter_UiRouterExtensions, $asm, {});
+	ss.initClass($AngularJS_UiRouter_StateEventsExtensions, $asm, {});
 	ss.setMetadata($AngularJS_RestrictFlags, { enumFlags: true });
 })();
