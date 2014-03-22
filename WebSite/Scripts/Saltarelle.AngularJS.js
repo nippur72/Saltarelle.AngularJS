@@ -11,11 +11,11 @@
 	$angular$BuiltinFilters.__typeName = 'angular$BuiltinFilters';
 	global.angular$BuiltinFilters = $angular$BuiltinFilters;
 	////////////////////////////////////////////////////////////////////////////////
-	// AngularJS.AngularUtils
-	var $AngularJS_AngularUtils = function() {
+	// AngularJS.AngularBuilder
+	var $AngularJS_AngularBuilder = function() {
 	};
-	$AngularJS_AngularUtils.__typeName = 'AngularJS.AngularUtils';
-	$AngularJS_AngularUtils.Controller = function(T) {
+	$AngularJS_AngularBuilder.__typeName = 'AngularJS.AngularBuilder';
+	$AngularJS_AngularBuilder.Controller = function(T) {
 		return function(module) {
 			var type = T;
 			// TODO
@@ -26,7 +26,7 @@
 			module.controller(ss.getTypeName(type), fcall);
 		};
 	};
-	$AngularJS_AngularUtils.Service = function(T) {
+	$AngularJS_AngularBuilder.Service = function(T) {
 		return function(module) {
 			var type = T;
 			var parameters = angular.injector().annotate($AngularJS_TypeExtensionMethods.GetConstructorFunction(type));
@@ -36,41 +36,41 @@
 			module.service(servicename, type);
 		};
 	};
-	$AngularJS_AngularUtils.Factory = function(T) {
+	$AngularJS_AngularBuilder.Factory = function(T) {
 		return function(module) {
 			var type = T;
 			// register all public instance methods as filters                       
 			var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
 			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
 				var funcname = $t1[$t2];
-				$AngularJS_AngularUtils.$RegisterFactory(module, type, funcname);
+				$AngularJS_AngularBuilder.$RegisterFactory(module, type, funcname);
 			}
 		};
 	};
-	$AngularJS_AngularUtils.$RegisterFactory = function(module, type, funcname) {
+	$AngularJS_AngularBuilder.$RegisterFactory = function(module, type, funcname) {
 		var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 2, funcname, true);
 		var parameters = type.$inject;
 		var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
 		module.factory(funcname, fcall);
 	};
-	$AngularJS_AngularUtils.Filter = function(T) {
+	$AngularJS_AngularBuilder.Filter = function(T) {
 		return function(module) {
 			var type = T;
 			// register all public instance methods as filters                       
 			var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
 			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
 				var funcname = $t1[$t2];
-				$AngularJS_AngularUtils.$RegisterFilter(module, type, funcname);
+				$AngularJS_AngularBuilder.$RegisterFilter(module, type, funcname);
 			}
 		};
 	};
-	$AngularJS_AngularUtils.$RegisterFilter = function(module, type, funcname) {
+	$AngularJS_AngularBuilder.$RegisterFilter = function(module, type, funcname) {
 		var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 3, funcname, false);
 		var parameters = type.$inject;
 		var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
 		module.filter(funcname, fcall);
 	};
-	$AngularJS_AngularUtils.Config = function(T) {
+	$AngularJS_AngularBuilder.Config = function(T) {
 		return function(module) {
 			var type = T;
 			var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 3, null, false);
@@ -79,7 +79,7 @@
 			module.config(fcall);
 		};
 	};
-	$AngularJS_AngularUtils.Run = function(T) {
+	$AngularJS_AngularBuilder.Run = function(T) {
 		return function(module) {
 			var type = T;
 			var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 3, null, false);
@@ -88,19 +88,19 @@
 			module.run(fcall);
 		};
 	};
-	$AngularJS_AngularUtils.Directive = function(T) {
+	$AngularJS_AngularBuilder.Directive = function(T) {
 		return function(module) {
 			var type = T;
 			// TODO when there will be IsSubClassOf
 			//if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
 			var dirob = ss.cast(ss.createInstance(type), $AngularJS_DirectiveDefinition);
-			var fun = $AngularJS_AngularUtils.$CreateDirectiveFunction(dirob);
+			var fun = $AngularJS_AngularBuilder.$CreateDirectiveFunction(dirob);
 			var parameters = angular.injector().annotate(fun);
 			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
 			module.directive(dirob.Name, fcall);
 		};
 	};
-	$AngularJS_AngularUtils.$CreateDirectiveFunction = function(def) {
+	$AngularJS_AngularBuilder.$CreateDirectiveFunction = function(def) {
 		var defob = def.CreateDefinitionObject();
 		var parameters = [];
 		var fnames = [];
@@ -144,18 +144,18 @@
 		body += 'return $obdef;\r\n';
 		return new Function(parameters, body);
 	};
-	$AngularJS_AngularUtils.Animation = function(T) {
+	$AngularJS_AngularBuilder.Animation = function(T) {
 		return function(module, name) {
 			var type = T;
 			// TODO when there will be IsSubClassOf
 			//if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
-			var fun = $AngularJS_AngularUtils.$CreateAnimationFunction(type);
+			var fun = $AngularJS_AngularBuilder.$CreateAnimationFunction(type);
 			var parameters = angular.injector().annotate(fun);
 			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
 			module.animation((ss.isNullOrUndefined(name) ? ss.getTypeName(type) : name), fcall);
 		};
 	};
-	$AngularJS_AngularUtils.$CreateAnimationFunction = function(type) {
+	$AngularJS_AngularBuilder.$CreateAnimationFunction = function(type) {
 		var body = '';
 		var thisref = 'this';
 		body += 'var $animob = {};\r\n';
@@ -175,7 +175,7 @@
 		body += ss.formatString('return $animob;\r\n');
 		return new Function(parameters, body);
 	};
-	global.AngularJS.AngularUtils = $AngularJS_AngularUtils;
+	global.AngularJS.AngularBuilder = $AngularJS_AngularBuilder;
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.BindingStrategies
 	var $AngularJS_BindingStrategies = function() {
@@ -419,7 +419,7 @@
 	};
 	global.AngularJS.UiRouter.StateEventsExtensions = $AngularJS_UiRouter_StateEventsExtensions;
 	ss.initClass($angular$BuiltinFilters, $asm, {});
-	ss.initClass($AngularJS_AngularUtils, $asm, {});
+	ss.initClass($AngularJS_AngularBuilder, $asm, {});
 	ss.initEnum($AngularJS_BindingStrategies, $asm, { AsString: 0, AsProperty: 1, AsFunction: 2 });
 	ss.initClass($AngularJS_DirectiveDefinition, $asm, {
 		$RestrictString: function() {

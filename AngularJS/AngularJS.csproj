@@ -25,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Saltarelle.AngularJS.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,31 +40,32 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AngularJS\Angular.UI-Router\UrlRouterProvider.cs" />
-    <Compile Include="AngularJS\Angular.UI-Router\StateParams.cs" />
-    <Compile Include="AngularJS\Angular.UI-Router\StateProvider.cs" />
-    <Compile Include="AngularJS\Angular.UI-Router\StateEvents.cs" />
-    <Compile Include="AngularJS\Angular.UI-Router\State.cs" />
-    <Compile Include="AngularJS\Angular.UI-Router\StateConfig.cs" />
+    <Compile Include="Angular.UI-Router\UrlRouterProvider.cs" />
+    <Compile Include="Angular.UI-Router\StateParams.cs" />
+    <Compile Include="Angular.UI-Router\StateProvider.cs" />
+    <Compile Include="Angular.UI-Router\StateEvents.cs" />
+    <Compile Include="Angular.UI-Router\State.cs" />
+    <Compile Include="Angular.UI-Router\StateConfig.cs" />
     <Compile Include="AngularJS\Attributes.cs" />
+    <Compile Include="AngularJS\Builder\TypeBuilder.cs" />
     <Compile Include="AngularJS\Event.cs" />
     <Compile Include="AngularJS\Filters.cs" />
     <Compile Include="AngularJS\Promise.cs" />
-    <Compile Include="AngularJS\Services\Animator.cs" />
-    <Compile Include="AngularJS\Angular.UI-Router\UiRouter.cs" />
-    <Compile Include="AngularJS\Services\Resource.cs" />
+    <Compile Include="Angular.Animate\Animator.cs" />
+    <Compile Include="Angular.UI-Router\UiRouter.cs" />
+    <Compile Include="Angular.Resource\Resource.cs" />
     <Compile Include="AngularJS\Services\Timeout.cs" />
     <Compile Include="AngularJS\Element.cs" />
     <Compile Include="AngularJS\DirectiveDefinition.cs" />
-    <Compile Include="AngularJS\Services\Injector.cs" />
-    <Compile Include="AngularJS\Services\Route.cs" />
+    <Compile Include="AngularJS\Injector.cs" />
+    <Compile Include="Angular.Route\Route.cs" />
     <Compile Include="AngularJS\Services\Location.cs" />
     <Compile Include="AngularJS\RootScope.cs" />
     <Compile Include="AngularJS\Services\Http.cs" />
     <Compile Include="AngularJS\Scope.cs" />
     <Compile Include="AngularJS\Module.cs" />
     <Compile Include="AngularJS\Angular.cs" />
-    <Compile Include="AngularJS\AngularUtils.cs" />
+    <Compile Include="AngularJS\Builder\AngularBuilder.cs" />
     <Compile Include="Assembly.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -88,6 +90,7 @@
       <HintPath>..\packages\Saltarelle.Web.3.0.1\lib\Saltarelle.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.2.4.0\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.2.4.0\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.2.4.0\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>

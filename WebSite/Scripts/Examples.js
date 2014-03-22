@@ -114,8 +114,8 @@
 	$TestAngularJS_AnimationExample.__typeName = 'TestAngularJS.AnimationExample';
 	$TestAngularJS_AnimationExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularUtils.Animation($TestAngularJS_CoolAnimation).call(null, app, 'cool-animation-show');
-		AngularJS.AngularUtils.Controller($TestAngularJS_AnimationController).call(null, app);
+		AngularJS.AngularBuilder.Animation($TestAngularJS_CoolAnimation).call(null, app, 'cool-animation-show');
+		AngularJS.AngularBuilder.Controller($TestAngularJS_AnimationController).call(null, app);
 	};
 	global.TestAngularJS.AnimationExample = $TestAngularJS_AnimationExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -157,10 +157,10 @@
 		//app.RegisterController( typeof(TestController) );         
 		//app.RegisterFactory( typeof(ItemsFactory) );
 		//app.RegisterDirectiveAsFactory("testdirective",typeof(testdirective));
-		AngularJS.AngularUtils.Factory($TestAngularJS_ItemsFactory).call(null, app);
-		AngularJS.AngularUtils.Directive($TestAngularJS_AccordionDefinition).call(null, app);
-		AngularJS.AngularUtils.Directive($TestAngularJS_ExpanderDefinition).call(null, app);
-		AngularJS.AngularUtils.Directive($TestAngularJS_HelloDirective).call(null, app);
+		AngularJS.AngularBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.AngularBuilder.Directive($TestAngularJS_AccordionDefinition).call(null, app);
+		AngularJS.AngularBuilder.Directive($TestAngularJS_ExpanderDefinition).call(null, app);
+		AngularJS.AngularBuilder.Directive($TestAngularJS_HelloDirective).call(null, app);
 	};
 	global.TestAngularJS.DirectivesExample = $TestAngularJS_DirectivesExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -211,9 +211,9 @@
 	$TestAngularJS_FundingExample.__typeName = 'TestAngularJS.FundingExample';
 	$TestAngularJS_FundingExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularUtils.Factory($TestAngularJS_ItemsFactory).call(null, app);
-		AngularJS.AngularUtils.Service($TestAngularJS_ExampleService).call(null, app);
-		AngularJS.AngularUtils.Controller($TestAngularJS_StartUpController).call(null, app);
+		AngularJS.AngularBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.AngularBuilder.Service($TestAngularJS_ExampleService).call(null, app);
+		AngularJS.AngularBuilder.Controller($TestAngularJS_StartUpController).call(null, app);
 		window.alert("'" + ss.cast(eval('typeof new Date()'), String) + "'");
 	};
 	global.TestAngularJS.FundingExample = $TestAngularJS_FundingExample;
@@ -279,9 +279,9 @@
 	$TestAngularJS_PhoneExample.__typeName = 'TestAngularJS.PhoneExample';
 	$TestAngularJS_PhoneExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularUtils.Config($TestAngularJS_PhoneConfig).call(null, app);
-		AngularJS.AngularUtils.Controller($TestAngularJS_PhoneListController).call(null, app);
-		AngularJS.AngularUtils.Controller($TestAngularJS_PhoneListControllerDetail).call(null, app);
+		AngularJS.AngularBuilder.Config($TestAngularJS_PhoneConfig).call(null, app);
+		AngularJS.AngularBuilder.Controller($TestAngularJS_PhoneListController).call(null, app);
+		AngularJS.AngularBuilder.Controller($TestAngularJS_PhoneListControllerDetail).call(null, app);
 	};
 	global.TestAngularJS.PhoneExample = $TestAngularJS_PhoneExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -336,7 +336,7 @@
 	$TestAngularJS_ResourceExample.__typeName = 'TestAngularJS.ResourceExample';
 	$TestAngularJS_ResourceExample.Main = function() {
 		var app = angular.module('myApp', ['ngResource']);
-		AngularJS.AngularUtils.Controller($TestAngularJS_ResourceExampleController).call(null, app);
+		AngularJS.AngularBuilder.Controller($TestAngularJS_ResourceExampleController).call(null, app);
 	};
 	global.TestAngularJS.ResourceExample = $TestAngularJS_ResourceExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -363,10 +363,10 @@
 	$TestAngularJS_ShoppingCartExample.__typeName = 'TestAngularJS.ShoppingCartExample';
 	$TestAngularJS_ShoppingCartExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularUtils.Factory($TestAngularJS_ItemsFactory).call(null, app);
-		AngularJS.AngularUtils.Factory($TestAngularJS_LabelsFactory).call(null, app);
-		AngularJS.AngularUtils.Filter($TestAngularJS_Filters).call(null, app);
-		AngularJS.AngularUtils.Controller($TestAngularJS_CartController).call(null, app);
+		AngularJS.AngularBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.AngularBuilder.Factory($TestAngularJS_LabelsFactory).call(null, app);
+		AngularJS.AngularBuilder.Filter($TestAngularJS_Filters).call(null, app);
+		AngularJS.AngularBuilder.Controller($TestAngularJS_CartController).call(null, app);
 	};
 	global.TestAngularJS.ShoppingCartExample = $TestAngularJS_ShoppingCartExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -422,9 +422,9 @@
 	$TestAngularJS_UiRouterExample.__typeName = 'TestAngularJS.UiRouterExample';
 	$TestAngularJS_UiRouterExample.Main = function() {
 		var app = angular.module('UiRouterExample', ['ui.router']);
-		AngularJS.AngularUtils.Config($TestAngularJS_UiRouterConfig).call(null, app);
-		AngularJS.AngularUtils.Controller($TestAngularJS_MyController).call(null, app);
-		AngularJS.AngularUtils.Controller($TestAngularJS_State1Controller).call(null, app);
+		AngularJS.AngularBuilder.Config($TestAngularJS_UiRouterConfig).call(null, app);
+		AngularJS.AngularBuilder.Controller($TestAngularJS_MyController).call(null, app);
+		AngularJS.AngularBuilder.Controller($TestAngularJS_State1Controller).call(null, app);
 	};
 	global.TestAngularJS.UiRouterExample = $TestAngularJS_UiRouterExample;
 	ss.initClass($AngularTests, $asm, {

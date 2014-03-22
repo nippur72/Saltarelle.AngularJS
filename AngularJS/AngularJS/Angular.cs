@@ -8,13 +8,14 @@ using System.Serialization;
 using System.Reflection;
 using System.Diagnostics;
 
-#pragma warning disable 1591   // disables missing XML documentation warning
-
 namespace AngularJS
 {             
    [Imported, ScriptName("angular"), ScriptNamespace("")]
    public static class Angular
    {
+      public static string ModuleName { [InlineCode("'ng'")] get { return null;} }
+
+      #region Builtin filters
       public static class BuiltinFilters
       {
          public static currencyFilter  currencyFilter  { [InlineCode("angular.injector(['ng']).get('$filter')('currency')" )] get {return null; } }
@@ -27,6 +28,7 @@ namespace AngularJS
          public static orderByFilter   orderByFilter   { [InlineCode("angular.injector(['ng']).get('$filter')('orderBy')"  )] get {return null; } }
          public static uppercaseFilter uppercaseFilter { [InlineCode("angular.injector(['ng']).get('$filter')('uppercase')")] get {return null; } }
       }
+      #endregion
 
       #region Global api
 

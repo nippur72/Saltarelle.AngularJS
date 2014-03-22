@@ -8,8 +8,6 @@ using System.Serialization;
 using System.Reflection;
 using System.Diagnostics;
 
-#pragma warning disable 1591   // disables missing XML documentation warning
-
 namespace AngularJS
 {         
    [Imported]
