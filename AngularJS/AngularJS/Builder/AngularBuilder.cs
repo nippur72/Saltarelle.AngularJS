@@ -12,23 +12,25 @@ namespace AngularJS
 {         
    #region Comment explaining how classes are turned into function controllers
    /*
-   public class ControllerClass
-   {
-      public string a;
+   
+   injectable objects:
+      - Service 
+      - Factory 
+      - Provider
+      - Value
+      - Constant
 
-      public ControllerClass(Scope _scope, Http _http)
-      {
-         a = "done";
-      }
+   non injectable objects:
+      - Config 
+      - Run 
 
-      public void remove(int index) { ... }
+   special purpose objects
+      - controller
+      - directive
+      - animation
+      - filter
+   
 
-      public void clear() { ... }
-
-      public static List<string> Items(Http _http) { return ...; }
-   }
-
-   // *** resume ***
    // config:     this = global   (no name required)
    // directive:  this = global 
 
@@ -70,7 +72,13 @@ namespace AngularJS
    #endregion
 
    public static class AngularBuilder
-   {        
+   {              
+      public static string PatchDollarName(string name)
+      {
+         if(name.StartsWith("_")) return "$"+name.Substring(1);
+         else return name;
+      }
+
       #region Controllers
 
       public static void Controller<T>(this Module module)
@@ -90,14 +98,17 @@ namespace AngularJS
       #endregion
 
       #region Services
-
-      //[InlineCode("{module}.service({$System.Script}.getTypeName({T}),{T})")]
+      
       public static void Service<T>(this Module module)
       {         
          Type type = typeof(T);
          var parameters = Angular.Injector().Annotate(type.GetConstructorFunction());         
          type.ToFunction().CreateFunctionCall(parameters); // only used to fix the "_" to "$" in type.$inject
-         string servicename = typeof(T).Name;        
+         string servicename = typeof(T).Name; // TODO: fix for names starting with "_" ?    
+
+         // patch service name for names starting with "$"
+         servicename = PatchDollarName(servicename);         
+  
          Service(module,servicename,type);
       }
 
@@ -121,7 +132,11 @@ namespace AngularJS
          Function fun = type.BuildControllerFunction(ThisMode.This,funcname,true);         
                   
          var parameters = type.ReadInjection();
-         var fcall = fun.CreateFunctionCall(parameters);         
+         var fcall = fun.CreateFunctionCall(parameters); 
+         
+         // patch function name for names starting with "$"
+         funcname = PatchDollarName(funcname);
+                 
          Factory(module,funcname,fcall);
       }     
       
@@ -306,50 +321,34 @@ namespace AngularJS
                 
       #endregion
 
-      #region Convenience Methods
+      #region Low level Angular methods
 
       [InlineCode("{module}.config({func})")]
-      public static void Config(Module module, object func)
-      {
-      }    
+      public static void Config(Module module, object func) { }    
 
       [InlineCode("{module}.controller({Name},{func})")]
-      public static void Controller(Module module, string Name, object func)
-      {
-      } 
+      public static void Controller(Module module, string Name, object func) { } 
       
       [InlineCode("{module}.directive({Name},{defob})")]
-      public static void Directive(Module module, string Name, object defob)
-      {
-      }
+      public static void Directive(Module module, string Name, object defob) { }
 
       [InlineCode("{module}.factory({Name},{func})")]
-      public static void Factory(Module module, string Name, object func)
-      {
-      }          
+      public static void Factory(Module module, string Name, object func) { }          
 
       [InlineCode("{module}.filter({FilterName},{ob})")]
-      public static void Filter(Module module, string FilterName, object ob)
-      {
-      }            
+      public static void Filter(Module module, string FilterName, object ob) { }            
 
       [InlineCode("{module}.service({Name},{func})")]
-      public static void Service(Module module, string Name, Type func)
-      {
-      }          
+      public static void Service(Module module, string Name, Type func) { }          
 
       [InlineCode("{module}.run({func})")]
-      public static void Run(Module module, object func)
-      {
-      }    
+      public static void Run(Module module, object func) { }    
 
       [InlineCode("{module}.animation({Name},{func})")]
-      public static void Animation(Module module, string Name, object func)
-      {
-      }          
+      public static void Animation(Module module, string Name, object func) { }          
 
       #endregion
-
    }
+
 }
 

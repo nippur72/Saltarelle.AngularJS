@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Diagnostics;
 
 namespace AngularJS
-{             
+{                   
    [Imported, ScriptName("angular"), ScriptNamespace("")]
    public static class Angular
    {

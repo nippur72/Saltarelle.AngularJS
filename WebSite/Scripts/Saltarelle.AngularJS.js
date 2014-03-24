@@ -15,6 +15,14 @@
 	var $AngularJS_AngularBuilder = function() {
 	};
 	$AngularJS_AngularBuilder.__typeName = 'AngularJS.AngularBuilder';
+	$AngularJS_AngularBuilder.PatchDollarName = function(name) {
+		if (ss.startsWithString(name, '_')) {
+			return '$' + name.substring(1);
+		}
+		else {
+			return name;
+		}
+	};
 	$AngularJS_AngularBuilder.Controller = function(T) {
 		return function(module) {
 			var type = T;
@@ -33,6 +41,9 @@
 			$AngularJS_FunctionExtensionMethods.CreateFunctionCall(type, parameters);
 			// only used to fix the "_" to "$" in type.$inject
 			var servicename = ss.getTypeName(T);
+			// TODO: fix for names starting with "_" ?    
+			// patch service name for names starting with "$"
+			servicename = $AngularJS_AngularBuilder.PatchDollarName(servicename);
 			module.service(servicename, type);
 		};
 	};
@@ -51,6 +62,8 @@
 		var fun = $AngularJS_TypeExtensionMethods.BuildControllerFunction(type, 2, funcname, true);
 		var parameters = type.$inject;
 		var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
+		// patch function name for names starting with "$"
+		funcname = $AngularJS_AngularBuilder.PatchDollarName(funcname);
 		module.factory(funcname, fcall);
 	};
 	$AngularJS_AngularBuilder.Filter = function(T) {
@@ -225,9 +238,7 @@
 		// builds array, but also FIX $injection in the type
 		var result = [];
 		for (var t = 0; t < parameters.length; t++) {
-			if (ss.startsWithString(parameters[t], '_')) {
-				parameters[t] = '$' + parameters[t].substring(1);
-			}
+			parameters[t] = $AngularJS_AngularBuilder.PatchDollarName(parameters[t]);
 			ss.add(result, parameters[t]);
 		}
 		ss.add(result, fun);

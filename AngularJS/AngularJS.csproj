@@ -54,6 +54,7 @@
     <Compile Include="Angular.Animate\Animator.cs" />
     <Compile Include="Angular.UI-Router\UiRouter.cs" />
     <Compile Include="Angular.Resource\Resource.cs" />
+    <Compile Include="AngularJS\Services\ExceptionHandler.cs" />
     <Compile Include="AngularJS\Services\Timeout.cs" />
     <Compile Include="AngularJS\Element.cs" />
     <Compile Include="AngularJS\DirectiveDefinition.cs" />

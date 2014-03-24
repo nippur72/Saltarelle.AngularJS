@@ -110,7 +110,7 @@ namespace AngularJS
          List<object> result = new List<object>();
          for(int t=0;t<parameters.Count;t++)
          {
-            if(parameters[t].StartsWith("_")) parameters[t] = "$" + parameters[t].Substring(1);
+            parameters[t] = AngularBuilder.PatchDollarName(parameters[t]);
             result.Add(parameters[t]);
          }                           
          result.Add(fun);
