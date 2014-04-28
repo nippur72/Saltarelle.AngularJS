@@ -12,14 +12,14 @@ namespace AngularJS.UiRouter
 {          
    public static class StateEventsExtensions
    {
-      public static void OnStateChangeStart(this RootScope _rootscope, Action<Event,StateConfig,object,StateConfig,Object> Function)
+      public static void OnStateChangeStart(this RootScope _rootscope, Action<Event,State,object,State,Object> Function)
       {
          _rootscope.On("$stateChangeStart",Function);
       }
 
       // view load events
 
-      public static void OnViewContentLoading(this Scope _scope, Action<Event,StateConfig> Function)
+      public static void OnViewContentLoading(this Scope _scope, Action<Event,State> Function)
       {
          _scope.On("$viewContentLoading",Function);
       }

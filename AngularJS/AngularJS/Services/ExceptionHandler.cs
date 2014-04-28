@@ -11,10 +11,16 @@ using System.Diagnostics;
 namespace AngularJS
 {                   
    [Imported]
+   public sealed class AngularException
+   {      
+      public string Message { [InlineCode("{this}.message")] get { return null;} }
+   }  
+
+   [Imported]
    public sealed class ExceptionHandler
    {
-      [InlineCode("{this}({exception})")]          public void Throw(Exception exception) {  }
-      [InlineCode("{this}({exception},{cause})")]  public void Throw(Exception exception, string cause) {  }
+      [InlineCode("{this}({exception})")]          public void Throw(AngularException exception) {  }
+      [InlineCode("{this}({exception},{cause})")]  public void Throw(AngularException exception, string cause) {  }      
    }  
 }
 

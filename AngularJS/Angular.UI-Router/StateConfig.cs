@@ -11,7 +11,7 @@ using System.Diagnostics;
 namespace AngularJS.UiRouter
 {          
    [Imported]
-   public sealed class StateConfig
+   public sealed class State
    {
       [ScriptName("name")]                public string Name;
       [ScriptName("template")]            public string Template;
@@ -26,7 +26,7 @@ namespace AngularJS.UiRouter
       [ScriptName("resolve")]             public JsDictionary<string,object> Resolve;
       [ScriptName("url")]                 public string Url;
       [ScriptName("params")]              public string[] Params;
-      [ScriptName("views")]               public JsDictionary<string,StateConfig> Views;
+      [ScriptName("views")]               public JsDictionary<string,State> Views;
       [ScriptName("abstract")]            public bool Abstract;
       [ScriptName("onEnter")]             public Action OnEnter;
       [ScriptName("onExit")]              public Action OnExit;
@@ -34,7 +34,7 @@ namespace AngularJS.UiRouter
       [ScriptName("data")]                public object Data;
 
       [InlineCode("{}")]
-      public StateConfig()
+      public State()
       {
       }
    }

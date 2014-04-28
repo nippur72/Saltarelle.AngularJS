@@ -59,7 +59,7 @@ namespace TestAngularJS
       {                           
          _urlRouterProvider.Otherwise("state1");
 
-         _stateProvider.State( new StateConfig()
+         _stateProvider.State( new State()
          {
             Name = "state1",
             Url = "/state1/{id}",
@@ -67,19 +67,43 @@ namespace TestAngularJS
             TemplateUrl = "state1.html"
          });
 
-         _stateProvider.State( new StateConfig()
+         _stateProvider.State( new State()
          {
             Name = "state2",
             Url = "/state2",
             TemplateUrl = "state2.html"
          });
 
-         _stateProvider.State( new StateConfig()
+         _stateProvider.State( new State()
          {
             Name = "state2.inner",
             Url = "/state2inner",
             TemplateUrl = "state2.inner.html"
          });                 
       }      
+   }
+
+   public class TestPromises
+   {
+      QService Q;
+
+      public TestPromises(QService _q)
+      {
+         this.Q = _q;
+      }
+
+      public void UsePromise()
+      {
+         Promise p = CreatePromise();         
+      }
+
+      public Promise CreatePromise()
+      {
+         var d = Q.Defer();
+
+         // somewhere else:  d.Resolve(); or d.Reject();
+
+         return d.Promise;         
+      }
    }
 }

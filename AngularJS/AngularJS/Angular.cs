@@ -29,6 +29,12 @@ namespace AngularJS
          public static uppercaseFilter uppercaseFilter { [InlineCode("angular.injector(['ng']).get('$filter')('uppercase')")] get {return null; } }
       }
       #endregion
+      
+      #region Other builtin objects
+      
+      public static ExceptionHandler DefaultExeceptionHandler  { [InlineCode("angular.injector(['ng']).get('$exceptionHandler')" )] get { return null; } }
+      
+      #endregion
 
       #region Global api
 
@@ -53,7 +59,6 @@ namespace AngularJS
       [ScriptName("fromJson")] public static T FromJson<T>(string value) { return default(T); } 
       [ScriptName("identity")] public static object Identity(object value) { return null; } 
       [ScriptName("injector")] public static Injector Injector() { return null; } 
-      //[ScriptName("injector")] public static Injector Injector(string[] ob) { return null; } 
       [ScriptName("injector")] public static Injector Injector(params string[] ob) { return null; } 
       [ScriptName("isArray")] public static bool IsArray(object ob) { return false; }
       [ScriptName("isDate")] public static bool IsDate(object ob) { return false; }

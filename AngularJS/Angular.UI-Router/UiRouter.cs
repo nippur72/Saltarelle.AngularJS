@@ -13,7 +13,7 @@ namespace AngularJS.UiRouter
    [Imported, ScriptName("angular"), ScriptNamespace("")]
    public static class UiRouter
    {      
-      public static string ModuleName { [InlineCode("'ui.router'")] get { return null;} }
+      public static string ModuleName { [InlineCode("'ui.router'")] get { return null; } }
    }   
 }
 
