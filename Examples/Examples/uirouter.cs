@@ -27,9 +27,9 @@ namespace TestAngularJS
 
    public class MyController
    {
-      StateService state;      
+      State state;      
 
-      public MyController(Scope _scope, StateService _state)
+      public MyController(Scope _scope, State _state)
       {
          state = _state;
       }
@@ -59,7 +59,7 @@ namespace TestAngularJS
       {                           
          _urlRouterProvider.Otherwise("state1");
 
-         _stateProvider.State( new State()
+         _stateProvider.State( new StateConfig()
          {
             Name = "state1",
             Url = "/state1/{id}",
@@ -67,14 +67,14 @@ namespace TestAngularJS
             TemplateUrl = "state1.html"
          });
 
-         _stateProvider.State( new State()
+         _stateProvider.State( new StateConfig()
          {
             Name = "state2",
             Url = "/state2",
             TemplateUrl = "state2.html"
          });
 
-         _stateProvider.State( new State()
+         _stateProvider.State( new StateConfig()
          {
             Name = "state2.inner",
             Url = "/state2inner",

@@ -394,6 +394,14 @@
 	$TestAngularJS_State1Controller.__typeName = 'TestAngularJS.State1Controller';
 	global.TestAngularJS.State1Controller = $TestAngularJS_State1Controller;
 	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.TestPromises
+	var $TestAngularJS_TestPromises = function(_q) {
+		this.$Q = null;
+		this.$Q = _q;
+	};
+	$TestAngularJS_TestPromises.__typeName = 'TestAngularJS.TestPromises';
+	global.TestAngularJS.TestPromises = $TestAngularJS_TestPromises;
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.UiRouterConfig
 	var $TestAngularJS_UiRouterConfig = function(_stateProvider, _urlRouterProvider, _locationProvider) {
 		_urlRouterProvider.otherwise('state1');
@@ -657,7 +665,7 @@
 							}
 							case 1: {
 								$state = -1;
-								z = $t1.getResult();
+								z = $t1.getAwaitedResult();
 								$tcs.setResult(z);
 								return;
 							}
@@ -738,6 +746,16 @@
 		}
 	}, AngularJS.Scope);
 	ss.initClass($TestAngularJS_State1Controller, $asm, {});
+	ss.initClass($TestAngularJS_TestPromises, $asm, {
+		UsePromise: function() {
+			var p = this.CreatePromise();
+		},
+		CreatePromise: function() {
+			var d = this.$Q.defer();
+			// somewhere else:  d.Resolve(); or d.Reject();
+			return d.promise;
+		}
+	});
 	ss.initClass($TestAngularJS_UiRouterConfig, $asm, {});
 	ss.initClass($TestAngularJS_UiRouterExample, $asm, {});
 })();
