@@ -27,9 +27,9 @@ namespace TestAngularJS
 
    public class MyController
    {
-      State state;      
+      StateService state;      
 
-      public MyController(Scope _scope, State _state)
+      public MyController(Scope _scope, StateService _state)
       {
          state = _state;
       }
