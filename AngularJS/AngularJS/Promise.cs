@@ -26,6 +26,7 @@ namespace AngularJS
    [Imported]
    public sealed class Promise
    {
+      [ScriptName("then")] public Promise Then()                                                                                    { return null; }
       [ScriptName("then")] public Promise Then(Action successCallback)                                                              { return null; }
       [ScriptName("then")] public Promise Then(Action successCallback, Action         errorCallback)                                { return null; }
       [ScriptName("then")] public Promise Then(Action successCallback, Action<object> errorCallback, Action         notifyCallback) { return null; }
