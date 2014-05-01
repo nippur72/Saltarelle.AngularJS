@@ -26,13 +26,26 @@ namespace AngularJS
    [Imported]
    public sealed class Promise
    {
-      [ScriptName("then")] public Promise Then(Action successCallback)                                                              { return null; }
-      [ScriptName("then")] public Promise Then(Action successCallback, Action         errorCallback)                                { return null; }
-      [ScriptName("then")] public Promise Then(Action successCallback, Action<object> errorCallback, Action         notifyCallback) { return null; }
-      [ScriptName("then")] public Promise Then(Action successCallback, Action<object> errorCallback, Action<object> notifyCallback) { return null; }
+      // 0-p
+      [ScriptName("then")] public Promise Then()                                                              { return null; }
 
-      [ScriptName("then")] public Promise Then(Action<object> successCallback)                                                              { return null; }
-      [ScriptName("then")] public Promise Then(Action<object> successCallback, Action         errorCallback)                                { return null; }
+      // 1-p
+      [ScriptName("then")] public Promise Then(Action successCallback)                                        { return null; }
+      [ScriptName("then")] public Promise Then(Action<object> successCallback)                                { return null; }
+
+      // 2-p
+      [ScriptName("then")] public Promise Then(Action         successCallback, Action         errorCallback)  { return null; }
+      [ScriptName("then")] public Promise Then(Action         successCallback, Action<object> errorCallback)  { return null; }
+      [ScriptName("then")] public Promise Then(Action<object> successCallback, Action         errorCallback)  { return null; }
+      [ScriptName("then")] public Promise Then(Action<object> successCallback, Action<object> errorCallback)  { return null; }
+      
+      // 3-p
+      [ScriptName("then")] public Promise Then(Action         successCallback, Action         errorCallback, Action         notifyCallback) { return null; }
+      [ScriptName("then")] public Promise Then(Action         successCallback, Action         errorCallback, Action<object> notifyCallback) { return null; }
+      [ScriptName("then")] public Promise Then(Action         successCallback, Action<object> errorCallback, Action         notifyCallback) { return null; }
+      [ScriptName("then")] public Promise Then(Action         successCallback, Action<object> errorCallback, Action<object> notifyCallback) { return null; }
+      [ScriptName("then")] public Promise Then(Action<object> successCallback, Action         errorCallback, Action         notifyCallback) { return null; }
+      [ScriptName("then")] public Promise Then(Action<object> successCallback, Action         errorCallback, Action<object> notifyCallback) { return null; }
       [ScriptName("then")] public Promise Then(Action<object> successCallback, Action<object> errorCallback, Action         notifyCallback) { return null; }
       [ScriptName("then")] public Promise Then(Action<object> successCallback, Action<object> errorCallback, Action<object> notifyCallback) { return null; }
 
@@ -40,7 +53,7 @@ namespace AngularJS
       //[ScriptName("catch")] public Promise Catch<TResult>(onRejected: (reason: any) => IPromise<TResult>)    { return null; }
       //[ScriptName("catch")] public Promise Catch<TResult>(onRejected: (reason: any) => TResult)              { return null; }
 
-      //[ScriptName("finally")] public Promise Finally<TResult>(Action FinallyCallback) { return null; }
+      [ScriptName("finally")] public Promise Finally(Action FinallyCallback) { return null; }
    }                         
 
    [Imported]

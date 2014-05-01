@@ -30,6 +30,8 @@ namespace AngularJS
       [ScriptName("error")] public HttpPromise Error(Action<object,int>               ErrorFunction) { return this; }
       [ScriptName("error")] public HttpPromise Error(Action<object,int,object>        ErrorFunction) { return this; }
       [ScriptName("error")] public HttpPromise Error(Action<object,int,object,object> ErrorFunction) { return this; }
+
+      [ScriptName("finally")] public HttpPromise Finally(Action FinallyCallback) { return null; }
    }
 
    [Imported]

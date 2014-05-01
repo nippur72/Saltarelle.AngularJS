@@ -44,8 +44,8 @@ namespace AngularJS
       [ScriptName("module")] public static Module Module(string Name) { return null; }   
       
       [ScriptName("bind")] public static Function Bind(object self, Function fn, object args) { return null; } 
-      [ScriptName("bootstrap")] public static Injector Bootstrap(Element element) { return null; } 
-      [ScriptName("bootstrap")] public static Injector Bootstrap(Element element, string[] modules) { return null; } 
+      [ScriptName("bootstrap")] public static Injector Bootstrap(System.Html.Element element) { return null; } 
+      [ScriptName("bootstrap")] public static Injector Bootstrap(System.Html.Element element, params string[] modules) { return null; } 
       [ScriptName("copy")] public static object Copy(object source, object destination) { return null; } 
       [ScriptName("copy")] public static object Copy(object source) { return null; } 
       [ScriptName("element")] public static AngularJS.Element Element(string ob) { return null; } 
