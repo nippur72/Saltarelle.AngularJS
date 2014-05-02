@@ -54,6 +54,11 @@ namespace AngularJS
       //[ScriptName("catch")] public Promise Catch<TResult>(onRejected: (reason: any) => TResult)              { return null; }
 
       [ScriptName("finally")] public Promise Finally(Action FinallyCallback) { return null; }
+
+      [InlineCode("({this}.then(function(response     ) {{ {fn}(response); }}),{this})")] public Promise Success(Action<object> fn) { return null; }
+      [InlineCode("({this}.then(null,function(response) {{ {fn}(response); }}),{this})")] public Promise Error  (Action<object> fn) { return null; }      
+      [InlineCode("({this}.then(function(response     ) {{ {fn}(); }}),{this})")] public Promise Success(Action fn) { return null; }
+      [InlineCode("({this}.then(null,function(response) {{ {fn}(); }}),{this})")] public Promise Error  (Action fn) { return null; }      
    }                         
 
    [Imported]
