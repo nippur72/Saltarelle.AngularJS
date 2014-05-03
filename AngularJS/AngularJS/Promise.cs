@@ -55,10 +55,15 @@ namespace AngularJS
 
       [ScriptName("finally")] public Promise Finally(Action FinallyCallback) { return null; }
 
-      [InlineCode("({this}.then(function(response     ) {{ {fn}(response); }}),{this})")] public Promise Success(Action<object> fn) { return null; }
-      [InlineCode("({this}.then(null,function(response) {{ {fn}(response); }}),{this})")] public Promise Error  (Action<object> fn) { return null; }      
-      [InlineCode("({this}.then(function(response     ) {{ {fn}(); }}),{this})")] public Promise Success(Action fn) { return null; }
-      [InlineCode("({this}.then(null,function(response) {{ {fn}(); }}),{this})")] public Promise Error  (Action fn) { return null; }      
+      [InlineCode(@"(function(fn){{{this}.then(     function(response){{fn(response);}});return {this};}})({func})")] public Promise Success<T>(Action<T> func) { return null; }
+      [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn(response);}});return {this};}})({func})")] public Promise Error  <T>(Action<T> func) { return null; }
+
+      [InlineCode(@"(function(fn){{{this}.then(     function(response){{fn(response);}});return {this};}})({func})")] public Promise Success(Action<object> func) { return null; }
+      [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn(response);}});return {this};}})({func})")] public Promise Error  (Action<object> func) { return null; }
+      
+      [InlineCode(@"(function(fn){{{this}.then(     function(response){{fn();}});return {this};}})({func})")] public Promise Success(Action func) { return null; }
+      [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn();}});return {this};}})({func})")] public Promise Error  (Action func) { return null; }
+      
    }                         
 
    [Imported]
