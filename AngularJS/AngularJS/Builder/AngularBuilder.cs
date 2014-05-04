@@ -203,78 +203,12 @@ namespace AngularJS
 
          DirectiveDefinition dirob = (DirectiveDefinition) Activator.CreateInstance(type);
 
-         Function fun = CreateDirectiveFunction(dirob);
+         Function fun = dirob.CreateDirectiveFunction();
          var parameters = Angular.Injector().Annotate(fun);          
          var fcall = fun.CreateFunctionCall(parameters);       
          Directive(module, dirob.Name, fcall);
-      }
-
-      private static Function CreateDirectiveFunction(DirectiveDefinition def)
-      {         
-         object defob = def.CreateDefinitionObject();
-         
-         List<string> parameters = new List<string>();
-         List<string> fnames = new List<string>();
-
-         Type type = def.DirectiveController;
-
-         object SharedController = ((dynamic)defob).controller;
-
-         if(type!=null)
-         {
-            parameters = Angular.Injector().Annotate(type.GetConstructorFunction());
-            fnames = type.GetInstanceMethodNames();
-         }       
-
-         string body = "";
-
-         body += "var $obdef = " + Json.Stringify(defob)+";\r\n";
-
-         if(type!=null)
-         {
-            if(fnames.Contains("Link"))
-            {
-               body += "var $outer_arguments = arguments;\r\n";
-               body += "$obdef.link = function(_scope) { \r\n";
-
-               // save isolated scope bindings that would be overwritten by constructor initialization
-               foreach(ScopeBindings sb in def.ScopeAttributes)
-               {
-                  body += String.Format("var $$saved_{0} = _scope.{0};\r\n",sb.AttributeName);
-               }
-         
-               foreach(string funcname in fnames)
-               {
-                  body += String.Format("   _scope.{1} = {0}.prototype.{1}.bind(_scope);\r\n",type.FullName,funcname);             
-               }
-            
-               body += String.Format("   {0}.apply(_scope,$outer_arguments);\r\n",type.FullName);
-
-               // retrieves back saved isolated scope bindings
-               foreach(ScopeBindings sb in def.ScopeAttributes)
-               {
-                  body += String.Format("_scope.{0} = $$saved_{0};\r\n",sb.AttributeName);
-               }
-
-               body += "   _scope.Link.apply(_scope,arguments);\r\n";
-               body += "}\r\n";
-            }         
-            else 
-            {
-               throw new Exception("Link() method not defined in directive controller");
-            }
-         }
-
-         if(SharedController!=null)
-         {
-            body+= "$obdef.controller = "+SharedController.ToString()+";";
-         }
-         
-         body += "return $obdef;\r\n";
-
-         return TypeExtensionMethods.CreateNewFunction(parameters,body);
-      }           
-
+      }   
+      
       #endregion
 
       #region Animations            

@@ -36,7 +36,8 @@ namespace TestAngularJS
       public Person persona;      
                 
       public ResourceObject myres;
-
+      
+      /*
       public async Task<int> Prova()
       {
          int z = await dostuff();
@@ -46,7 +47,7 @@ namespace TestAngularJS
       public async Task<int> dostuff()
       {
          return 55;
-      }
+      }*/
 
       public ResourceExampleController(Scope _scope, Resource _resource)
       {

@@ -188,9 +188,9 @@
 		this.Restrict = 1;
 		this.Replace = true;
 		this.Transclude = true;
-		this.Require = this.RequireDirective('accordion', true, false);
+		this.RequireDirective('accordion', true, false);
 		this.ScopeMode = 2;
-		ss.add(this.ScopeAttributes, new AngularJS.ScopeBindings.$ctor2('title', 0, 'expanderTitle'));
+		this.BindAttribute$2('title', 'expanderTitle');
 		this.Template = "<div>\r\n                         <div class='title' ng-click='toggle()'>{{title}}</div>\r\n                         <div class='body' ng-show='showMe' ng-transclude></div>\r\n                      </div>";
 		this.DirectiveController = $TestAngularJS_ExpanderController;
 	};
@@ -649,64 +649,6 @@
 	ss.initClass($TestAngularJS_PhoneRouteParams, $asm, {}, AngularJS.RouteParams);
 	ss.initClass($TestAngularJS_ResourceExample, $asm, {});
 	ss.initClass($TestAngularJS_ResourceExampleController, $asm, {
-		Prova: function() {
-			var $state = 0, $tcs = new ss.TaskCompletionSource(), $t1, z;
-			var $sm = ss.mkdel(this, function() {
-				try {
-					$sm1:
-					for (;;) {
-						switch ($state) {
-							case 0: {
-								$state = -1;
-								$t1 = this.dostuff();
-								$state = 1;
-								$t1.continueWith($sm);
-								return;
-							}
-							case 1: {
-								$state = -1;
-								z = $t1.getAwaitedResult();
-								$tcs.setResult(z);
-								return;
-							}
-							default: {
-								break $sm1;
-							}
-						}
-					}
-				}
-				catch ($t2) {
-					$tcs.setException(ss.Exception.wrap($t2));
-				}
-			});
-			$sm();
-			return $tcs.task;
-		},
-		dostuff: function() {
-			var $state = 0, $tcs = new ss.TaskCompletionSource();
-			var $sm = function() {
-				try {
-					$sm1:
-					for (;;) {
-						switch ($state) {
-							case 0: {
-								$state = -1;
-								$tcs.setResult(55);
-								return;
-							}
-							default: {
-								break $sm1;
-							}
-						}
-					}
-				}
-				catch ($t1) {
-					$tcs.setException(ss.Exception.wrap($t1));
-				}
-			};
-			$sm();
-			return $tcs.task;
-		},
 		prova: function() {
 			//persona = myres.Get<Person>(new {userId=10}, succ, err);
 			//persona = myres.Action<Person>("fetch", new {userId=10}, succ, err);

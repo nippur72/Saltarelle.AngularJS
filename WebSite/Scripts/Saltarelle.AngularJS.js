@@ -107,55 +107,11 @@
 			// TODO when there will be IsSubClassOf
 			//if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
 			var dirob = ss.cast(ss.createInstance(type), $AngularJS_DirectiveDefinition);
-			var fun = $AngularJS_AngularBuilder.$CreateDirectiveFunction(dirob);
+			var fun = dirob.CreateDirectiveFunction();
 			var parameters = angular.injector().annotate(fun);
 			var fcall = $AngularJS_FunctionExtensionMethods.CreateFunctionCall(fun, parameters);
 			module.directive(dirob.Name, fcall);
 		};
-	};
-	$AngularJS_AngularBuilder.$CreateDirectiveFunction = function(def) {
-		var defob = def.CreateDefinitionObject();
-		var parameters = [];
-		var fnames = [];
-		var type = def.DirectiveController;
-		var SharedController = defob.controller;
-		if (ss.isValue(type)) {
-			parameters = angular.injector().annotate($AngularJS_TypeExtensionMethods.GetConstructorFunction(type));
-			fnames = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
-		}
-		var body = '';
-		body += 'var $obdef = ' + JSON.stringify(defob) + ';\r\n';
-		if (ss.isValue(type)) {
-			if (ss.contains(fnames, 'Link')) {
-				body += 'var $outer_arguments = arguments;\r\n';
-				body += '$obdef.link = function(_scope) { \r\n';
-				// save isolated scope bindings that would be overwritten by constructor initialization
-				for (var $t1 = 0; $t1 < def.ScopeAttributes.length; $t1++) {
-					var sb = def.ScopeAttributes[$t1];
-					body += ss.formatString('var $$saved_{0} = _scope.{0};\r\n', sb.AttributeName);
-				}
-				for (var $t2 = 0; $t2 < fnames.length; $t2++) {
-					var funcname = fnames[$t2];
-					body += ss.formatString('   _scope.{1} = {0}.prototype.{1}.bind(_scope);\r\n', ss.getTypeFullName(type), funcname);
-				}
-				body += ss.formatString('   {0}.apply(_scope,$outer_arguments);\r\n', ss.getTypeFullName(type));
-				// retrieves back saved isolated scope bindings
-				for (var $t3 = 0; $t3 < def.ScopeAttributes.length; $t3++) {
-					var sb1 = def.ScopeAttributes[$t3];
-					body += ss.formatString('_scope.{0} = $$saved_{0};\r\n', sb1.AttributeName);
-				}
-				body += '   _scope.Link.apply(_scope,arguments);\r\n';
-				body += '}\r\n';
-			}
-			else {
-				throw new ss.Exception('Link() method not defined in directive controller');
-			}
-		}
-		if (ss.isValue(SharedController)) {
-			body += '$obdef.controller = ' + SharedController.toString() + ';';
-		}
-		body += 'return $obdef;\r\n';
-		return new Function(parameters, body);
 	};
 	$AngularJS_AngularBuilder.Animation = function(T) {
 		return function(module, name) {
@@ -201,13 +157,14 @@
 		this.Name = null;
 		this.Restrict = 2;
 		this.Priority = null;
+		this.Terminal = null;
 		this.Template = null;
 		this.TemplateUrl = null;
 		this.Replace = false;
 		this.Transclude = false;
 		this.ScopeMode = 0;
-		this.ScopeAttributes = [];
-		this.Require = null;
+		this.$ScopeAttributes = [];
+		this.$Require = [];
 		this.SharedController = null;
 		this.DirectiveController = null;
 	};
@@ -306,28 +263,36 @@
 	global.AngularJS.Scope = $AngularJS_Scope;
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.ScopeBindings
-	var $AngularJS_ScopeBindings = function(AttributeName) {
+	var $AngularJS_ScopeBindings = function(ScopeVariableName) {
+		this.ScopeName = null;
 		this.AttributeName = null;
 		this.Strategy = 0;
-		this.TemplateAttributeName = null;
-		this.AttributeName = AttributeName;
+		this.ScopeName = ScopeVariableName;
 		this.Strategy = 0;
 	};
 	$AngularJS_ScopeBindings.__typeName = 'AngularJS.ScopeBindings';
-	$AngularJS_ScopeBindings.$ctor1 = function(AttributeName, Strategy) {
+	$AngularJS_ScopeBindings.$ctor2 = function(ScopeVariableName, AlternateAttributeName) {
+		this.ScopeName = null;
 		this.AttributeName = null;
 		this.Strategy = 0;
-		this.TemplateAttributeName = null;
-		this.AttributeName = AttributeName;
+		this.ScopeName = ScopeVariableName;
+		this.Strategy = 0;
+		this.AttributeName = AlternateAttributeName;
+	};
+	$AngularJS_ScopeBindings.$ctor1 = function(ScopeVariableName, Strategy) {
+		this.ScopeName = null;
+		this.AttributeName = null;
+		this.Strategy = 0;
+		this.ScopeName = ScopeVariableName;
 		this.Strategy = Strategy;
 	};
-	$AngularJS_ScopeBindings.$ctor2 = function(AttributeAlias, Strategy, TemplateAttributeName) {
+	$AngularJS_ScopeBindings.$ctor3 = function(ScopeVariableName, Strategy, AlternateAttributeName) {
+		this.ScopeName = null;
 		this.AttributeName = null;
 		this.Strategy = 0;
-		this.TemplateAttributeName = null;
-		this.AttributeName = AttributeAlias;
+		this.ScopeName = ScopeVariableName;
 		this.Strategy = Strategy;
-		this.TemplateAttributeName = TemplateAttributeName;
+		this.AttributeName = AlternateAttributeName;
 	};
 	global.AngularJS.ScopeBindings = $AngularJS_ScopeBindings;
 	////////////////////////////////////////////////////////////////////////////////
@@ -431,7 +396,7 @@
 	global.AngularJS.UiRouter.StateEventsExtensions = $AngularJS_UiRouter_StateEventsExtensions;
 	ss.initClass($angular$BuiltinFilters, $asm, {});
 	ss.initClass($AngularJS_AngularBuilder, $asm, {});
-	ss.initEnum($AngularJS_BindingStrategies, $asm, { AsString: 0, AsProperty: 1, AsFunction: 2 });
+	ss.initEnum($AngularJS_BindingStrategies, $asm, { Unidirectional: 0, Bidirectional: 1, AsFunction: 2 });
 	ss.initClass($AngularJS_DirectiveDefinition, $asm, {
 		$RestrictString: function() {
 			var s = '';
@@ -449,7 +414,7 @@
 			}
 			return s;
 		},
-		RequireDirective: function(ControllerName, LookParent, Optional) {
+		$RequireDirectiveString: function(ControllerName, LookParent, Optional) {
 			var s = ControllerName;
 			if (Optional) {
 				s = '?' + s;
@@ -459,7 +424,22 @@
 			}
 			return s;
 		},
-		CreateDefinitionObject: function() {
+		RequireDirective: function(ControllerName, LookParent, Optional) {
+			ss.add(this.$Require, this.$RequireDirectiveString(ControllerName, LookParent, Optional));
+		},
+		BindAttribute: function(ScopeVariableName) {
+			ss.add(this.$ScopeAttributes, new $AngularJS_ScopeBindings(ScopeVariableName));
+		},
+		BindAttribute$2: function(ScopeVariableName, AlternateAttributeName) {
+			ss.add(this.$ScopeAttributes, new $AngularJS_ScopeBindings.$ctor2(ScopeVariableName, AlternateAttributeName));
+		},
+		BindAttribute$1: function(ScopeVariableName, Strategy) {
+			ss.add(this.$ScopeAttributes, new $AngularJS_ScopeBindings.$ctor1(ScopeVariableName, Strategy));
+		},
+		BindAttribute$3: function(ScopeVariableName, Strategy, AlternateAttributeName) {
+			ss.add(this.$ScopeAttributes, new $AngularJS_ScopeBindings.$ctor3(ScopeVariableName, Strategy, AlternateAttributeName));
+		},
+		$CreateDefinitionObject: function() {
 			var result = {};
 			// maps name
 			if (ss.isValue(this.Name)) {
@@ -468,6 +448,10 @@
 			// maps priority
 			if (ss.isValue(this.Priority)) {
 				result['priority'] = this.Priority;
+			}
+			// maps terminal
+			if (ss.isValue(this.Priority)) {
+				result['termina'] = this.Terminal;
 			}
 			// maps restrict
 			result['restrict'] = this.$RestrictString();
@@ -482,6 +466,7 @@
 			result['replace'] = this.Replace;
 			// maps transclude
 			result['transclude'] = this.Transclude;
+			// TODO 'element'
 			// maps scope
 			if (this.ScopeMode === 0) {
 				result['scope'] = false;
@@ -491,24 +476,77 @@
 			}
 			else if (this.ScopeMode === 2) {
 				var scope = {};
-				for (var $t1 = 0; $t1 < this.ScopeAttributes.length; $t1++) {
-					var sb = this.ScopeAttributes[$t1];
-					scope[sb.AttributeName] = sb.ScopeBindingString();
+				for (var $t1 = 0; $t1 < this.$ScopeAttributes.length; $t1++) {
+					var sb = this.$ScopeAttributes[$t1];
+					scope[sb.ScopeName] = sb.ScopeBindingString();
 				}
 				result['scope'] = scope;
 			}
 			// maps compile function
+			// TODO not supported
 			// maps (shared) controller         
 			if (ss.isValue(this.SharedController)) {
 				var scontr = $AngularJS_TypeExtensionMethods.BuildControllerFunction(this.SharedController, 2, null, false);
 				result['controller'] = scontr;
 			}
+			// maps controllerAs                                    
+			// TODO
 			// directive controller ('link' function) is managed during the registration process
 			// maps require
-			if (ss.isValue(this.Require)) {
-				result['require'] = this.Require;
+			if (ss.isValue(this.$Require)) {
+				if (this.$Require.length === 1) {
+					result['require'] = this.$Require[0];
+				}
+				else {
+					result['require'] = this.$Require;
+				}
+				// as array of strings
 			}
 			return result;
+		},
+		CreateDirectiveFunction: function() {
+			var defob = this.$CreateDefinitionObject();
+			var parameters = [];
+			var fnames = [];
+			var type = this.DirectiveController;
+			var SharedController = defob.controller;
+			if (ss.isValue(type)) {
+				parameters = angular.injector().annotate($AngularJS_TypeExtensionMethods.GetConstructorFunction(type));
+				fnames = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
+			}
+			var body = '';
+			body += 'var $obdef = ' + JSON.stringify(defob) + ';\r\n';
+			if (ss.isValue(type)) {
+				if (ss.contains(fnames, 'Link')) {
+					body += 'var $outer_arguments = arguments;\r\n';
+					body += '$obdef.link = function(_scope) { \r\n';
+					// save isolated scope bindings that would be overwritten by constructor initialization
+					for (var $t1 = 0; $t1 < this.$ScopeAttributes.length; $t1++) {
+						var sb = this.$ScopeAttributes[$t1];
+						body += ss.formatString('var $$saved_{0} = _scope.{0};\r\n', sb.ScopeName);
+					}
+					for (var $t2 = 0; $t2 < fnames.length; $t2++) {
+						var funcname = fnames[$t2];
+						body += ss.formatString('   _scope.{1} = {0}.prototype.{1}.bind(_scope);\r\n', ss.getTypeFullName(type), funcname);
+					}
+					body += ss.formatString('   {0}.apply(_scope,$outer_arguments);\r\n', ss.getTypeFullName(type));
+					// retrieves back saved isolated scope bindings
+					for (var $t3 = 0; $t3 < this.$ScopeAttributes.length; $t3++) {
+						var sb1 = this.$ScopeAttributes[$t3];
+						body += ss.formatString('_scope.{0} = $$saved_{0};\r\n', sb1.ScopeName);
+					}
+					body += '   _scope.Link.apply(_scope,arguments);\r\n';
+					body += '}\r\n';
+				}
+				else {
+					throw new ss.Exception('Link() method not defined in directive controller');
+				}
+			}
+			if (ss.isValue(SharedController)) {
+				body += '$obdef.controller = ' + SharedController.toString() + ';';
+			}
+			body += 'return $obdef;\r\n';
+			return new Function(parameters, body);
 		}
 	});
 	ss.initClass($AngularJS_Event, $asm, {});
@@ -530,13 +568,13 @@
 			else if (this.Strategy === 2) {
 				s = '&';
 			}
-			if (ss.isValue(this.TemplateAttributeName)) {
-				s += this.TemplateAttributeName;
+			if (ss.isValue(this.AttributeName)) {
+				s += this.AttributeName;
 			}
 			return s;
 		}
 	});
-	$AngularJS_ScopeBindings.$ctor1.prototype = $AngularJS_ScopeBindings.$ctor2.prototype = $AngularJS_ScopeBindings.prototype;
+	$AngularJS_ScopeBindings.$ctor2.prototype = $AngularJS_ScopeBindings.$ctor1.prototype = $AngularJS_ScopeBindings.$ctor3.prototype = $AngularJS_ScopeBindings.prototype;
 	ss.initEnum($AngularJS_ScopeModes, $asm, { Existing: 0, New: 1, Isolate: 2 });
 	ss.initEnum($AngularJS_ThisMode, $asm, { ScopeStrict: 0, Scope: 1, This: 2, NewObject: 3 });
 	ss.initClass($AngularJS_TypeExtensionMethods, $asm, {});

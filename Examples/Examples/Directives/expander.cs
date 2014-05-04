@@ -17,10 +17,10 @@ namespace TestAngularJS
          Name = "expander";
          Restrict = RestrictFlags.Element;
          Replace = true;
-         Transclude = true;
-         Require = RequireDirective("accordion", LookParent:true, Optional:false);
+         Transclude = true;         
+         RequireDirective("accordion", LookParent:true, Optional:false);
          ScopeMode = ScopeModes.Isolate;
-         ScopeAttributes.Add( new ScopeBindings("title", BindingStrategies.AsString, "expanderTitle") );
+         BindAttribute("title", "expanderTitle");
          Template = @"<div>
                          <div class='title' ng-click='toggle()'>{{title}}</div>
                          <div class='body' ng-show='showMe' ng-transclude></div>
