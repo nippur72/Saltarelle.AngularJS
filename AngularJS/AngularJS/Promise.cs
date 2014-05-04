@@ -32,6 +32,8 @@ namespace AngularJS
       // 1-p
       [ScriptName("then")] public Promise Then(Action successCallback)                                        { return null; }
       [ScriptName("then")] public Promise Then(Action<object> successCallback)                                { return null; }
+      [ScriptName("then")] public Promise Then(Func<Promise> successCallback)                                 { return null; }
+      [ScriptName("then")] public Promise Then(Func<object,Promise> successCallback)                          { return null; }
 
       // 2-p
       [ScriptName("then")] public Promise Then(Action         successCallback, Action         errorCallback)  { return null; }
@@ -62,8 +64,16 @@ namespace AngularJS
       [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn(response);}});return {this};}})({func})")] public Promise Error  (Action<object> func) { return null; }
       
       [InlineCode(@"(function(fn){{{this}.then(     function(response){{fn();}});return {this};}})({func})")] public Promise Success(Action func) { return null; }
-      [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn();}});return {this};}})({func})")] public Promise Error  (Action func) { return null; }
+      [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn();}});return {this};}})({func})")] public Promise Error  (Action func) { return null; }      
+
+      [InlineCode(@"(function(fn){{{this}.then(     function(response){{fn(response);}});return {this};}})({func})")] public Promise Success<T>(Func<T,Promise> func) { return null; }
+      [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn(response);}});return {this};}})({func})")] public Promise Error  <T>(Func<T,Promise> func) { return null; }
+
+      [InlineCode(@"(function(fn){{{this}.then(     function(response){{fn(response);}});return {this};}})({func})")] public Promise Success(Func<object,Promise> func) { return null; }
+      [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn(response);}});return {this};}})({func})")] public Promise Error  (Func<object,Promise> func) { return null; }
       
+      [InlineCode(@"(function(fn){{{this}.then(     function(response){{fn();}});return {this};}})({func})")] public Promise Success(Func<Promise> func) { return null; }
+      [InlineCode(@"(function(fn){{{this}.then(null,function(response){{fn();}});return {this};}})({func})")] public Promise Error  (Func<Promise> func) { return null; }      
    }                         
 
    [Imported]

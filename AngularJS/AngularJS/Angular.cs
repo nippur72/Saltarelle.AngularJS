@@ -48,6 +48,7 @@ namespace AngularJS
       [ScriptName("bootstrap")] public static Injector Bootstrap(System.Html.Element element, params string[] modules) { return null; } 
       [ScriptName("copy")] public static object Copy(object source, object destination) { return null; } 
       [ScriptName("copy")] public static object Copy(object source) { return null; } 
+      [ScriptName("copy")] public static T Copy<T>(T source) { return default(T); } 
       [ScriptName("element")] public static AngularJS.Element Element(string ob) { return null; } 
       [ScriptName("element")] public static AngularJS.Element Element(object ob) { return null; } 
       [ScriptName("equals")] public static bool AreEquals(object ob1, object ob2) { return false; } 
