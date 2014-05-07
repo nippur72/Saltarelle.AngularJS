@@ -10,35 +10,15 @@ using AngularJS;
 
 namespace TestAngularJS
 {                        
-   public class ExpanderDefinition : DirectiveDefinition                                                                                        
+   public class expanderDirective : IDirective                                                                                      
    {
-      public ExpanderDefinition()
-      {
-         Name = "expander";
-         Restrict = RestrictFlags.Element;
-         Replace = true;
-         Transclude = true;         
-         RequireDirective("accordion", LookParent:true, Optional:false);
-         ScopeMode = ScopeModes.Isolate;
-         BindAttribute("title", "expanderTitle");
-         Template = @"<div>
-                         <div class='title' ng-click='toggle()'>{{title}}</div>
-                         <div class='body' ng-show='showMe' ng-transclude></div>
-                      </div>";
-         
-         DirectiveController = typeof(ExpanderController); 
-      }
-   }
-
-   public class ExpanderController
-   {   
       public string title;
       public bool showMe;
       public AccordionSharedController accordionController;      
 
-      public void Link(ExpanderController _scope, AngularJS.Element iElement, Attributes iAttrs, AccordionSharedController acontroller)
-      {
-         accordionController = acontroller;
+      public void Link(Scope _scope, AngularJS.Element iElement, Attributes iAttrs, object acontroller)
+      {         
+         accordionController = Script.Reinterpret<AccordionSharedController>(acontroller);
          showMe = false;
          
          accordionController.addExpander(this);
@@ -48,6 +28,26 @@ namespace TestAngularJS
       {
          showMe = !showMe;
          accordionController.gotOpened(this);
-      }            
-   }
+      } 
+      
+      public DefinitionObject GetDefinition()
+      {
+         var def = new DirectiveDefinitionHelper();
+         
+         def.Restrict = RestrictFlags.Element;
+         def.Replace = true;
+         def.Transclude = true;         
+         def.RequireDirective("accordion", LookParent:true, Optional:false);
+         def.ScopeMode = ScopeModes.Isolate;
+         def.BindAttribute("title", "expanderTitle");
+         def.Template = @"<div>
+                         <div class='title' ng-click='toggle()'>{{title}}</div>
+                         <div class='body' ng-show='showMe' ng-transclude></div>
+                      </div>";
+         
+         def.Link = this.Link;
+
+         return def.ToDefinitionObject();
+      }
+   }   
 }

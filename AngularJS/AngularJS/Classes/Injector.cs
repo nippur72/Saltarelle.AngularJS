@@ -13,7 +13,7 @@ namespace AngularJS
    [Imported]
    public sealed class Injector
    {
-      [ScriptName("annotate")]    public List<string> Annotate(object fn) { return null; }  
+      [ScriptName("annotate")]    public string[] Annotate(object fn) { return null; }             
       
       [ScriptName("get")]                             public T Get<T>(string ServiceName) { return default(T); }
       [InlineCode("{this}.get(ss.getTypeName({T}))")] public T Get<T>() { return default(T); }

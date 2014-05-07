@@ -58,9 +58,9 @@ namespace TestAngularJS
          //app.RegisterDirectiveAsFactory("testdirective",typeof(testdirective));
          app.Factory<ItemsFactory>();
                  
-         app.Directive<AccordionDefinition>();
-         app.Directive<ExpanderDefinition>();         
-         app.Directive<HelloDirective>();        
+         app.Directive<accordionDirective>();
+         app.Directive<expanderDirective>();         
+         app.Directive<helloDirective>();        
       }   
    }   
    

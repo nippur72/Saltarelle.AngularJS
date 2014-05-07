@@ -100,13 +100,8 @@ namespace AngularJS
       }     
    }
    
-   public class DirectiveDefinition
+   public class DirectiveDefinitionHelper
    {
-      /// <summary>
-      /// Camel cased name of the Directive
-      /// </summary>     
-      public string Name;
-
       /// <summary>
       /// Target of DOM the directive applies (default=restrict to attribute only)
       /// </summary>     
@@ -157,17 +152,33 @@ namespace AngularJS
 
       private List<string> Require = new List<string>();
             
+      private Type ControllerType;
+      
       /// <summary>
       /// A controller that is instantiated before the pre-linking phase and it is shared with other directives (see require attribute). 
       /// This allows the directives to communicate with each other and augment each other's behavior. 
       /// The controller is injectable (and supports bracket notation) with the following locals: $scope, $element, $attrs, $transclude
       /// </summary>
-      public Type SharedController;
+      public void Controller<T>()
+      {
+          Type type = typeof(T);
+          ControllerType = type;
+      }
 
       /// <summary>
-      /// The controller of the directive which can implement a Link(scope, iElement, iAttrs, controller, transcludeFn) method
+      /// "controller as" syntax alias for the directive controller
       /// </summary>
-      public Type DirectiveController;
+      public string ControllerAs;      
+
+      /// <summary>
+      /// A compile function form manipulating the DOM. It may return an object with { pre, post} linking functions
+      /// </summary>
+      public Action<AngularJS.Element, Attributes> Compile;
+
+      /// <summary>
+      /// Link function 
+      /// </summary>
+      public Action<Scope, AngularJS.Element, Attributes, object> Link;
 
       private string RestrictString()
       {
@@ -230,12 +241,9 @@ namespace AngularJS
          ScopeAttributes.Add(new ScopeBindings(ScopeVariableName, Strategy, AlternateAttributeName));
       } 
 
-      private JsDictionary CreateDefinitionObject()
+      public DefinitionObject ToDefinitionObject()
       {
          JsDictionary result = new JsDictionary();
-         
-         // maps name
-         if(Name!=null) result["name"] = Name;
 
          // maps priority
          if(Priority!=null) result["priority"] = Priority;
@@ -270,20 +278,15 @@ namespace AngularJS
             result["scope"] = scope;
          }         
 
-         // maps compile function
-         // TODO not supported
+         // maps compile and link function
+         if(Compile!=null) result["compile"] = Compile;
+         if(Link!=null) result["link"] = Link;
          
          // maps (shared) controller         
-         if(SharedController != null)
-         {
-            var scontr = SharedController.BuildControllerFunction(ThisMode.This);
-            result["controller"] = scontr;                            
-         }                
-         
-         // maps controllerAs                                    
-         // TODO
-
-         // directive controller ('link' function) is managed during the registration process
+         if(ControllerType != null) result["controller"] = ControllerType;                            
+                                  
+         // maps controllerAs 
+         if(ControllerAs!=null) result["controllerAs"] = ControllerAs;                                                                                
                                                              
          // maps require
          if(Require!=null) 
@@ -292,75 +295,8 @@ namespace AngularJS
             else result["require"] = Require;                    // as array of strings
          }
 
-         return result;
-      }
-
-      public Function CreateDirectiveFunction()
-      {         
-         object defob = this.CreateDefinitionObject();
-         
-         List<string> parameters = new List<string>();
-         List<string> fnames = new List<string>();
-
-         Type type = this.DirectiveController;
-
-         object SharedController = ((dynamic)defob).controller;
-
-         if(type!=null)
-         {
-            parameters = Angular.Injector().Annotate(type.GetConstructorFunction());
-            fnames = type.GetInstanceMethodNames();
-         }       
-
-         string body = "";
-
-         body += "var $obdef = " + Json.Stringify(defob)+";\r\n";
-
-         if(type!=null)
-         {
-            if(fnames.Contains("Link"))
-            {
-               body += "var $outer_arguments = arguments;\r\n";
-               body += "$obdef.link = function(_scope) { \r\n";
-
-               // save isolated scope bindings that would be overwritten by constructor initialization
-               foreach(ScopeBindings sb in this.ScopeAttributes)
-               {
-                  body += String.Format("var $$saved_{0} = _scope.{0};\r\n",sb.ScopeName);
-               }
-         
-               foreach(string funcname in fnames)
-               {
-                  body += String.Format("   _scope.{1} = {0}.prototype.{1}.bind(_scope);\r\n",type.FullName,funcname);             
-               }
-            
-               body += String.Format("   {0}.apply(_scope,$outer_arguments);\r\n",type.FullName);
-
-               // retrieves back saved isolated scope bindings
-               foreach(ScopeBindings sb in this.ScopeAttributes)
-               {
-                  body += String.Format("_scope.{0} = $$saved_{0};\r\n",sb.ScopeName);
-               }
-
-               body += "   _scope.Link.apply(_scope,arguments);\r\n";
-               body += "}\r\n";
-            }         
-            else 
-            {
-               throw new Exception("Link() method not defined in directive controller");
-            }
-         }
-
-         if(SharedController!=null)
-         {
-            body+= "$obdef.controller = "+SharedController.ToString()+";";
-         }
-         
-         body += "return $obdef;\r\n";
-
-         return TypeExtensionMethods.CreateNewFunction(parameters,body);
-      }           
-
+         return Script.Reinterpret<DefinitionObject>(result);
+      }     
    }
 }
 

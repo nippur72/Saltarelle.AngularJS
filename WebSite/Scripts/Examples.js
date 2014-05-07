@@ -59,31 +59,15 @@
 	};
 	global.Test.TestMain = $Test_TestMain;
 	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.AccordionController
-	var $TestAngularJS_AccordionController = function(Items) {
+	// TestAngularJS.accordionDirective
+	var $TestAngularJS_accordionDirective = function(Items) {
 		this.ppp = null;
 		this.Items = null;
 		//Debug.Break();
 		this.Items = Items;
 	};
-	$TestAngularJS_AccordionController.__typeName = 'TestAngularJS.AccordionController';
-	global.TestAngularJS.AccordionController = $TestAngularJS_AccordionController;
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.AccordionDefinition
-	var $TestAngularJS_AccordionDefinition = function() {
-		AngularJS.DirectiveDefinition.call(this);
-		this.Name = 'accordion';
-		this.Restrict = 3;
-		this.Replace = true;
-		this.Transclude = true;
-		this.ScopeMode = 2;
-		this.Template = "<div><div ng-click='clickme()'>click me</div><div ng-transclude></div></div>";
-		//Template = @"<div ng-transclude></div>";
-		this.SharedController = $TestAngularJS_AccordionSharedController;
-		this.DirectiveController = $TestAngularJS_AccordionController;
-	};
-	$TestAngularJS_AccordionDefinition.__typeName = 'TestAngularJS.AccordionDefinition';
-	global.TestAngularJS.AccordionDefinition = $TestAngularJS_AccordionDefinition;
+	$TestAngularJS_accordionDirective.__typeName = 'TestAngularJS.accordionDirective';
+	global.TestAngularJS.accordionDirective = $TestAngularJS_accordionDirective;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.AccordionSharedController
 	var $TestAngularJS_AccordionSharedController = function() {
@@ -114,8 +98,8 @@
 	$TestAngularJS_AnimationExample.__typeName = 'TestAngularJS.AnimationExample';
 	$TestAngularJS_AnimationExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularBuilder.Animation($TestAngularJS_CoolAnimation).call(null, app, 'cool-animation-show');
-		AngularJS.AngularBuilder.Controller($TestAngularJS_AnimationController).call(null, app);
+		AngularJS.ModuleBuilder.Animation($TestAngularJS_CoolAnimation).call(null, app, 'cool-animation-show');
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_AnimationController).call(null, app);
 	};
 	global.TestAngularJS.AnimationExample = $TestAngularJS_AnimationExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -157,10 +141,10 @@
 		//app.RegisterController( typeof(TestController) );         
 		//app.RegisterFactory( typeof(ItemsFactory) );
 		//app.RegisterDirectiveAsFactory("testdirective",typeof(testdirective));
-		AngularJS.AngularBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
-		AngularJS.AngularBuilder.Directive($TestAngularJS_AccordionDefinition).call(null, app);
-		AngularJS.AngularBuilder.Directive($TestAngularJS_ExpanderDefinition).call(null, app);
-		AngularJS.AngularBuilder.Directive($TestAngularJS_HelloDirective).call(null, app);
+		AngularJS.ModuleBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.ModuleBuilder.Directive($TestAngularJS_accordionDirective).call(null, app);
+		AngularJS.ModuleBuilder.Directive($TestAngularJS_expanderDirective).call(null, app);
+		AngularJS.ModuleBuilder.Directive($TestAngularJS_helloDirective).call(null, app);
 	};
 	global.TestAngularJS.DirectivesExample = $TestAngularJS_DirectivesExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -172,30 +156,14 @@
 	$TestAngularJS_ExampleService.__typeName = 'TestAngularJS.ExampleService';
 	global.TestAngularJS.ExampleService = $TestAngularJS_ExampleService;
 	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.ExpanderController
-	var $TestAngularJS_ExpanderController = function() {
+	// TestAngularJS.expanderDirective
+	var $TestAngularJS_expanderDirective = function() {
 		this.title = null;
 		this.showMe = false;
 		this.accordionController = null;
 	};
-	$TestAngularJS_ExpanderController.__typeName = 'TestAngularJS.ExpanderController';
-	global.TestAngularJS.ExpanderController = $TestAngularJS_ExpanderController;
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.ExpanderDefinition
-	var $TestAngularJS_ExpanderDefinition = function() {
-		AngularJS.DirectiveDefinition.call(this);
-		this.Name = 'expander';
-		this.Restrict = 1;
-		this.Replace = true;
-		this.Transclude = true;
-		this.RequireDirective('accordion', true, false);
-		this.ScopeMode = 2;
-		this.BindAttribute$2('title', 'expanderTitle');
-		this.Template = "<div>\r\n                         <div class='title' ng-click='toggle()'>{{title}}</div>\r\n                         <div class='body' ng-show='showMe' ng-transclude></div>\r\n                      </div>";
-		this.DirectiveController = $TestAngularJS_ExpanderController;
-	};
-	$TestAngularJS_ExpanderDefinition.__typeName = 'TestAngularJS.ExpanderDefinition';
-	global.TestAngularJS.ExpanderDefinition = $TestAngularJS_ExpanderDefinition;
+	$TestAngularJS_expanderDirective.__typeName = 'TestAngularJS.expanderDirective';
+	global.TestAngularJS.expanderDirective = $TestAngularJS_expanderDirective;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.Filters
 	var $TestAngularJS_Filters = function(LabelEuro) {
@@ -211,24 +179,18 @@
 	$TestAngularJS_FundingExample.__typeName = 'TestAngularJS.FundingExample';
 	$TestAngularJS_FundingExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
-		AngularJS.AngularBuilder.Service($TestAngularJS_ExampleService).call(null, app);
-		AngularJS.AngularBuilder.Controller($TestAngularJS_StartUpController).call(null, app);
+		AngularJS.ModuleBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.ModuleBuilder.Service($TestAngularJS_ExampleService).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_StartUpController).call(null, app);
 		window.alert("'" + ss.cast(eval('typeof new Date()'), String) + "'");
 	};
 	global.TestAngularJS.FundingExample = $TestAngularJS_FundingExample;
 	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.HelloDirective
-	var $TestAngularJS_HelloDirective = function() {
-		AngularJS.DirectiveDefinition.call(this);
-		this.Name = 'hello';
-		this.Restrict = 7;
-		this.Template = '<div>Hello <span ng-transclude></span>!</div>';
-		this.Replace = true;
-		this.Transclude = true;
+	// TestAngularJS.helloDirective
+	var $TestAngularJS_helloDirective = function() {
 	};
-	$TestAngularJS_HelloDirective.__typeName = 'TestAngularJS.HelloDirective';
-	global.TestAngularJS.HelloDirective = $TestAngularJS_HelloDirective;
+	$TestAngularJS_helloDirective.__typeName = 'TestAngularJS.helloDirective';
+	global.TestAngularJS.helloDirective = $TestAngularJS_helloDirective;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.ItemsFactory
 	var $TestAngularJS_ItemsFactory = function() {
@@ -279,9 +241,9 @@
 	$TestAngularJS_PhoneExample.__typeName = 'TestAngularJS.PhoneExample';
 	$TestAngularJS_PhoneExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularBuilder.Config($TestAngularJS_PhoneConfig).call(null, app);
-		AngularJS.AngularBuilder.Controller($TestAngularJS_PhoneListController).call(null, app);
-		AngularJS.AngularBuilder.Controller($TestAngularJS_PhoneListControllerDetail).call(null, app);
+		AngularJS.ModuleBuilder.Config($TestAngularJS_PhoneConfig).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_PhoneListController).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_PhoneListControllerDetail).call(null, app);
 	};
 	global.TestAngularJS.PhoneExample = $TestAngularJS_PhoneExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -336,7 +298,7 @@
 	$TestAngularJS_ResourceExample.__typeName = 'TestAngularJS.ResourceExample';
 	$TestAngularJS_ResourceExample.Main = function() {
 		var app = angular.module('myApp', ['ngResource']);
-		AngularJS.AngularBuilder.Controller($TestAngularJS_ResourceExampleController).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_ResourceExampleController).call(null, app);
 	};
 	global.TestAngularJS.ResourceExample = $TestAngularJS_ResourceExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -363,10 +325,10 @@
 	$TestAngularJS_ShoppingCartExample.__typeName = 'TestAngularJS.ShoppingCartExample';
 	$TestAngularJS_ShoppingCartExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.AngularBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
-		AngularJS.AngularBuilder.Factory($TestAngularJS_LabelsFactory).call(null, app);
-		AngularJS.AngularBuilder.Filter($TestAngularJS_Filters).call(null, app);
-		AngularJS.AngularBuilder.Controller($TestAngularJS_CartController).call(null, app);
+		AngularJS.ModuleBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
+		AngularJS.ModuleBuilder.Factory($TestAngularJS_LabelsFactory).call(null, app);
+		AngularJS.ModuleBuilder.Filter($TestAngularJS_Filters).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_CartController).call(null, app);
 	};
 	global.TestAngularJS.ShoppingCartExample = $TestAngularJS_ShoppingCartExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -430,9 +392,9 @@
 	$TestAngularJS_UiRouterExample.__typeName = 'TestAngularJS.UiRouterExample';
 	$TestAngularJS_UiRouterExample.Main = function() {
 		var app = angular.module('UiRouterExample', ['ui.router']);
-		AngularJS.AngularBuilder.Config($TestAngularJS_UiRouterConfig).call(null, app);
-		AngularJS.AngularBuilder.Controller($TestAngularJS_MyController).call(null, app);
-		AngularJS.AngularBuilder.Controller($TestAngularJS_State1Controller).call(null, app);
+		AngularJS.ModuleBuilder.Config($TestAngularJS_UiRouterConfig).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_MyController).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_State1Controller).call(null, app);
 	};
 	global.TestAngularJS.UiRouterExample = $TestAngularJS_UiRouterExample;
 	ss.initClass($AngularTests, $asm, {
@@ -491,7 +453,7 @@
 		}
 	}, $Test_BaseClass);
 	ss.initClass($Test_TestMain, $asm, {});
-	ss.initClass($TestAngularJS_AccordionController, $asm, {
+	ss.initClass($TestAngularJS_accordionDirective, $asm, {
 		Link: function(_scope, iElement, iAttrs, acontroller) {
 			//Debug.Break();
 			this.ppp = 'fissa';
@@ -502,9 +464,20 @@
 			// System.Diagnostics.Debug.Break();
 			window.alert('clicked to ' + this.ppp);
 			window.alert('Items[0] is ' + this.Items[0].title);
+		},
+		GetDefinition: function() {
+			var def = new AngularJS.DirectiveDefinitionHelper();
+			def.Restrict = 3;
+			def.Replace = true;
+			def.Transclude = true;
+			def.ScopeMode = 2;
+			def.Template = "<div><div ng-click='clickme()'>click me</div><div ng-transclude></div></div>";
+			//def.//Template = @"<div ng-transclude></div>";
+			def.Controller($TestAngularJS_AccordionSharedController).call(def);
+			def.Link = ss.mkdel(this, this.Link);
+			return def.ToDefinitionObject();
 		}
-	});
-	ss.initClass($TestAngularJS_AccordionDefinition, $asm, {}, AngularJS.DirectiveDefinition);
+	}, null, [AngularJS.IDirective]);
 	ss.initClass($TestAngularJS_AccordionSharedController, $asm, {
 		gotOpened: function(selectedExpander) {
 			//  Window.Alert("gotOpened called ["+pppp+"]");
@@ -572,7 +545,7 @@
 			window.alert(this.$Items[0].title);
 		}
 	});
-	ss.initClass($TestAngularJS_ExpanderController, $asm, {
+	ss.initClass($TestAngularJS_expanderDirective, $asm, {
 		Link: function(_scope, iElement, iAttrs, acontroller) {
 			this.accordionController = acontroller;
 			this.showMe = false;
@@ -581,9 +554,20 @@
 		toggle: function() {
 			this.showMe = !this.showMe;
 			this.accordionController.gotOpened(this);
+		},
+		GetDefinition: function() {
+			var def = new AngularJS.DirectiveDefinitionHelper();
+			def.Restrict = 1;
+			def.Replace = true;
+			def.Transclude = true;
+			def.RequireDirective('accordion', true, false);
+			def.ScopeMode = 2;
+			def.BindAttribute$2('title', 'expanderTitle');
+			def.Template = "<div>\r\n                         <div class='title' ng-click='toggle()'>{{title}}</div>\r\n                         <div class='body' ng-show='showMe' ng-transclude></div>\r\n                      </div>";
+			def.Link = ss.mkdel(this, this.Link);
+			return def.ToDefinitionObject();
 		}
-	});
-	ss.initClass($TestAngularJS_ExpanderDefinition, $asm, {}, AngularJS.DirectiveDefinition);
+	}, null, [AngularJS.IDirective]);
 	ss.initClass($TestAngularJS_Filters, $asm, {
 		euro: function(input) {
 			return input.toString() + ' euros (' + this.$le + ')';
@@ -593,7 +577,16 @@
 		}
 	});
 	ss.initClass($TestAngularJS_FundingExample, $asm, {});
-	ss.initClass($TestAngularJS_HelloDirective, $asm, {}, AngularJS.DirectiveDefinition);
+	ss.initClass($TestAngularJS_helloDirective, $asm, {
+		GetDefinition: function() {
+			var def = new AngularJS.DirectiveDefinitionHelper();
+			def.Restrict = 7;
+			def.Template = '<div>Hello <span ng-transclude></span>!</div>';
+			def.Replace = true;
+			def.Transclude = true;
+			return def.ToDefinitionObject();
+		}
+	}, null, [AngularJS.IDirective]);
 	ss.initClass($TestAngularJS_ItemsFactory, $asm, {
 		Items: function() {
 			var items = [];

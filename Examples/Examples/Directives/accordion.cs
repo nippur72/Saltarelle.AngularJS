@@ -10,34 +10,18 @@ using System.Diagnostics;
 
 namespace TestAngularJS
 {                               
-   public class AccordionDefinition : DirectiveDefinition                                                                                        
+   public class accordionDirective : IDirective
    {
-      public AccordionDefinition()
-      {
-         Name = "accordion";
-         Restrict = RestrictFlags.Element | RestrictFlags.Attribute;
-         Replace = true;
-         Transclude = true;
-         ScopeMode = ScopeModes.Isolate;
-         Template = @"<div><div ng-click='clickme()'>click me</div><div ng-transclude></div></div>";
-         //Template = @"<div ng-transclude></div>";
-         SharedController = typeof(AccordionSharedController); 
-         DirectiveController = typeof(AccordionController);        
-      }           
-   }   
-
-   public class AccordionController 
-   {      
       public string ppp;
       public List<CartItem> Items;
-
-      public AccordionController(List<CartItem> Items)
+      
+      public accordionDirective(List<CartItem> Items)
       {
          //Debug.Break();
          this.Items = Items;
       }
 
-      public void Link(Scope _scope, AngularJS.Element iElement, Attributes iAttrs, AccordionSharedController acontroller)      
+      public void Link(Scope _scope, AngularJS.Element iElement, Attributes iAttrs, object acontroller)      
       {
          //Debug.Break();
          ppp = "fissa";
@@ -51,12 +35,29 @@ namespace TestAngularJS
          Window.Alert("clicked to "+ppp);
          Window.Alert("Items[0] is "+Items[0].title);         
       }
-   }
+
+      public DefinitionObject GetDefinition()
+      {
+         var def = new DirectiveDefinitionHelper();
+                 
+         def.Restrict = RestrictFlags.Element | RestrictFlags.Attribute;
+         def.Replace = true;
+         def.Transclude = true;
+         def.ScopeMode = ScopeModes.Isolate;
+         def.Template = @"<div><div ng-click='clickme()'>click me</div><div ng-transclude></div></div>";
+         //def.//Template = @"<div ng-transclude></div>";
+         def.Controller<AccordionSharedController>();
+         def.Link = this.Link;
+
+         return def.ToDefinitionObject();         
+      }            
+   }   
+
    
    public class AccordionSharedController 
    {      
       public string pppp;
-      public List<ExpanderController> expanders = new List<ExpanderController>();
+      public List<expanderDirective> expanders = new List<expanderDirective>();
 
       public AccordionSharedController()
       {         
@@ -65,7 +66,7 @@ namespace TestAngularJS
          pppp = "constructor ok";         
       }                      
       
-      public void gotOpened(ExpanderController selectedExpander) 
+      public void gotOpened(expanderDirective selectedExpander) 
       {
        //  Window.Alert("gotOpened called ["+pppp+"]");
 
@@ -75,7 +76,7 @@ namespace TestAngularJS
          }
       }
 
-      public void addExpander(ExpanderController expander) 
+      public void addExpander(expanderDirective expander) 
       {
        //  Window.Alert("addExpander called ["+pppp+"]");
 

@@ -21,7 +21,7 @@ namespace TestAngularJS
                   
          app.Config<UiRouterConfig>();
          app.Controller<MyController>();
-         app.Controller<State1Controller>();
+         app.Controller<State1Controller>();        
       }   
    }
 

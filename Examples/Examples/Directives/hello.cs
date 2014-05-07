@@ -10,15 +10,16 @@ using AngularJS;
 
 namespace TestAngularJS
 {                      
-   public class HelloDirective : DirectiveDefinition
+   public class helloDirective : IDirective
    {
-      public HelloDirective()
+      public DefinitionObject GetDefinition()
       {                  
-         Name = "hello";
-         Restrict = RestrictFlags.Element | RestrictFlags.Attribute | RestrictFlags.Class;
-         Template = "<div>Hello <span ng-transclude></span>!</div>";
-         Replace = true;         
-         Transclude = true;         
+         var def = new DirectiveDefinitionHelper();         
+         def.Restrict = RestrictFlags.Element | RestrictFlags.Attribute | RestrictFlags.Class;
+         def.Template = "<div>Hello <span ng-transclude></span>!</div>";
+         def.Replace = true;         
+         def.Transclude = true;         
+         return def.ToDefinitionObject();
       }           
    }      
 }
