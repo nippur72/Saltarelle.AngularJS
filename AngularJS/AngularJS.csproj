@@ -82,6 +82,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="README.Directives.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="todo.txt" />

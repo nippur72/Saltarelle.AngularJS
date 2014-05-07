@@ -10,6 +10,9 @@ using System.Diagnostics;
 
 namespace AngularJS
 {             
+   public delegate Action<Scope> Compile(AngularJS.Element element);
+   
+   /*
    [Imported]   
    public sealed class Compile
    {
@@ -19,5 +22,6 @@ namespace AngularJS
       [InlineCode("{this}({element})")]
       public Action<Scope> Call(AngularJS.Element element) { return null; }
    }  
+   */
 }
 

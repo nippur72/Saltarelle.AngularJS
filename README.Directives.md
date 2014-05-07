@@ -6,10 +6,10 @@ Angular.JS for C#
 
 - [What is](#whatis)
 - [Current state](#currentstate)
+- [Requirements](#requirements)
 - [Getting started](#gettingstarted)
 - [Member casing](#membercasing)
 - [Differences between C# and Javascript](#differences)
-- [Creating a directive](README.Directives.md)
    - Reserved names ($)
    - Dependency injection
    - Creating a module
@@ -18,13 +18,18 @@ Angular.JS for C#
 - Creating a factory
 - Creating a service
 - Creating a filter
+- Creating an animation
+- Creating a directive
+- Using routes
+- Using the http object
 - Using watches
+- Using resources
 
 <a name="whatis"></a>
 ## What is
 
 Saltarelle.AngularJS is a library written for the [Saltarelle](www.saltarelle-compiler.com) C#-to-javascript compiler that allows to 
-use the [AngularJS](angularjs.org) framework from the C# language, making it possible to write C# client side web applications.
+use the [AngularJS](angularjs.org) framework from the C# language, making it possible to write modern C# client side web applications.
 
 Other than providing an interface to AngularJS, the library also makes Angular more C# friendly, trying to make it look
 as if it was designed for C# and not Javascript.
@@ -32,17 +37,24 @@ as if it was designed for C# and not Javascript.
 <a name="currentstate"></a>
 ## Current state
 
-As of now, only the main features of the latest angular release are covered, tough more and more are costantly added. 
-If you want to contribute, write a pull request or file a request under the issue section.
+As of now, the latest Angular 1.1.5 is supported. Unfortunately only the main features of 
+Angular are covered yet, tough more and more are costantly added. If you want to contribute, 
+write a pull request or file a request under the issue section.
 
+<a name="requirements"></a>
+## Requirements
+
+In this documentation it's assumed a basic knowledge of Angular (at least of the basic concepts), and
+of the Saltarelle C#-to-Javascript compiler. The HTML-side of Angular remains unchanged and
+works the same as for Javascript.
+
+<a name="gettingstarted"></a>
 ## Getting started
 
-To start using the library in your C# project (Visual Studio assumed) do the following steps: 
+To start using the library in your projects (Visual Studio assumed) do the following steps: 
 
 - add a reference to `Saltarelle.AngularJS.dll` (contained in this repo) in your C#-Saltarelle project.
-- put the file `Saltarelle.AngularJS.js` (contained in this repo) in your website script folder, and 
-
-as long as `angular.js` and it related files.
+- put the file `Saltarelle.AngularJS.js` (contained in this repo) in your website script folder (as long as `angular.js` or `angular.min.js`).
 - Put a `<script>` reference to `Saltarelle.AngularJS.js` in your HTML page, just after the `mscorlib.js` reference.
 
 Differently from Javascript, the Angular application needs to be called explicitly, that is, you have to call
@@ -288,7 +300,7 @@ A filter is a function that formats data that is used in HTML templates. For exa
 ```C#
 public class CartFilters
 {                
-   public Filters(/* injectables */)
+    public Filters(/* injectables */)
 	{
 	}
 	public string dollars(double input)
@@ -310,8 +322,103 @@ and in HTML template:
 <span>{{amount | dollars }}<span>
 ```
 
+# Working with Http
+
+Http is a pre-defined service ($http) that helps working with http requests, e.g. for RESTful services. There are methods for Get, Post, Put, Delete, Head and Jsonp. 
+
+The result of Http requests are `HttpPromise`s that can be chained:
+
+```C#
+public PhoneListController
+{
+	List<string> items;
+
+	public PhoneListController(PhoneScope _scope, Http _http)
+	{
+		http.Get("items.json").Success((data,status)=> {
+			items = data;
+		}).Error((data,status)=>{ 
+			Window.Alert("error!");
+		});
+	}
+}   
+```
+
+# Working with the $route service to define application routing and views
+
+The `RouteProvider` service can be used to define the client-side application routings that are 
+mapped to views that are rendered under the `ng-view` directive.
+
+```C#
+public class ConfigRoute
+{
+	public ConfigRoute(RouteProvider _routeProvider)
+	{
+		routeProvider.when("/phones"          , new RouteMap() { TemplateUrl = "phonemain.html"   })
+					 .when("/phones/:phoneId" , new RouteMap() { TemplateUrl = "phonedetail.html" })
+					 .otherwise(                new RouteMap() { RedirectTo  = "/phones"          });
+	}
+}
+```
+
+phonedetail.html contains only the partial view to be rendered within the `ng-view` directive:
+
+```HTML
+<div ng-controller="PhoneListControllerDetail">   
+   <p>phoneId parameter is {{ phoneId }}</p>
+</div>
+```
+
+# Working with directives
+
+Directive in AngularJS are the most difficult part to understand, but thanks to C# and to an helper function everything becomes very simple.
+
+Directives are defined by deriving an object from `DirectiveDefinition` and filling its content. For example:
+
+```C#
+public class HelloDirective : DirectiveDefinition
+{
+    public HelloDirective()
+    {                  
+        Name = "hello";
+        Restrict = RestrictFlags.Element;
+        Template = "<div>Hello <span ng-transclude></span>!</div>";
+        Replace = true;         
+        Transclude = true;         
+    }           
+}      
+```
+
+defines a directive called "hello", that applies to elements (result will be `<hello>`) with the given template.
+
+```C#
+app.Directive<HelloDirective>();  
+```
+
+Some concepts about directives:
+
+- they can have their own scope, or inerhit from parent
+- they can have their own controller for implementing the logic of the directive
+- they can have a "shared" controller that other elements can reference (for example netsted elements can register into a common controller)
+
+(to be continued)
+ 						  
+
+## Creating an animation
 
 
+## Using resources ($resource)
+
+Resource is an external Angular module (named `ngResource`) that makes easy to work with HTTP RESTful services. 
+
+Since is an external module it needs to be referenced in the markup by adding a script reference to `angular-resource.js` or `angular-resource-min.js`.
+
+Also don't forget to specify that your module depends on `ngResource`:
+
+```C#
+Module app = new Module("myApp","ngResource");
+```
 
 
+	
 

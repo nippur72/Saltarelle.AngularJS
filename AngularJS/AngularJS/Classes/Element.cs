@@ -23,6 +23,10 @@ namespace AngularJS
       public void bind(string eventType, bool preventBubble) {}      
       public void bind(string eventType, object eventData, Action<object> eventHandler) {}      
       public void bind(string eventType, object eventData, bool preventBubble) {}            
+
+      public object append(object arg) { return null; }
+
+      public object replaceWith(object arg) { return null; }
    }      
 }
 
