@@ -123,8 +123,13 @@
 	$AngularJS_ModuleBuilder.Config = function(T) {
 		return function(module) {
 			var type = T;
-			$AngularJS_ModuleBuilder.FixAnnotation(type);
-			module.config(type);
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
+			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
+			// "run" function are called without a "this" reference, so we need to instantiate the class with "new"
+			var body = '{ new ' + ss.getTypeName(type) + '(' + plist + '); }';
+			var F = new Function(parameters, body);
+			F.$inject = parameters;
+			module.config(F);
 		};
 	};
 	$AngularJS_ModuleBuilder.Run = function(T) {

@@ -87,8 +87,15 @@ namespace AngularJS
       public static void Config<T>(this Module module)
       {
          Type type = typeof(T);
-         FixAnnotation(type); 
-         Config(module,type);
+         var parameters = FixAnnotation(type);          
+         var plist = CommaSeparatedList(parameters);
+                  
+         // "run" function are called without a "this" reference, so we need to instantiate the class with "new"
+         string body = "{ new "+type.Name+"("+plist+"); }";
+         Function F = new Function(parameters,body);                     
+         
+         Injectable.From(F).Inject = parameters;         
+         Config(module,F);
       }
 
       #endregion

@@ -49,7 +49,7 @@ Differently from Javascript, the Angular application needs to be called explicit
 the method that contains the app initialization. For example if you have defined a static method called `Main()`, 
 in your HTML page add something like this:
 
-```
+```JavaScript
 <script type="text/javascript">MyAppNameSpace.MyApp.Main();</script>     
 ```
 

@@ -1,0 +1,331 @@
+﻿<h1>Saltarelle.AngularJS</h1>
+
+<p>Angular.JS for C#</p>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#whatis">What is</a></li>
+<li><a href="#currentstate">Current state</a></li>
+<li><a href="#gettingstarted">Getting started</a></li>
+<li><a href="#membercasing">Member casing</a></li>
+<li><a href="#differences">Differences between C# and Javascript</a></li>
+<li><a href="README.Directives.md">Creating a directive</a>
+<ul>
+<li>Reserved names ($)</li>
+<li>Dependency injection</li>
+<li>Creating a module</li>
+</ul></li>
+<li>Creating a controller</li>
+<li>Creating a config</li>
+<li>Creating a factory</li>
+<li>Creating a service</li>
+<li>Creating a filter</li>
+<li>Using watches</li>
+</ul>
+
+<p><a name="whatis"></a></p>
+
+<h2>What is</h2>
+
+<p>Saltarelle.AngularJS is a library written for the <a href="www.saltarelle-compiler.com">Saltarelle</a> C#-to-javascript compiler that allows to 
+use the <a href="angularjs.org">AngularJS</a> framework from the C# language, making it possible to write C# client side web applications.</p>
+
+<p>Other than providing an interface to AngularJS, the library also makes Angular more C# friendly, trying to make it look
+as if it was designed for C# and not Javascript.</p>
+
+<p><a name="currentstate"></a></p>
+
+<h2>Current state</h2>
+
+<p>As of now, only the main features of the latest angular release are covered, tough more and more are costantly added. 
+If you want to contribute, write a pull request or file a request under the issue section.</p>
+
+<h2>Getting started</h2>
+
+<p>To start using the library in your C# project (Visual Studio assumed) do the following steps: </p>
+
+<ul>
+<li>add a reference to <code>Saltarelle.AngularJS.dll</code> (contained in this repo) in your C#-Saltarelle project.</li>
+<li>put the file <code>Saltarelle.AngularJS.js</code> (contained in this repo) in your website script folder, and </li>
+</ul>
+
+<p>as long as <code>angular.js</code> and it related files.
+- Put a <code>&lt;script&gt;</code> reference to <code>Saltarelle.AngularJS.js</code> in your HTML page, just after the <code>mscorlib.js</code> reference.</p>
+
+<p>Differently from Javascript, the Angular application needs to be called explicitly, that is, you have to call
+the method that contains the app initialization. For example if you have defined a static method called <code>Main()</code>, 
+in your HTML page add something like this:</p>
+
+<p>```JavaScript</p>
+
+<script type="text/javascript">MyAppNameSpace.MyApp.Main();</script>     
+
+<p>```</p>
+
+<p>Don't forget make the AngularJS namespace available in your C# code by adding:</p>
+
+<p><code>C#
+using AngularJS;
+</code></p>
+
+<p><a name="membercasing"></a></p>
+
+<h2>Member casing</h2>
+
+<p>By default the Saltarelle compiler is configured to translate to Javascript casing (eg "ToString()" is converted into "toString()"),
+which can be source of mistakes when you reference your C# objects from the HTML markup. To avoid case mismatches, it's suggested to add the
+following global attribute declaration in your <code>Assembly.cs</code> file:</p>
+
+<p><code>
+[assembly: PreserveMemberCase]
+</code></p>
+
+<p><a name="differences"></a></p>
+
+<h2>Differences between C# and Javascript</h2>
+
+<p>There are some differences between the AngularJS C# implementation and its Javascript counterpart, mostly due to inherent differences between the two languages, 
+C# and Javascript. </p>
+
+<h3>Classes instead of nested functions</h3>
+
+<p>Angular makes intensive use of nested functions (functions containing functions) which are used to manage dependency injection in controllers, services 
+and other components. Typically an outer function receives injected objects as function's parameters which are thus available to be referenced withing
+inner functions. </p>
+
+<p>Unfortunately the C# equivalent of this schema results in a clumsy use of function delegates and lambda expressions that is
+too impractical for real coding. </p>
+
+<p>For this reason a different approach is used in C#: 
+- controllers, services and all other angular components are written as classes instead of functions
+- the class constructor receives the injectable objects as parameters (the same way the "outer" function does in javascript)
+- to make injectable objects available to the methods of the class, the constructor needs to save them in field members</p>
+
+<p>Example:</p>
+
+<p>in Javascript:</p>
+
+<p><code>Javascript
+function outer($scope,$http)
+{
+    function inner()
+    {
+       // use $http here
+    }
+}
+</code></p>
+
+<p>in C#:</p>
+
+<p>```C#
+public class outer
+{
+    // save injectables
+    Http http;</p>
+
+<pre><code>public outer(Scope _scope, Http _http)
+{
+    this.http = _http;  // since _http is referenced in "inner" we save it locally
+}
+
+public void inner()
+{
+   // use http here 
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<h3>Scope aumatically bound to controllers</h3>
+
+<p>In C# the <code>$scope</code> object is bound to the controller class (in other words, it's <code>this</code>) so there is no need to make direct reference to the scope. 
+This is a good advantage that makes code much more readable than its Javascript equivalent.</p>
+
+<h1>Reserved names in AngularJS</h1>
+
+<p>AngularJS unfortunately names all its object with the <code>$</code> prefix (e.g. <code>$scope</code>) thus making them not available in C#. To avoid this, 
+the <code>_</code> underscore character is used in placed of the <code>$</code> sign when declaring parameters for dependency injection. The library takes care 
+of translating it back to <code>$</code>. So for example in your C# code you'll write <code>_scope</code> instead of <code>$scope</code>.</p>
+
+<h1>Creating an AngularJS module</h1>
+
+<p>Create an Angular module to be referenced with the <code>ng-app</code> directive:</p>
+
+<p><code>C#
+Module app = new Module("myApp");
+</code></p>
+
+<h1>Creating an AngularJS Controller</h1>
+
+<p>AngularJs controllers are mapped to C# classes and $scope is bound the the class istance itself, so it's very easy to implement a controller and 
+reference to $scope is not require. The only requirements are:</p>
+
+<ul>
+<li>the controller class is derived from the base <code>Scope</code> class</li>
+<li>the first parameter of the class constructor is <code>_scope</code></li>
+</ul>
+
+<p>The class name is the the name for the controller that can be later referenced in the
+<code>ng-controller</code> directive. For example:</p>
+
+<p><code>C#
+public class ShoppingCartController : Scope
+{<br />
+    public ShoppingCartController(Scope _scope, Timeout _timeout)
+    {
+    }
+}
+</code></p>
+
+<p>any other parameter in the class constructor will be treated as an injectable parameter 
+(in the example above the <code>$timeout</code> object is injected). If you want to use any injected 
+parameter outside of the constructor, save its reference to a field variable. <code>$scope</code>
+does not need to be referenced because the whole class is the scope itself (this==_scope)
+which makes the code much less verbose than the javascript counterpart.</p>
+
+<p>The class should also declare all objects that are put in the scope. What you refer from
+outside C# (e.g. HTML) should be declared with then <code>public</code> modifier. For example:</p>
+
+<p>```C#
+public class ShoppingCartController : Scope
+{<br />
+    public List<CartItem> items;
+    public double billDiscount;</p>
+
+<pre><code>public ShoppingCartController(Scope _scope, Timeout _timeout)
+{
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>After the class controller is defined you need to register it within the application-module:</p>
+
+<p><code>C#
+app.Controller&lt;ShoppingCartController&gt;();
+</code></p>
+
+<h1>Implementing the controller logic</h1>
+
+<p>Controller functions are defined as methods, but you can also define them as <code>Action</code> or <code>Func</code>:</p>
+
+<p><code>C#
+public void remove(int index)
+{
+    items.RemoveAt(index);
+}
+</code></p>
+
+<p>or (within the constructor):</p>
+
+<p><code>C#
+remove = (index) =&gt; 
+{
+    items.RemoveAt(index);
+};
+</code></p>
+
+<h1>Adding a watch</h1>
+
+<p>A watch keeps on listening to a function, and when its value changes another function is called. </p>
+
+<p>Put the watch in the constructor:</p>
+
+<p><code>C#
+Watch&lt;double&gt;(()=&gt;totalCart, calculateDiscount);
+</code></p>
+
+<p>and then define:</p>
+
+<p><code>C#
+public double calculateDiscount(double newValue, double oldValue)
+{
+    billDiscount = newValue &gt; 100 ? 10 : 0;
+};
+</code></p>
+
+<h1>Defining a config function</h1>
+
+<p>Configs are functions that are called on module initialization. As with controllers, they are written as classes:</p>
+
+<p><code>C#
+public class MyConfigs
+{<br />
+    public MyConfig(/* injectables */)
+    {
+    }
+}
+</code></p>
+
+<p>and then registered with</p>
+
+<p><code>C#
+app.Config&lt;MyConfigs&gt;();
+</code></p>
+
+<h1>Defining a Service (Factory)</h1>
+
+<p>A service (factory) is a function that returns an object resource that can be used in controllers or other parts of Angular and 
+that is injected automatically using the service name. </p>
+
+<p>In the following example the service called "Items" is defined</p>
+
+<p>```C#
+public class ItemsFactory
+{<br />
+    public ItemsFactory(/* injectables */)
+    {</p>
+
+<pre><code>}
+
+public List&lt;CartItem&gt; Items()
+{
+    var items = new List&lt;CartItem&gt;();
+    items.Add( new CartItem() { title="AAAA", quantity= 1024, price= 44.95 } );
+    items.Add( new CartItem() { title="BBBB", quantity= 2048, price= 55.95 } );
+    return items;
+}
+</code></pre>
+
+<p>}<br />
+```</p>
+
+<p>and then registered with:</p>
+
+<p><code>C#
+app.Factory&lt;ItemsFactory&gt;();
+</code></p>
+
+<p>once the factory is registered, it can be used in any angular function by refering its name ("Items"). For example you can define a controller:</p>
+
+<h1>Defining a filter</h1>
+
+<p>A filter is a function that formats data that is used in HTML templates. For example the following filter adds the word "dollars" to a numeric value:</p>
+
+<p><code>C#
+public class CartFilters
+{<br />
+   public Filters(/* injectables */)
+    {
+    }
+    public string dollars(double input)
+    {
+        return input.ToString() + " dollars";
+    }
+}
+</code></p>
+
+<p>and then registered with:</p>
+
+<p><code>C#
+app.Filters&lt;CartFilters&gt;();
+</code></p>
+
+<p>and in HTML template:</p>
+
+<p><code>HTML
+&lt;span&gt;{{amount | dollars }}&lt;span&gt;
+</code></p>
