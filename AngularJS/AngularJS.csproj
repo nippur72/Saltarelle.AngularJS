@@ -75,17 +75,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README.md">
-      <Link>README.md</Link>
-    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="README.Directives.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">

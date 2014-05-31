@@ -10,18 +10,6 @@ using System.Diagnostics;
 
 namespace AngularJS
 {             
-   public delegate Action<Scope> Compile(AngularJS.Element element);
-   
-   /*
-   [Imported]   
-   public sealed class Compile
-   {
-      /// <summary>
-      /// Compiles an HTML element and returns a linking function
-      /// </summary>
-      [InlineCode("{this}({element})")]
-      public Action<Scope> Call(AngularJS.Element element) { return null; }
-   }  
-   */
+   public delegate Action<Scope> Compile(AngularJS.Element element);   
 }
 

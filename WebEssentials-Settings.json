@@ -89,11 +89,11 @@
     "CompileOnBuild": false,
     "CompileOnSave": false,
     "EncodeProblemUrlCharacters": false,
-    "GenerateXHTML": true,
+    "GenerateXHTML": false,
     "LinkEmails": false,
     "MinifyInPlace": false,
     "OutputDirectory": null,
-    "ShowPreviewPane": true,
+    "ShowPreviewPane": false,
     "StrictBoldItalic": false
   },
   "Scss": {
