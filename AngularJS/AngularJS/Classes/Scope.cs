@@ -24,18 +24,19 @@ namespace AngularJS
       /// <summary>
       /// Executes an expression in angular from outside of the angular framework
       /// </summary>      
-      [InlineCode("{this}.$apply()")]
-      public void Apply()
-      {
-      }
-
-      /// <summary>
-      /// Executes an expression in angular from outside of the angular framework
-      /// </summary>      
       [InlineCode("{this}.$apply({expression})")]
       public T Apply<T>(string expression)
       {
          return default(T);
+      }      
+
+      /// <summary>
+      /// Executes an expression in angular from outside of the angular framework
+      /// </summary>      
+      [InlineCode("{this}.$apply({function})")]
+      public void Apply(Action<Scope> function)
+      {
+         return;
       }      
 
       /// <summary>
