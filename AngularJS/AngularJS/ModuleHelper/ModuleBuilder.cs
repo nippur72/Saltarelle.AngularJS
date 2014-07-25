@@ -91,7 +91,7 @@ namespace AngularJS
          var plist = CommaSeparatedList(parameters);
                   
          // "run" function are called without a "this" reference, so we need to instantiate the class with "new"
-         string body = "{ new "+type.Name+"("+plist+"); }";
+         string body = "{ new "+type.FullName+"("+plist+"); }";
          Function F = new Function(parameters,body);                     
          
          Injectable.From(F).Inject = parameters;         
@@ -109,7 +109,7 @@ namespace AngularJS
          var plist = CommaSeparatedList(parameters);
                   
          // "run" function are called without a "this" reference, so we need to instantiate the class with "new"
-         string body = "{ new "+type.Name+"("+plist+"); }";
+         string body = "{ new "+type.FullName+"("+plist+"); }";
          Function F = new Function(parameters,body);            
          
          Injectable.From(F).Inject = parameters;
@@ -122,7 +122,7 @@ namespace AngularJS
       #region Factory
 
       public static void Factory<T>(this Module module)
-      {         
+      {                  
          Type type = typeof(T);
          var parameters = FixAnnotation(type); 
          var plist = CommaSeparatedList(parameters);
@@ -130,7 +130,7 @@ namespace AngularJS
          // register all public instance methods as factory                      
          foreach(string funcname in type.GetInstanceMethodNames())
          {
-            string body = "{ return (new "+type.Name+"("+plist+"))."+funcname+"(); }";
+            string body = "{ return (new "+type.FullName+"("+plist+"))."+funcname+"(); }";
             Function F = new Function(parameters,body);
             Factory(module,PatchDollarName(funcname),F);
          }
@@ -149,7 +149,7 @@ namespace AngularJS
          // register all public instance methods as filters                      
          foreach(string funcname in type.GetInstanceMethodNames())
          {
-            string body = "{ var $ob = new "+type.Name+"("+plist+"); return $ob."+funcname+"; }";
+            string body = "{ var $ob = new "+type.FullName+"("+plist+"); return $ob."+funcname+".bind($ob); }";  // bind required because reference to this is lost somewhere
             Function F = new Function(parameters,body);                        
             Filter(module,PatchDollarName(funcname),F);
          }
@@ -166,7 +166,7 @@ namespace AngularJS
          var plist = CommaSeparatedList(parameters);
 
          // a directive is a (injectable) function returning a definition object
-         string body = "{ var $ob = new "+type.Name+"("+plist+"); return $ob.GetDefinition(); }";
+         string body = "{ var $ob = new "+type.FullName+"("+plist+"); return $ob.GetDefinition(); }";
          Function F = new Function(parameters,body);
                      
          // extract directive name from the class name

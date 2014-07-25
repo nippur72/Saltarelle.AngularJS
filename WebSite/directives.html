@@ -11,35 +11,49 @@
    <script>      
    </script>                         
 </head>
-<body ng-app="myApp">    
-   <!--
-   <div ng-controller="TestController">
-       zzz is {{zzz }}
+<body ng-app="myApp">
+   <div ng-controller="TestDirectiveController as ctrl">      
+
+      <h1>Accordion/Expander directives example:</h1>
+      <i>
+         Premise: writing directives with Angualar is a very wide and complex subject. Don't expect to understand everything.
+      </i>
+
+      <ul>
+         <li>'Expander' is a clickable control that shows/hides its content. It has a title and a content.</li>
+         <li>'Accordion' holds a collection of expanderss, and when one is expanded, all the others in the collection are collapsed.</li>
+         <li>
+            When created, 'Expander' looks for the accordion controller in the parent chain and register itself into it,
+            so that accordion can keep a list of expanders. For such purpose, the accordion controller is passed as argument in the expander Link function.
+         </li>
+         <li>
+            When expander is clicked, it toggles itself and notifies the accordion controller so that he can collapse all the other expanders.
+         </li>
+         <li>
+            Both directives have their own separate controllers. Such controllers  are available in the $scope object as field members
+            (the "controller as" syntax, e.g. $scope.ctrl)
+         </li>
+         <li>
+            Controllers can access the $scope object because it can be injected.
+         </li>
+      </ul>
+
+      <accordion>
+         <expander expander-title="title1">this is expander content 1</expander>
+         <expander expander-title="title2">this is expander content 2</expander>
+         <expander expander-title="title3">this is expander content 3</expander>
+         <expander expander-title="title4">this is expander content 4</expander>
+         <expander expander-title="title5">this is expander content 5</expander>
+         <expander expander-title="title6">this is expander content 6</expander>
+      </accordion>
+
+      <h1>Hello directive example:</h1>
+
+      <hello>Erik Kallen</hello>
+      <hello>Antonino Porcino</hello>
+      <hello>Marin Mersenne</hello>
+
    </div>
-   
-   <div testdirective>aaa</div>
-     
-   <h1>Accordion and expander example</h1>
-   
-   <expander expander-title="this is expander title">this is expander content 1</expander>-->
-      
-   <accordion>
-      <expander expander-title="title1">this is expander content 1</expander>
-      <expander expander-title="title2">this is expander content 2</expander>
-      <expander expander-title="title3">this is expander content 3</expander>
-      <expander expander-title="title4">this is expander content 4</expander>
-      <expander expander-title="title5">this is expander content 5</expander>
-      <expander expander-title="title6">this is expander content 6</expander>
-   </accordion>    
-   
-   <hr />
-
-   <h1>Hello example</h1>
-   
-   <hello>Erik Kallen</hello>
-   <div hello>Antonino Porcino</div>
-   <div class="hello">Marin Mersenne</div>
-
 </body>
 </html>
 

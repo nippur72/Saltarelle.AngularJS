@@ -17,7 +17,7 @@ namespace AngularJS
 
    public class DefinitionObject
    {
-   }
+   }   
 }
 
 

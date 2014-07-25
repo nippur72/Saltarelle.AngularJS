@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Serialization;
 
 using AngularJS;
+using System.Diagnostics;
 
 namespace TestAngularJS
 {                        
@@ -29,7 +30,7 @@ namespace TestAngularJS
       public double price;
    } 
    
-   public class CartController : Scope
+   public class CartController 
    {
       public List<CartItem> items;
       public double billDiscount;
@@ -38,7 +39,7 @@ namespace TestAngularJS
       {
          zeroitems();
          items = Items;
-         Watch<double>(totalCart, calculateDiscount);
+         _scope.Watch<double>(totalCart, calculateDiscount);
       }
 
       public void zeroitems()
@@ -71,47 +72,49 @@ namespace TestAngularJS
          billDiscount = newValue > 100 ? 10 : 0;
       }      
    }      
-        
+   
+   // this factory creates an injectable object called "Items" whose value is an array of CartItem objects
    public class ItemsFactory 
    {                        
       public List<CartItem> Items()
       {
          var items = new List<CartItem>();
-         items.Add( new CartItem() { title="AaAa", quantity= 1024, price= 44.95 } );
-         items.Add( new CartItem() { title="BBBB", quantity= 2048, price= 55.95 } );
-         items.Add( new CartItem() { title="CCCC", quantity= 4096, price= 66.95 } );
-         items.Add( new CartItem() { title="dddd", quantity= 1024, price= 44.95 } );
-         items.Add( new CartItem() { title="eeee", quantity= 2048, price= 55.95 } );
-         items.Add( new CartItem() { title="ffff", quantity= 4096, price= 66.95 } );
+         items.Add( new CartItem() { title="AaAa", quantity=1024, price=44.95 } );
+         items.Add( new CartItem() { title="BBBB", quantity=2048, price=55.95 } );
+         items.Add( new CartItem() { title="CCCC", quantity=4096, price=66.95 } );
+         items.Add( new CartItem() { title="dddd", quantity=1024, price=44.95 } );
+         items.Add( new CartItem() { title="eeee", quantity=2048, price=55.95 } );
+         items.Add( new CartItem() { title="ffff", quantity=4096, price=66.95 } );
          return items;
       }
    }
-         
+   
+   // this factory creates an injectable object called "LabelPounds" whose value is "GBP"
    public class LabelsFactory 
    {                  
-      public string LabelEuro()
-      {
-         return "CHF";
+      public string LabelPounds()
+      {        
+         return "GBP";
       }
    }
 
    public class Filters
    {                  
-      string le;
+      string label_pounds;
 
-      public Filters(string LabelEuro)
+      public Filters(string LabelPounds)
       {         
-         le = LabelEuro;
+         label_pounds = LabelPounds;
       }
 
       public string euro(double input)
-      {
-         return input.ToString() + " euros ("+le+")" ;
+      {         
+         return input.ToString() + " euros " ;
       }
 
-      public string dracma(double input)
+      public string pounds(double input)
       {
-         return input.ToString() + " dracmas " ;
+         return (input*1.25).ToString() + " "+label_pounds ;
       }
    }                                 
 }

@@ -8,7 +8,6 @@ using System.Serialization;
 
 using AngularJS;
 
-
 namespace TestAngularJS
 {                           
    public class AnimationExample

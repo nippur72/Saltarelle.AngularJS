@@ -168,6 +168,11 @@ namespace AngularJS
       [InlineCode("{this}.$watchCollection({obj},{listener})")] public Action WatchCollection<T>(Func<T> obj, WatchListener<T> listener) {return null;} 
       
       #endregion 
+
+      /// <summary>
+      /// Access the controller class added to the $scope with the "controller as" syntax
+      /// </summary>      
+      [InlineCode("{this}.{@name}")] public T ControllerAs<T>(string name) { return default(T); }
    } 
 }
 

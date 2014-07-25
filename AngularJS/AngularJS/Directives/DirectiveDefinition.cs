@@ -162,7 +162,7 @@ namespace AngularJS
       public void Controller<T>()
       {
           Type type = typeof(T);
-          ControllerType = type;
+          ControllerType = type;          
       }
 
       /// <summary>
@@ -263,6 +263,7 @@ namespace AngularJS
 
          // maps transclude
          result["transclude"] = Transclude;
+         
          // TODO 'element'
 
          // maps scope
@@ -283,7 +284,11 @@ namespace AngularJS
          if(Link!=null) result["link"] = Link;
          
          // maps (shared) controller         
-         if(ControllerType != null) result["controller"] = ControllerType;                            
+         if(ControllerType != null) 
+         {
+            ModuleBuilder.FixAnnotation(ControllerType);
+            result["controller"] = ControllerType;                            
+         }
                                   
          // maps controllerAs 
          if(ControllerAs!=null) result["controllerAs"] = ControllerAs;                                                                                

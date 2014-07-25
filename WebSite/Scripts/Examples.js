@@ -1,15 +1,8 @@
 ﻿(function() {
 	'use strict';
 	var $asm = {};
-	global.Test = global.Test || {};
 	global.TestAngularJS = global.TestAngularJS || {};
 	ss.initAssembly($asm, 'Examples');
-	////////////////////////////////////////////////////////////////////////////////
-	// AngularTests
-	var $AngularTests = function() {
-	};
-	$AngularTests.__typeName = 'AngularTests';
-	global.AngularTests = $AngularTests;
 	////////////////////////////////////////////////////////////////////////////////
 	// JasmineTests
 	var $JasmineTests = function() {
@@ -18,67 +11,19 @@
 	$JasmineTests.__typeName = 'JasmineTests';
 	global.JasmineTests = $JasmineTests;
 	////////////////////////////////////////////////////////////////////////////////
-	// Test.BaseClass
-	var $Test_BaseClass = function() {
-		this.$type = 0;
-		this.$type = 0;
+	// TestAngularJS.AccordionController
+	var $TestAngularJS_AccordionController = function() {
+		this.accordiontitle = 'This is an accordion';
+		this.expanders = [];
 	};
-	$Test_BaseClass.__typeName = 'Test.BaseClass';
-	global.Test.BaseClass = $Test_BaseClass;
-	////////////////////////////////////////////////////////////////////////////////
-	// Test.EnumType
-	var $Test_EnumType = function() {
-	};
-	$Test_EnumType.__typeName = 'Test.EnumType';
-	global.Test.EnumType = $Test_EnumType;
-	////////////////////////////////////////////////////////////////////////////////
-	// Test.SubClass
-	var $Test_SubClass = function() {
-		$Test_BaseClass.call(this);
-		$Test_BaseClass.prototype.get_Type.call(this).toString();
-		$Test_BaseClass.prototype.set_Type.call(this, 0);
-	};
-	$Test_SubClass.__typeName = 'Test.SubClass';
-	global.Test.SubClass = $Test_SubClass;
-	////////////////////////////////////////////////////////////////////////////////
-	// Test.SubClass2
-	var $Test_SubClass2 = function() {
-		this.$subType = 0;
-		$Test_BaseClass.call(this);
-	};
-	$Test_SubClass2.__typeName = 'Test.SubClass2';
-	global.Test.SubClass2 = $Test_SubClass2;
-	////////////////////////////////////////////////////////////////////////////////
-	// Test.TestMain
-	var $Test_TestMain = function() {
-	};
-	$Test_TestMain.__typeName = 'Test.TestMain';
-	$Test_TestMain.Main = function() {
-		new $Test_SubClass();
-		(new $Test_SubClass2()).set_Type(0);
-	};
-	global.Test.TestMain = $Test_TestMain;
+	$TestAngularJS_AccordionController.__typeName = 'TestAngularJS.AccordionController';
+	global.TestAngularJS.AccordionController = $TestAngularJS_AccordionController;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.accordionDirective
-	var $TestAngularJS_accordionDirective = function(Items) {
-		this.ppp = null;
-		this.Items = null;
-		//Debug.Break();
-		this.Items = Items;
+	var $TestAngularJS_accordionDirective = function() {
 	};
 	$TestAngularJS_accordionDirective.__typeName = 'TestAngularJS.accordionDirective';
 	global.TestAngularJS.accordionDirective = $TestAngularJS_accordionDirective;
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.AccordionSharedController
-	var $TestAngularJS_AccordionSharedController = function() {
-		this.pppp = null;
-		this.expanders = [];
-		//System.Diagnostics.Debug.Break();
-		window.alert('Shared controller initialized');
-		this.pppp = 'constructor ok';
-	};
-	$TestAngularJS_AccordionSharedController.__typeName = 'TestAngularJS.AccordionSharedController';
-	global.TestAngularJS.AccordionSharedController = $TestAngularJS_AccordionSharedController;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.AnimationController
 	var $TestAngularJS_AnimationController = function(_scope) {
@@ -107,10 +52,9 @@
 	var $TestAngularJS_CartController = function(_scope, Items) {
 		this.items = null;
 		this.billDiscount = 0;
-		AngularJS.Scope.call(this);
 		this.zeroitems();
 		this.items = Items;
-		this.$watch(ss.mkdel(this, this.totalCart), ss.mkdel(this, this.calculateDiscount));
+		_scope.$watch(ss.mkdel(this, this.totalCart), ss.mkdel(this, this.calculateDiscount));
 	};
 	$TestAngularJS_CartController.__typeName = 'TestAngularJS.CartController';
 	global.TestAngularJS.CartController = $TestAngularJS_CartController;
@@ -137,38 +81,33 @@
 	$TestAngularJS_DirectivesExample.__typeName = 'TestAngularJS.DirectivesExample';
 	$TestAngularJS_DirectivesExample.Main = function() {
 		var app = angular.module('myApp', []);
-		//app.Debug("service","pippo");                  
-		//app.RegisterController( typeof(TestController) );         
-		//app.RegisterFactory( typeof(ItemsFactory) );
-		//app.RegisterDirectiveAsFactory("testdirective",typeof(testdirective));
-		AngularJS.ModuleBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
 		AngularJS.ModuleBuilder.Directive($TestAngularJS_accordionDirective).call(null, app);
 		AngularJS.ModuleBuilder.Directive($TestAngularJS_expanderDirective).call(null, app);
 		AngularJS.ModuleBuilder.Directive($TestAngularJS_helloDirective).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_TestDirectiveController).call(null, app);
 	};
 	global.TestAngularJS.DirectivesExample = $TestAngularJS_DirectivesExample;
 	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.ExampleService
-	var $TestAngularJS_ExampleService = function(Items, _http) {
-		this.$Items = null;
-		this.$Items = Items;
+	// TestAngularJS.ExpanderController
+	var $TestAngularJS_ExpanderController = function(_scope) {
+		this.Scope = null;
+		this.showMe = false;
+		this.accordionController = null;
+		this.Scope = _scope;
 	};
-	$TestAngularJS_ExampleService.__typeName = 'TestAngularJS.ExampleService';
-	global.TestAngularJS.ExampleService = $TestAngularJS_ExampleService;
+	$TestAngularJS_ExpanderController.__typeName = 'TestAngularJS.ExpanderController';
+	global.TestAngularJS.ExpanderController = $TestAngularJS_ExpanderController;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.expanderDirective
 	var $TestAngularJS_expanderDirective = function() {
-		this.title = null;
-		this.showMe = false;
-		this.accordionController = null;
 	};
 	$TestAngularJS_expanderDirective.__typeName = 'TestAngularJS.expanderDirective';
 	global.TestAngularJS.expanderDirective = $TestAngularJS_expanderDirective;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.Filters
-	var $TestAngularJS_Filters = function(LabelEuro) {
-		this.$le = null;
-		this.$le = LabelEuro;
+	var $TestAngularJS_Filters = function(LabelPounds) {
+		this.$label_pounds = null;
+		this.$label_pounds = LabelPounds;
 	};
 	$TestAngularJS_Filters.__typeName = 'TestAngularJS.Filters';
 	global.TestAngularJS.Filters = $TestAngularJS_Filters;
@@ -179,10 +118,7 @@
 	$TestAngularJS_FundingExample.__typeName = 'TestAngularJS.FundingExample';
 	$TestAngularJS_FundingExample.Main = function() {
 		var app = angular.module('myApp', []);
-		AngularJS.ModuleBuilder.Factory($TestAngularJS_ItemsFactory).call(null, app);
-		AngularJS.ModuleBuilder.Service($TestAngularJS_ExampleService).call(null, app);
 		AngularJS.ModuleBuilder.Controller($TestAngularJS_StartUpController).call(null, app);
-		window.alert("'" + ss.cast(eval('typeof new Date()'), String) + "'");
 	};
 	global.TestAngularJS.FundingExample = $TestAngularJS_FundingExample;
 	////////////////////////////////////////////////////////////////////////////////
@@ -333,15 +269,13 @@
 	global.TestAngularJS.ShoppingCartExample = $TestAngularJS_ShoppingCartExample;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.StartUpController
-	var $TestAngularJS_StartUpController = function(_scope, ExampleService) {
+	var $TestAngularJS_StartUpController = function(_scope) {
 		this.fundingStartingEstimate = 0;
 		this.fundingNeeded = 0;
-		AngularJS.Scope.call(this);
 		this.fundingStartingEstimate = 0;
-		this.$watch(ss.mkdel(this, function() {
+		_scope.$watch(ss.mkdel(this, function() {
 			return this.fundingStartingEstimate;
 		}), ss.mkdel(this, this.compneeded));
-		ExampleService.DoAlert();
 	};
 	$TestAngularJS_StartUpController.__typeName = 'TestAngularJS.StartUpController';
 	global.TestAngularJS.StartUpController = $TestAngularJS_StartUpController;
@@ -355,6 +289,12 @@
 	};
 	$TestAngularJS_State1Controller.__typeName = 'TestAngularJS.State1Controller';
 	global.TestAngularJS.State1Controller = $TestAngularJS_State1Controller;
+	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.TestDirectiveController
+	var $TestAngularJS_TestDirectiveController = function(_scope) {
+	};
+	$TestAngularJS_TestDirectiveController.__typeName = 'TestAngularJS.TestDirectiveController';
+	global.TestAngularJS.TestDirectiveController = $TestAngularJS_TestDirectiveController;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.TestPromises
 	var $TestAngularJS_TestPromises = function(_q) {
@@ -397,15 +337,6 @@
 		AngularJS.ModuleBuilder.Controller($TestAngularJS_State1Controller).call(null, app);
 	};
 	global.TestAngularJS.UiRouterExample = $TestAngularJS_UiRouterExample;
-	ss.initClass($AngularTests, $asm, {
-		runTests: function() {
-			test('OneIsOne', ss.mkdel(this, function() {
-				deepEqual(1, 1, 'one is one');
-				ok(true, 'one is still one');
-				ok(!false, 'one is not two');
-			}));
-		}
-	});
 	ss.initClass($JasmineTests, $asm, {
 		SpecRunner: function() {
 			describe('Currency filter', ss.mkdel(this, function() {
@@ -434,53 +365,11 @@
 			}));
 		}
 	}, Object);
-	ss.initClass($Test_BaseClass, $asm, {
-		get_Type: function() {
-			return this.$type;
-		},
-		set_Type: function(value) {
-			this.$type = value;
-		}
-	});
-	ss.initEnum($Test_EnumType, $asm, { Zero: 0, One: 1 });
-	ss.initClass($Test_SubClass, $asm, {}, $Test_BaseClass);
-	ss.initClass($Test_SubClass2, $asm, {
-		get_Type: function() {
-			return this.$subType;
-		},
-		set_Type: function(value) {
-			this.$subType = value;
-		}
-	}, $Test_BaseClass);
-	ss.initClass($Test_TestMain, $asm, {});
-	ss.initClass($TestAngularJS_accordionDirective, $asm, {
-		Link: function(_scope, iElement, iAttrs, acontroller) {
-			//Debug.Break();
-			this.ppp = 'fissa';
-		},
+	ss.initClass($TestAngularJS_AccordionController, $asm, {
 		clickme: function() {
-			//Debug.Break();
-			//Http h = Angular.InjectorRead("$http");
-			// System.Diagnostics.Debug.Break();
-			window.alert('clicked to ' + this.ppp);
-			window.alert('Items[0] is ' + this.Items[0].title);
+			window.alert('clicked!');
 		},
-		GetDefinition: function() {
-			var def = new AngularJS.DirectiveDefinitionHelper();
-			def.Restrict = 3;
-			def.Replace = true;
-			def.Transclude = true;
-			def.ScopeMode = 2;
-			def.Template = "<div><div ng-click='clickme()'>click me</div><div ng-transclude></div></div>";
-			//def.//Template = @"<div ng-transclude></div>";
-			def.Controller($TestAngularJS_AccordionSharedController).call(def);
-			def.Link = ss.mkdel(this, this.Link);
-			return def.ToDefinitionObject();
-		}
-	}, null, [AngularJS.IDirective]);
-	ss.initClass($TestAngularJS_AccordionSharedController, $asm, {
 		gotOpened: function(selectedExpander) {
-			//  Window.Alert("gotOpened called ["+pppp+"]");
 			for (var $t1 = 0; $t1 < this.expanders.length; $t1++) {
 				var o = this.expanders[$t1];
 				if (!ss.referenceEquals(selectedExpander, o)) {
@@ -489,10 +378,24 @@
 			}
 		},
 		addExpander: function(expander) {
-			//  Window.Alert("addExpander called ["+pppp+"]");
 			ss.add(this.expanders, expander);
 		}
 	});
+	ss.initClass($TestAngularJS_accordionDirective, $asm, {
+		Link: function(_scope, iElement, iAttrs, acontroller) {
+		},
+		GetDefinition: function() {
+			var def = new AngularJS.DirectiveDefinitionHelper();
+			def.Restrict = 3;
+			def.Replace = true;
+			def.Transclude = true;
+			def.ScopeMode = 0;
+			def.Template = "<div><div ng-click='acc.clickme()'>[{{acc.accordiontitle}}] you can click me</div><div ng-transclude></div>[end]</div>";
+			def.Controller($TestAngularJS_AccordionController).call(def);
+			def.ControllerAs = 'acc';
+			return def.ToDefinitionObject();
+		}
+	}, null, [AngularJS.IDirective]);
 	ss.initClass($TestAngularJS_AnimationController, $asm, {
 		switch_show: function() {
 			this.show_block = !this.show_block;
@@ -525,7 +428,7 @@
 		calculateDiscount: function(newValue, oldValue) {
 			this.billDiscount = ((newValue > 100) ? 10 : 0);
 		}
-	}, AngularJS.Scope);
+	});
 	ss.initClass($TestAngularJS_CartItem, $asm, {});
 	ss.initClass($TestAngularJS_CoolAnimation, $asm, {
 		Setup: function(element) {
@@ -540,20 +443,17 @@
 		}
 	});
 	ss.initClass($TestAngularJS_DirectivesExample, $asm, {});
-	ss.initClass($TestAngularJS_ExampleService, $asm, {
-		DoAlert: function() {
-			window.alert(this.$Items[0].title);
+	ss.initClass($TestAngularJS_ExpanderController, $asm, {
+		toggle: function() {
+			this.showMe = !this.showMe;
+			this.accordionController.gotOpened(this);
 		}
 	});
 	ss.initClass($TestAngularJS_expanderDirective, $asm, {
 		Link: function(_scope, iElement, iAttrs, acontroller) {
-			this.accordionController = acontroller;
-			this.showMe = false;
-			this.accordionController.addExpander(this);
-		},
-		toggle: function() {
-			this.showMe = !this.showMe;
-			this.accordionController.gotOpened(this);
+			var ctrl = _scope.ccc;
+			ctrl.accordionController = acontroller;
+			ctrl.accordionController.addExpander(ctrl);
 		},
 		GetDefinition: function() {
 			var def = new AngularJS.DirectiveDefinitionHelper();
@@ -563,17 +463,19 @@
 			def.RequireDirective('accordion', true, false);
 			def.ScopeMode = 2;
 			def.BindAttribute$2('title', 'expanderTitle');
-			def.Template = "<div>\r\n                         <div class='title' ng-click='toggle()'>{{title}}</div>\r\n                         <div class='body' ng-show='showMe' ng-transclude></div>\r\n                      </div>";
+			def.Template = "<div>\r\n                             <div class='title' ng-click='ccc.toggle()'>{{title}}</div>\r\n                             <div style='margin-left: 1em;' class='body' ng-show='ccc.showMe' ng-transclude></div>\r\n                          </div>";
 			def.Link = ss.mkdel(this, this.Link);
+			def.Controller($TestAngularJS_ExpanderController).call(def);
+			def.ControllerAs = 'ccc';
 			return def.ToDefinitionObject();
 		}
 	}, null, [AngularJS.IDirective]);
 	ss.initClass($TestAngularJS_Filters, $asm, {
 		euro: function(input) {
-			return input.toString() + ' euros (' + this.$le + ')';
+			return input.toString() + ' euros ';
 		},
-		dracma: function(input) {
-			return input.toString() + ' dracmas ';
+		pounds: function(input) {
+			return (input * 1.25).toString() + ' ' + this.$label_pounds;
 		}
 	});
 	ss.initClass($TestAngularJS_FundingExample, $asm, {});
@@ -581,7 +483,7 @@
 		GetDefinition: function() {
 			var def = new AngularJS.DirectiveDefinitionHelper();
 			def.Restrict = 7;
-			def.Template = '<div>Hello <span ng-transclude></span>!</div>';
+			def.Template = '<div>Hello, <span ng-transclude></span>!</div>';
 			def.Replace = true;
 			def.Transclude = true;
 			return def.ToDefinitionObject();
@@ -624,8 +526,8 @@
 		}
 	});
 	ss.initClass($TestAngularJS_LabelsFactory, $asm, {
-		LabelEuro: function() {
-			return 'CHF';
+		LabelPounds: function() {
+			return 'GBP';
 		}
 	});
 	ss.initClass($TestAngularJS_MyController, $asm, {
@@ -679,8 +581,9 @@
 		compneeded: function(newval, oldval) {
 			this.fundingNeeded = this.fundingStartingEstimate * 10;
 		}
-	}, AngularJS.Scope);
+	});
 	ss.initClass($TestAngularJS_State1Controller, $asm, {});
+	ss.initClass($TestAngularJS_TestDirectiveController, $asm, {});
 	ss.initClass($TestAngularJS_TestPromises, $asm, {
 		UsePromise: function() {
 			var p = this.CreatePromise();

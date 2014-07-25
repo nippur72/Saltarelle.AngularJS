@@ -9,21 +9,23 @@
       <script type="text/javascript">TestAngularJS.ShoppingCartExample.Main();</script>                         
    </head>
    <body>
-      <div ng-controller='CartController'>
+      <div ng-controller="CartController as ctrl">
          <h1>Your Order</h1>
-         <div ng-repeat='item in items'>
+         <div ng-repeat="item in ctrl.items">
             <span>{{item.title}}</span>
-            <input ng-model='item.quantity'>
+            <input ng-model="item.quantity">
             <span>{{item.price | euro}}</span>
-            <span>{{item.price * item.quantity | dracma}}</span>
-            <button ng-click="remove($index)">Remove</button>
+            <span>{{item.price * item.quantity | euro}}</span>
+            <button ng-click="ctrl.remove($index)">Remove</button>
          </div>
-         <div>Total: {{totalCart() | currency}}</div>
-         <div>Discount: {{billDiscount | currency}}</div>
-         <div>Subtotal: {{subtotal() | currency}}</div>      
+         <div>Total: {{ctrl.totalCart() | currency}}</div>
+         <div>Discount: {{ctrl.billDiscount | currency}}</div>
+         <div>Subtotal: {{ctrl.subtotal() | currency}}</div>      
+         <p>in pounds</p>
+         <div>Total: {{ctrl.totalCart() | pounds }}</div>
+         <div>Discount: {{ctrl.billDiscount | pounds }}</div>
+         <div>Subtotal: {{ctrl.subtotal() | pounds }}</div>      
       </div>      
    </body>
 </html>
-
-
 

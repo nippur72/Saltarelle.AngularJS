@@ -126,7 +126,7 @@
 			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// "run" function are called without a "this" reference, so we need to instantiate the class with "new"
-			var body = '{ new ' + ss.getTypeName(type) + '(' + plist + '); }';
+			var body = '{ new ' + ss.getTypeFullName(type) + '(' + plist + '); }';
 			var F = new Function(parameters, body);
 			F.$inject = parameters;
 			module.config(F);
@@ -138,7 +138,7 @@
 			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// "run" function are called without a "this" reference, so we need to instantiate the class with "new"
-			var body = '{ new ' + ss.getTypeName(type) + '(' + plist + '); }';
+			var body = '{ new ' + ss.getTypeFullName(type) + '(' + plist + '); }';
 			var F = new Function(parameters, body);
 			F.$inject = parameters;
 			module.run(F);
@@ -153,7 +153,7 @@
 			var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
 			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
 				var funcname = $t1[$t2];
-				var body = '{ return (new ' + ss.getTypeName(type) + '(' + plist + ')).' + funcname + '(); }';
+				var body = '{ return (new ' + ss.getTypeFullName(type) + '(' + plist + ')).' + funcname + '(); }';
 				var F = new Function(parameters, body);
 				module.factory($AngularJS_ModuleBuilder.PatchDollarName(funcname), F);
 			}
@@ -168,7 +168,8 @@
 			var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
 			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
 				var funcname = $t1[$t2];
-				var body = '{ var $ob = new ' + ss.getTypeName(type) + '(' + plist + '); return $ob.' + funcname + '; }';
+				var body = '{ var $ob = new ' + ss.getTypeFullName(type) + '(' + plist + '); return $ob.' + funcname + '.bind($ob); }';
+				// bind required because reference to this is lost somewhere
 				var F = new Function(parameters, body);
 				module.filter($AngularJS_ModuleBuilder.PatchDollarName(funcname), F);
 			}
@@ -180,7 +181,7 @@
 			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// a directive is a (injectable) function returning a definition object
-			var body = '{ var $ob = new ' + ss.getTypeName(type) + '(' + plist + '); return $ob.GetDefinition(); }';
+			var body = '{ var $ob = new ' + ss.getTypeFullName(type) + '(' + plist + '); return $ob.GetDefinition(); }';
 			var F = new Function(parameters, body);
 			// extract directive name from the class name
 			var DirectiveName = ss.getTypeName(type);
@@ -495,6 +496,7 @@
 			}
 			// maps (shared) controller         
 			if (ss.isValue(this.$ControllerType)) {
+				$AngularJS_ModuleBuilder.FixAnnotation(this.$ControllerType);
 				result['controller'] = this.$ControllerType;
 			}
 			// maps controllerAs 
