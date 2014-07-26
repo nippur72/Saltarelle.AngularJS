@@ -6,7 +6,7 @@
 	////////////////////////////////////////////////////////////////////////////////
 	// JasmineTests
 	var $JasmineTests = function() {
-		ss.shallowCopy(null, this);
+		ss.shallowCopy({}, this);
 	};
 	$JasmineTests.__typeName = 'JasmineTests';
 	global.JasmineTests = $JasmineTests;
@@ -339,28 +339,69 @@
 	global.TestAngularJS.UiRouterExample = $TestAngularJS_UiRouterExample;
 	ss.initClass($JasmineTests, $asm, {
 		SpecRunner: function() {
-			describe('Currency filter', ss.mkdel(this, function() {
-				it('should format numbers to money amounts', ss.mkdel(this, function() {
-					var f = angular.injector(['ng']).get('$filter')('currency');
-					expect(f(0)).toBe('$0.00');
-					expect(f(5.75)).toBe('$5.75');
-					expect(f(1000000)).toBe('$1,000,000.00');
-					expect(f(-5.75)).toBe('($5.75)');
-					expect(f(5.753)).toBe('$5.75');
-					expect(f(5.75, '€')).toBe('€5.75');
+			this.Constant();
+			this.Value();
+			this.Filters();
+		},
+		Constant: function() {
+			var M = angular.module('test', []);
+			M.constant('testconst', 42);
+			var injector = angular.injector(['test']);
+			describe('Constant', ss.mkdel(this, function() {
+				var testconst = null;
+				it('should be defined in the injector', ss.mkdel(this, function() {
+					var read = function() {
+						testconst = injector.get('testconst');
+					};
+					expect(read).not.toThrow();
+				}));
+				it('should return the expected value', ss.mkdel(this, function() {
+					expect(testconst).toBe(42);
 				}));
 			}));
-			describe('Date filter', ss.mkdel(this, function() {
-				var f1 = angular.injector(['ng']).get('$filter')('date');
-				var d = new Date(1972, 4, 3);
-				it('should format dates to U.S. format', ss.mkdel(this, function() {
-					expect(f1(d)).toBe('May 3, 1972');
+		},
+		Value: function() {
+			var M = angular.module('test', []);
+			M.value('testvalue', 42);
+			var injector = angular.injector(['test']);
+			describe('Value', ss.mkdel(this, function() {
+				var testvalue = null;
+				it('should be defined in the injector', ss.mkdel(this, function() {
+					var read = function() {
+						testvalue = injector.get('testvalue');
+					};
+					expect(read).not.toThrow();
 				}));
-				it('should format short dates', ss.mkdel(this, function() {
-					expect(f1(d, 'dd/MM/yy')).toBe('03/05/72');
+				it('should return the expected value', ss.mkdel(this, function() {
+					expect(testvalue).toBe(42);
 				}));
-				it('should format long dates', ss.mkdel(this, function() {
-					expect(f1(d, 'dd/MM/yyyy')).toBe('03/05/1972');
+			}));
+		},
+		Filters: function() {
+			describe('Filters', ss.mkdel(this, function() {
+				describe('Currency filter', ss.mkdel(this, function() {
+					it('should format numbers to money amounts', ss.mkdel(this, function() {
+						var f = angular.injector(['ng']).get('$filter')('currency');
+						expect(f(0)).toBe('$0.00');
+						expect(f(5.75)).toBe('$5.75');
+						expect(f(1000000)).toBe('$1,000,000.00');
+						expect(f(-5.75)).toBe('($5.75)');
+						expect(f(5.753)).toBe('$5.75');
+						expect(f(5.75, '€')).toBe('€5.75');
+					}));
+				}));
+				describe('Date filter', ss.mkdel(this, function() {
+					var f1 = angular.injector(['ng']).get('$filter')('date');
+					var d = new Date(1972, 4, 3);
+					it('should format dates to U.S. format', ss.mkdel(this, function() {
+						expect(f1(d)).toBe('May 3, 1972');
+					}));
+					it('should format short dates', ss.mkdel(this, function() {
+						expect(f1(d, 'dd/MM/yy')).toBe('03/05/72');
+					}));
+					it('should format long dates', ss.mkdel(this, function() {
+						expect(f1(d, 'dd/MM/yyyy')).toBe('03/05/1972');
+					}));
 				}));
 			}));
 		}

@@ -15,6 +15,7 @@ namespace AngularJS
    {
       [ScriptName("annotate")]    public string[] Annotate(object fn) { return null; }             
       
+      [ScriptName("get")]                             public object Get(string ServiceName) { return null; }
       [ScriptName("get")]                             public T Get<T>(string ServiceName) { return default(T); }
       [InlineCode("{this}.get(ss.getTypeName({T}))")] public T Get<T>() { return default(T); }
 

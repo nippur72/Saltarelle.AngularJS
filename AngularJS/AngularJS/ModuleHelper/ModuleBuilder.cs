@@ -117,8 +117,8 @@ namespace AngularJS
          Run(module,F);
       }
 
-      #endregion
-
+      #endregion      
+     
       #region Factory
 
       public static void Factory<T>(this Module module)
@@ -230,11 +230,20 @@ namespace AngularJS
 
       #region Low level Angular methods
 
+      [InlineCode("{module}.animation({Name},{func})")]
+      public static void Animation(Module module, string Name, object func) { }          
+
       [InlineCode("{module}.config({func})")]
       public static void Config(Module module, object func) { }    
 
+      [InlineCode("{module}.constant({Name},{value})")]
+      public static void Constant(this Module module, string Name, object value) { }            
+
       [InlineCode("{module}.controller({Name},{func})")]
       public static void Controller(Module module, string Name, object func) { }            
+
+      [InlineCode("{module}.decorator({Name},{func})")]
+      public static void Decorator(Module module, string Name, object func) { }          
 
       [InlineCode("{module}.directive({Name},{defob})")]
       public static void Directive(Module module, string Name, object defob) { }
@@ -245,14 +254,15 @@ namespace AngularJS
       [InlineCode("{module}.filter({FilterName},{ob})")]
       public static void Filter(Module module, string FilterName, object ob) { }            
 
-      [InlineCode("{module}.service({Name},{ob})")]
-      public static void Service(Module module, string Name, object ob) { }          
-
       [InlineCode("{module}.run({func})")]
       public static void Run(Module module, object func) { }    
 
-      [InlineCode("{module}.animation({Name},{func})")]
-      public static void Animation(Module module, string Name, object func) { }          
+      [InlineCode("{module}.service({Name},{ob})")]
+      public static void Service(Module module, string Name, object ob) { }          
+
+      [InlineCode("{module}.value({Name},{value})")]
+      public static void Value(this Module module, string Name, object value) { }            
+
 
       #endregion
    }

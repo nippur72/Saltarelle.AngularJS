@@ -37,54 +37,7 @@ namespace AngularJS
       public string[] Requires
       {
          [InlineCode("{this}.requires")] get { return null; }
-      }
-
-      /*
-      #region Convenience Methods
-
-      [InlineCode("{this}.config({func})")]
-      public void Config(object func)
-      {
-      }    
-
-      [InlineCode("{this}.controller({Name},{func})")]
-      public void Controller(string Name, object func)
-      {
       } 
-      
-      [InlineCode("{this}.directive({Name},{defob})")]
-      public void Directive(string Name, object defob)
-      {
-      }
-
-      [InlineCode("{this}.factory({Name},{func})")]
-      public void Factory(string Name, object func)
-      {
-      }          
-
-      [InlineCode("{this}.filter({FilterName},{ob})")]
-      public void Filter(string FilterName, object ob)
-      {
-      }            
-
-      [InlineCode("{this}.factory({Name},{func})")]
-      public void Service(string Name, Type func)
-      {
-      }          
-
-      #endregion
-      */
-
-      [InlineCode("{this}.{@FuncName}(function(){{debugger;}})")]
-      public void Debug(string FuncName) {}       
-
-      [InlineCode("{this}.{@FuncName}({pars},function(){{debugger;}})")]
-      public void Debug(string FuncName, string pars) {}   
-      
-      /*
-      var myInjector = angular.injector(["ng"]);
-      var $http = myInjector.get("$http");
-      */                
    }     
 }
 
