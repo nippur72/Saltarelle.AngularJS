@@ -54,7 +54,7 @@
     <Compile Include="AngularJS\Classes\Event.cs" />
     <Compile Include="AngularJS\Classes\Filters.cs" />
     <Compile Include="AngularJS\Classes\Promise.cs" />
-    <Compile Include="Angular.Animate\Animator.cs" />
+    <Compile Include="Angular.Animate\Animate.cs" />
     <Compile Include="Angular.UI-Router\UiRouter.cs" />
     <Compile Include="Angular.Resource\Resource.cs" />
     <Compile Include="AngularJS\Services\ExceptionHandler.cs" />

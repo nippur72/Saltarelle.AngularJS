@@ -2,6 +2,7 @@
 	'use strict';
 	var $asm = {};
 	global.AngularJS = global.AngularJS || {};
+	global.AngularJS.Animate = global.AngularJS.Animate || {};
 	global.AngularJS.UiRouter = global.AngularJS.UiRouter || {};
 	ss.initAssembly($asm, 'Saltarelle.AngularJS');
 	////////////////////////////////////////////////////////////////////////////////
@@ -194,74 +195,15 @@
 	};
 	$AngularJS_ModuleBuilder.Animation = function(T) {
 		return function(module, name) {
-			//
-			//         Type type = typeof(T);
-			//
-			//         
-			//
-			//         // TODO when there will be IsSubClassOf
-			//
-			//         //if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
-			//
-			//         
-			//
-			//         Function fun = CreateAnimationFunction(type);
-			//
-			//         var parameters = Angular.Injector().Annotate(fun);
-			//
-			//         var fcall = fun.CreateFunctionCall(parameters);
-			//
-			//         Animation(module, name==null ? type.Name : name, fcall);
+			var type = T;
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
+			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
+			// an animation is a (injectable) function returning a definition object
+			var body = '{ var $ob = new ' + ss.getTypeFullName(type) + '(' + plist + '); return $ob.GetDefinition(); }';
+			var F = new Function(parameters, body);
+			// extract directive name from the class name         
+			module.animation(name, F);
 		};
-	};
-	$AngularJS_ModuleBuilder.$CreateAnimationFunction = function(type) {
-		return null;
-		//
-		//         string body = "";
-		//
-		//         string thisref = "this";
-		//
-		//         
-		//
-		//         body+="var $animob = {};\r\n";
-		//
-		//         
-		//
-		//         // gets and annotate constructor parameter; annotations are stored in type.$inject
-		//
-		//         var parameters = Angular.Injector().Annotate(type.GetConstructorFunction());
-		//
-		//         
-		//
-		//         // takes method into $scope, binding "$scope" to "this"
-		//
-		//         foreach(string funcname in type.GetInstanceMethodNames())
-		//
-		//         {
-		//
-		//         body += String.Format("{2}.{1} = {0}.prototype.{1}.bind({2});\r\n",type.FullName,funcname,thisref);
-		//
-		//         
-		//
-		//         if(funcname=="Start" || funcname=="Setup" || funcname=="Cancel" )
-		//
-		//         {
-		//
-		//         body += String.Format("$animob.{0} = {2}.{1};\r\n",funcname.ToLower(),funcname,thisref);
-		//
-		//         }
-		//
-		//         }
-		//
-		//         
-		//
-		//         // put call at the end so that methods are defined first
-		//
-		//         body+=String.Format("{0}.apply({1},arguments);\r\n",type.FullName,thisref);
-		//
-		//         body+=String.Format("return $animob;\r\n");
-		//
-		//         return TypeExtensionMethods.CreateNewFunction(parameters,body);
 	};
 	global.AngularJS.ModuleBuilder = $AngularJS_ModuleBuilder;
 	////////////////////////////////////////////////////////////////////////////////
@@ -382,6 +324,12 @@
 		return type.prototype['constructor'];
 	};
 	global.AngularJS.TypeExtensionMethods = $AngularJS_TypeExtensionMethods;
+	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.Animate.IAnimation
+	var $AngularJS_Animate_IAnimation = function() {
+	};
+	$AngularJS_Animate_IAnimation.__typeName = 'AngularJS.Animate.IAnimation';
+	global.AngularJS.Animate.IAnimation = $AngularJS_Animate_IAnimation;
 	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.UiRouter.StateEventsExtensions
 	var $AngularJS_UiRouter_StateEventsExtensions = function() {
@@ -545,6 +493,7 @@
 	$AngularJS_ScopeBindings.$ctor2.prototype = $AngularJS_ScopeBindings.$ctor1.prototype = $AngularJS_ScopeBindings.$ctor3.prototype = $AngularJS_ScopeBindings.prototype;
 	ss.initEnum($AngularJS_ScopeModes, $asm, { Existing: 0, New: 1, Isolate: 2 });
 	ss.initClass($AngularJS_TypeExtensionMethods, $asm, {});
+	ss.initInterface($AngularJS_Animate_IAnimation, $asm, { GetDefinition: null });
 	ss.initClass($AngularJS_UiRouter_StateEventsExtensions, $asm, {});
 	ss.setMetadata($AngularJS_RestrictFlags, { enumFlags: true });
 })();

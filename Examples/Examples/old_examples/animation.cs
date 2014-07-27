@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using System.Serialization;
 
 using AngularJS;
+using AngularJS.Animate;
+using System.Diagnostics;
 
 namespace TestAngularJS
 {                           
@@ -14,91 +16,93 @@ namespace TestAngularJS
    {
       public static void Main()
       {        
-         Module app = new Module("myApp");
-         app.Animation<CoolAnimation>("cool-animation-show");
+         Module app = new Module("myApp", ngAnimate.ModuleName);         
+
+         app.Animation<SpecialAnimation>(".special-animation");
+
          app.Controller<AnimationController>();
       }   
    }  
 
    public class AnimationController
    {
-      public bool show_block = true;
-
-      public void switch_show()
-      {
-         show_block = !show_block;
-      }
-
-      public List<string> names;
+      public bool Checked;
+      public string bodytext;
+      public string[] items;
+      public string filter;
+      public bool runAnimation;
 
       public AnimationController(Scope _scope)
       {
-         names = new List<string>();
-         names.Add("pippo");
-         names.Add("pluto");
-         names.Add(Angular.UpperCase(Angular.BuiltinFilters.jsonFilter.Filter(Angular.Version)));
+         Checked = false;
+         bodytext = "This text is animated when shown on/off";
+         items = new string[] { "Rome", "Tokyo", "New York", "London", "Paris", "Moscow", "Berlin" };         
+         runAnimation = false;
       }
 
-      public void add()
+      public void startAnimation()
       {
-         names.Insert(0,"item "+names.Count.ToString());
-      }
-
-      public void remove(int index)
-      {
-         names.RemoveAt(index);
-      }      
-   }  
-   
-   public class CoolAnimation
-   {
-      public CoolAnimation(RootScope _rootScope)
-      {
-         //System.Diagnostics.Debug.Break();
-      }
-
-      public void Setup(System.Html.Element element)
-      {
-         //this is called before the animation
-         //jQuery.FromElement(element).CSS("opacity",0);
-      }
-
-      public void Start(System.Html.Element element, Action done, object memo)
-      {
-         var ob = new JsDictionary("opacity",1);
-         //jQuery.FromElement(element).Animate(ob, new TypeOption<int,EffectDuration>(), EffectEasing.Linear, ()=>{done();});
-      }
-
-      public void Cancel(System.Html.Element element, Action done)
-      {
+         runAnimation = !runAnimation;
       }
    }    
+   
+   public class SpecialAnimation : IAnimation
+   {      
+      private string scrolltext = "*** CBM BASIC V2 *** 3583 BYTES FREE READY. 10 PRINT 'HELLO' 20 GOTO 10 RUN";
+
+      public object GetDefinition()
+      {         
+         Func<List<System.Html.Element>,string,Action,Action> removeClass = (element,className,doneCallback)=>
+         {                                   
+            // keep tracks of the timer
+            int timer_id = 0;
+
+            // the cancel/end animation funcion
+            Action cancelCallback = ()=>
+            { 
+               Window.ClearInterval(timer_id); 
+            };
+
+            // the function that updated the control
+            Action<System.Html.Element> OnTick = (el)=>
+            {
+               int l = el.TextContent.Length;
+               if(l<scrolltext.Length) 
+               {
+                  el.TextContent = scrolltext.Substring(0,l+1);
+               }
+               else
+               { 
+                  cancelCallback(); // stops the animation
+                  doneCallback(); 
+               }               
+            };
+                                                                  
+            if(className == "ng-hide") 
+            {
+               // We're unhiding the element, i.e. showing the element
+               var el = element[0];
+               el.TextContent="*";               
+               
+               timer_id = Window.SetInterval(()=>OnTick(el),250);
+            } 
+            else doneCallback(); 
+
+            return cancelCallback;
+         };
+         
+         // Action<bool> addClass(element, string className, Action done)
+         Action<List<System.Html.Element>,string,Action> addClass = (element,className,done)=>
+         {            
+            if(className == "ng-hide") 
+            {
+               // We're hiding the element
+               done();
+            } 
+            else done(); 
+         };
+         
+         return new { addClass=addClass, removeClass=removeClass };
+      }
+   }
 }
-
-/*
-//you can inject stuff!
-myModule.animation('cool-animation', ['$rootScope', function($rootScope) {
-  return { 
-    setup : function(element) {
-      //this is called before the animation
-      jQuery(element).css({
-        'border-width':0
-      }); 
-    },
-    start : function(element, done, memo) {
-      //this is where the animation is expected to be run
-      jQuery(element).animate({
-        'border-width':20
-      }, function() {
-        //call done to close when the animation is complete
-        done(); 
-      });
-    },
-    cancel : function(element, done) {
-      //this is called when another animation is started
-      //whilst the previous animation is still chugging away
-    }   
-  };
-}]);
-*/
-

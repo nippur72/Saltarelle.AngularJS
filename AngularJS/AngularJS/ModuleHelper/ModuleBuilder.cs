@@ -181,51 +181,20 @@ namespace AngularJS
 
       #region Animations            
 
-      public static void Animation<T>(this Module module, string name=null)
+      public static void Animation<T>(this Module module, string name) where T: AngularJS.Animate.IAnimation
       {         
-         /*
          Type type = typeof(T);
+         var parameters = FixAnnotation(type); 
+         var plist = CommaSeparatedList(parameters);
 
-         // TODO when there will be IsSubClassOf
-         //if(!type.IsSubclassOf(DirectiveDefinition)) throw new Exception(String.Format("{0} is not sub class of {1}",type.Name,typeof(DirectiveDefinition).Name);
-
-         Function fun = CreateAnimationFunction(type);
-         var parameters = Angular.Injector().Annotate(fun);          
-         var fcall = fun.CreateFunctionCall(parameters);       
-         Animation(module, name==null ? type.Name : name, fcall);
-         */
-      }
-
-      private static Function CreateAnimationFunction(Type type)
-      {
-         return null;
-         /*
-         string body = "";
-         string thisref = "this";  
-         
-         body+="var $animob = {};\r\n"; 
-         
-         // gets and annotate constructor parameter; annotations are stored in type.$inject                                             
-         var parameters = Angular.Injector().Annotate(type.GetConstructorFunction());
-                                    
-         // takes method into $scope, binding "$scope" to "this"                 
-         foreach(string funcname in type.GetInstanceMethodNames())
-         {
-            body += String.Format("{2}.{1} = {0}.prototype.{1}.bind({2});\r\n",type.FullName,funcname,thisref);             
-
-            if(funcname=="Start" || funcname=="Setup" || funcname=="Cancel" )
-            {
-               body += String.Format("$animob.{0} = {2}.{1};\r\n",funcname.ToLower(),funcname,thisref);                
-            }
-         }
-                  
-         // put call at the end so that methods are defined first
-         body+=String.Format("{0}.apply({1},arguments);\r\n",type.FullName,thisref);
-         body+=String.Format("return $animob;\r\n");   
-         return TypeExtensionMethods.CreateNewFunction(parameters,body);
-         */
-      }
-                
+         // an animation is a (injectable) function returning a definition object
+         string body = "{ var $ob = new "+type.FullName+"("+plist+"); return $ob.GetDefinition(); }";
+         Function F = new Function(parameters,body);
+                     
+         // extract directive name from the class name         
+         Animation(module,name,F);         
+      }   
+                        
       #endregion
 
       #region Low level Angular methods

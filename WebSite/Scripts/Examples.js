@@ -27,12 +27,15 @@
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.AnimationController
 	var $TestAngularJS_AnimationController = function(_scope) {
-		this.show_block = true;
-		this.names = null;
-		this.names = [];
-		ss.add(this.names, 'pippo');
-		ss.add(this.names, 'pluto');
-		ss.add(this.names, angular.uppercase(angular.injector(['ng']).get('$filter')('json')(angular.version)));
+		this.Checked = false;
+		this.bodytext = null;
+		this.items = null;
+		this.filter = null;
+		this.runAnimation = false;
+		this.Checked = false;
+		this.bodytext = 'This text is animated when shown on/off';
+		this.items = ['Rome', 'Tokyo', 'New York', 'London', 'Paris', 'Moscow', 'Berlin'];
+		this.runAnimation = false;
 	};
 	$TestAngularJS_AnimationController.__typeName = 'TestAngularJS.AnimationController';
 	global.TestAngularJS.AnimationController = $TestAngularJS_AnimationController;
@@ -42,8 +45,8 @@
 	};
 	$TestAngularJS_AnimationExample.__typeName = 'TestAngularJS.AnimationExample';
 	$TestAngularJS_AnimationExample.Main = function() {
-		var app = angular.module('myApp', []);
-		AngularJS.ModuleBuilder.Animation($TestAngularJS_CoolAnimation).call(null, app, 'cool-animation-show');
+		var app = angular.module('myApp', ['ngAnimate']);
+		AngularJS.ModuleBuilder.Animation($TestAngularJS_SpecialAnimation).call(null, app, '.special-animation');
 		AngularJS.ModuleBuilder.Controller($TestAngularJS_AnimationController).call(null, app);
 	};
 	global.TestAngularJS.AnimationExample = $TestAngularJS_AnimationExample;
@@ -67,13 +70,6 @@
 	};
 	$TestAngularJS_CartItem.__typeName = 'TestAngularJS.CartItem';
 	global.TestAngularJS.CartItem = $TestAngularJS_CartItem;
-	////////////////////////////////////////////////////////////////////////////////
-	// TestAngularJS.CoolAnimation
-	var $TestAngularJS_CoolAnimation = function(_rootScope) {
-		//System.Diagnostics.Debug.Break();
-	};
-	$TestAngularJS_CoolAnimation.__typeName = 'TestAngularJS.CoolAnimation';
-	global.TestAngularJS.CoolAnimation = $TestAngularJS_CoolAnimation;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.DirectivesExample
 	var $TestAngularJS_DirectivesExample = function() {
@@ -268,6 +264,13 @@
 	};
 	global.TestAngularJS.ShoppingCartExample = $TestAngularJS_ShoppingCartExample;
 	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.SpecialAnimation
+	var $TestAngularJS_SpecialAnimation = function() {
+		this.$scrolltext = "*** CBM BASIC V2 *** 3583 BYTES FREE READY. 10 PRINT 'HELLO' 20 GOTO 10 RUN";
+	};
+	$TestAngularJS_SpecialAnimation.__typeName = 'TestAngularJS.SpecialAnimation';
+	global.TestAngularJS.SpecialAnimation = $TestAngularJS_SpecialAnimation;
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.StartUpController
 	var $TestAngularJS_StartUpController = function(_scope) {
 		this.fundingStartingEstimate = 0;
@@ -438,14 +441,8 @@
 		}
 	}, null, [AngularJS.IDirective]);
 	ss.initClass($TestAngularJS_AnimationController, $asm, {
-		switch_show: function() {
-			this.show_block = !this.show_block;
-		},
-		add: function() {
-			ss.insert(this.names, 0, 'item ' + this.names.length.toString());
-		},
-		remove: function(index) {
-			ss.removeAt(this.names, index);
+		startAnimation: function() {
+			this.runAnimation = !this.runAnimation;
 		}
 	});
 	ss.initClass($TestAngularJS_AnimationExample, $asm, {});
@@ -471,18 +468,6 @@
 		}
 	});
 	ss.initClass($TestAngularJS_CartItem, $asm, {});
-	ss.initClass($TestAngularJS_CoolAnimation, $asm, {
-		Setup: function(element) {
-			//this is called before the animation
-			//jQuery.FromElement(element).CSS("opacity",0);
-		},
-		Start: function(element, done, memo) {
-			var ob = ss.mkdict(['opacity', 1]);
-			//jQuery.FromElement(element).Animate(ob, new TypeOption<int,EffectDuration>(), EffectEasing.Linear, ()=>{done();});
-		},
-		Cancel: function(element, done) {
-		}
-	});
 	ss.initClass($TestAngularJS_DirectivesExample, $asm, {});
 	ss.initClass($TestAngularJS_ExpanderController, $asm, {
 		toggle: function() {
@@ -609,6 +594,53 @@
 		}
 	});
 	ss.initClass($TestAngularJS_ShoppingCartExample, $asm, {});
+	ss.initClass($TestAngularJS_SpecialAnimation, $asm, {
+		GetDefinition: function() {
+			var removeClass = ss.mkdel(this, function(element, className, doneCallback) {
+				// keep tracks of the timer
+				var timer_id = 0;
+				// the cancel/end animation funcion
+				var cancelCallback = function() {
+					window.clearInterval(timer_id);
+				};
+				// the function that updated the control
+				var OnTick = ss.mkdel(this, function(el) {
+					var l = el.textContent.length;
+					if (l < this.$scrolltext.length) {
+						el.textContent = this.$scrolltext.substr(0, l + 1);
+					}
+					else {
+						cancelCallback();
+						// stops the animation
+						doneCallback();
+					}
+				});
+				if (className === 'ng-hide') {
+					// We're unhiding the element, i.e. showing the element
+					var el1 = element[0];
+					el1.textContent = '*';
+					timer_id = window.setInterval(function() {
+						OnTick(el1);
+					}, 250);
+				}
+				else {
+					doneCallback();
+				}
+				return cancelCallback;
+			});
+			// Action<bool> addClass(element, string className, Action done)
+			var addClass = function(element1, className1, done) {
+				if (className1 === 'ng-hide') {
+					// We're hiding the element
+					done();
+				}
+				else {
+					done();
+				}
+			};
+			return { addClass: addClass, removeClass: removeClass };
+		}
+	}, null, [AngularJS.Animate.IAnimation]);
 	ss.initClass($TestAngularJS_StartUpController, $asm, {
 		computeNeeded: function() {
 			this.fundingNeeded = this.fundingStartingEstimate * 10;
