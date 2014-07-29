@@ -12,7 +12,7 @@ namespace AngularJS
 {         
    ///<summary>
    ///  Exposes the $inject property field to injectable JavaScript functions
-   ///<summary>
+   ///</summary>
    [Imported]
    public sealed class Injectable
    {

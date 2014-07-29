@@ -346,6 +346,7 @@
 		SpecRunner: function() {
 			this.Constant();
 			this.Value();
+			this.Parse();
 			this.Filters();
 		},
 		Constant: function() {
@@ -379,6 +380,22 @@
 				}));
 				it('should return the expected value', ss.mkdel(this, function() {
 					expect(testvalue).toBe(42);
+				}));
+			}));
+		},
+		Parse: function() {
+			describe('$parse', ss.mkdel(this, function() {
+				var injector = angular.injector(['ng']);
+				var _parse = injector.get('$parse');
+				var getter = _parse('user.name');
+				var setter = getter.assign;
+				var context = { user: { name: 'angular' } };
+				var locals = { user: { name: 'local' } };
+				it('should read and write context in a parsed expression', ss.mkdel(this, function() {
+					expect(getter(context)).toEqual('angular');
+					setter(context, 'newValue');
+					expect(context.user.name).toEqual('newValue');
+					expect(getter(context, locals)).toEqual('local');
 				}));
 			}));
 		},

@@ -13,10 +13,10 @@ namespace AngularJS
    [Imported]
    public sealed class Element
    {
-      public dynamic controller(string name) {return null;}
-      public dynamic injector() {return null;}
-      public dynamic scope() {return null;}
-      public dynamic inherithedData() {return null;}
+      public object controller(string name) { return null; }
+      public Injector injector() { return null; }
+      public object scope() { return null; }
+      public object inherithedData() { return null; }
             
       public void bind(JsDictionary events) {}      
       public void bind(string eventType, Action eventHandler) {}
