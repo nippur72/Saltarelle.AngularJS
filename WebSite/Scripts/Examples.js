@@ -265,8 +265,10 @@
 	global.TestAngularJS.ShoppingCartExample = $TestAngularJS_ShoppingCartExample;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.SpecialAnimation
-	var $TestAngularJS_SpecialAnimation = function() {
+	var $TestAngularJS_SpecialAnimation = function(_interval) {
 		this.$scrolltext = "*** CBM BASIC V2 *** 3583 BYTES FREE READY. 10 PRINT 'HELLO' 20 GOTO 10 RUN";
+		this.$Interval = null;
+		this.$Interval = _interval;
 	};
 	$TestAngularJS_SpecialAnimation.__typeName = 'TestAngularJS.SpecialAnimation';
 	global.TestAngularJS.SpecialAnimation = $TestAngularJS_SpecialAnimation;
@@ -598,11 +600,11 @@
 		GetDefinition: function() {
 			var removeClass = ss.mkdel(this, function(element, className, doneCallback) {
 				// keep tracks of the timer
-				var timer_id = 0;
+				var timerPromise = null;
 				// the cancel/end animation funcion
-				var cancelCallback = function() {
-					window.clearInterval(timer_id);
-				};
+				var cancelCallback = ss.mkdel(this, function() {
+					this.$Interval.cancel(timerPromise);
+				});
 				// the function that updated the control
 				var OnTick = ss.mkdel(this, function(el) {
 					var l = el.textContent.length;
@@ -619,9 +621,9 @@
 					// We're unhiding the element, i.e. showing the element
 					var el1 = element[0];
 					el1.textContent = '*';
-					timer_id = window.setInterval(function() {
+					timerPromise = this.$Interval(function() {
 						OnTick(el1);
-					}, 250);
+					}, 100);
 				}
 				else {
 					doneCallback();

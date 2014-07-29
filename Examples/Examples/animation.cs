@@ -45,22 +45,29 @@ namespace TestAngularJS
          runAnimation = !runAnimation;
       }
    }    
-   
+
    public class SpecialAnimation : IAnimation
    {      
       private string scrolltext = "*** CBM BASIC V2 *** 3583 BYTES FREE READY. 10 PRINT 'HELLO' 20 GOTO 10 RUN";
+
+      private Interval Interval;
+
+      public SpecialAnimation(Interval _interval)
+      {
+         this.Interval = _interval;
+      }
 
       public object GetDefinition()
       {         
          Func<List<System.Html.Element>,string,Action,Action> removeClass = (element,className,doneCallback)=>
          {                                   
             // keep tracks of the timer
-            int timer_id = 0;
+            Promise timerPromise = null;
 
             // the cancel/end animation funcion
             Action cancelCallback = ()=>
             { 
-               Window.ClearInterval(timer_id); 
+               Interval.Cancel(timerPromise);               
             };
 
             // the function that updated the control
@@ -84,7 +91,7 @@ namespace TestAngularJS
                var el = element[0];
                el.TextContent="*";               
                
-               timer_id = Window.SetInterval(()=>OnTick(el),250);
+               timerPromise = Interval.Set(()=>OnTick(el),100);               
             } 
             else doneCallback(); 
 
@@ -104,5 +111,5 @@ namespace TestAngularJS
          
          return new { addClass=addClass, removeClass=removeClass };
       }
-   }
+   }   
 }

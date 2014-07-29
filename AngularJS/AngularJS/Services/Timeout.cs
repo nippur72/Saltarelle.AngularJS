@@ -12,7 +12,7 @@ namespace AngularJS
 {             
    [Imported]   
    public sealed class Timeout
-   {
+   {      
       [InlineCode("{this}({function})")]
       public Promise Set(Action function) { return null; }
 
