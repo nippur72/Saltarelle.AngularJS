@@ -14,10 +14,22 @@ public class JasmineTests : JasmineSuite
 {
    public void SpecRunner()
    {      
-      Constant();
-      Value();
-      Parse();
+      describe("Angular.Module",()=>
+      {
+         Constant();
+         Value();
+      });
+
+      describe("Angular services",()=>
+      {
+         Parse();
+         Locale();
+         Interpolate();
+      });
+
       Filters();
+
+      Version();
    }
 
    public void Constant()
@@ -92,6 +104,52 @@ public class JasmineTests : JasmineSuite
       });
    }
 
+   public void Locale()
+   {      
+      describe("$locale",()=>
+      {
+         Injector injector = Angular.Injector("ng");                 
+         var loc = injector.Get<Locale>("$locale");
+
+         it("should be set to english language/US by default",()=>
+         {
+            expect(loc.id).toEqual("en-us");            
+         });
+      });
+   }
+
+   public void Interpolate()
+   {      
+      describe("$interpolate",()=>
+      {
+         Injector injector = Angular.Injector("ng");                 
+         var interpolate = injector.Get<Interpolate>("$interpolate");
+
+         it("should interpolate strings with given context",()=>
+         {            
+            var exp = interpolate.Call("Hello {{name | uppercase}}!");
+            var context = new {name="Angular"};
+            expect(exp(context)).toEqual("Hello ANGULAR!");
+         });
+
+         it("should interpolate strings in 'forgiving' mode",()=>
+         {            
+            var context = new {greeting="Hello" /*, name: undefined*/ };            
+            var exp = interpolate.Call("{{greeting}} {{name}}!");
+            expect(exp(context)).toEqual("Hello !");
+         });
+
+         it("should interpolate strings in 'allOrNothing' mode",()=>
+         {                      
+            var context      = new {greeting="Hello", /*, name: undefined*/ };                        
+            var context_full = new {greeting="Hello", name="Angular" };                        
+            var exp = interpolate.Call("{{greeting}} {{name}}!", false, null, true);
+            expect(exp(context     )).toBeUndefined();                        
+            expect(exp(context_full)).toEqual("Hello Angular!");
+         });
+      });
+   }
+
 
    public void Filters()
    {
@@ -120,6 +178,18 @@ public class JasmineTests : JasmineSuite
             it("should format short dates",()=>{ expect(f.Filter(d,"dd/MM/yy")).toBe("03/05/72"); });
             it("should format long dates",()=>{ expect(f.Filter(d,"dd/MM/yyyy")).toBe("03/05/1972"); });
          });      
+      });
+   }
+
+   public void Version()
+   {
+      describe("Angular.Version",()=>
+      {
+         it("should be at least 1.3 in this testing environment",()=>
+         {
+            expect(Angular.Version.major).not.toBeLessThan(1);
+            expect(Angular.Version.minor).not.toBeLessThan(3);
+         });
       });
    }
 }

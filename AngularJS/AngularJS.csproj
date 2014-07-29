@@ -40,6 +40,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Angular.Route\RouteProvider.cs" />
     <Compile Include="Angular.UI-Bootstrap\Bootstrap.cs" />
     <Compile Include="Angular.UI-Router\UrlRouterProvider.cs" />
     <Compile Include="Angular.UI-Router\StateParams.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Angular.UI-Router\State.cs" />
     <Compile Include="Angular.UI-Router\StateConfig.cs" />
     <Compile Include="AngularJS\Classes\Attributes.cs" />
+    <Compile Include="AngularJS\Classes\Version.cs" />
     <Compile Include="AngularJS\ModuleHelper\Injectable.cs" />
     <Compile Include="AngularJS\ModuleHelper\TypeExtensions.cs" />
     <Compile Include="AngularJS\Directives\Directive.cs" />
@@ -57,6 +59,11 @@
     <Compile Include="Angular.Animate\Animate.cs" />
     <Compile Include="Angular.UI-Router\UiRouter.cs" />
     <Compile Include="Angular.Resource\Resource.cs" />
+    <Compile Include="AngularJS\Provider\LocationProvider.cs" />
+    <Compile Include="AngularJS\Services\Controller.cs" />
+    <Compile Include="AngularJS\Services\Filter.cs" />
+    <Compile Include="AngularJS\Services\Locale.cs" />
+    <Compile Include="AngularJS\Services\Interpolate.cs" />
     <Compile Include="AngularJS\Services\Parse.cs" />
     <Compile Include="AngularJS\Services\ExceptionHandler.cs" />
     <Compile Include="AngularJS\Services\Compile.cs" />
@@ -64,6 +71,7 @@
     <Compile Include="AngularJS\Services\Log.cs" />
     <Compile Include="AngularJS\Services\Q.cs" />
     <Compile Include="AngularJS\Services\RootElement.cs" />
+    <Compile Include="AngularJS\Services\Document.cs" />
     <Compile Include="AngularJS\Services\Window.cs" />
     <Compile Include="AngularJS\Services\Timeout.cs" />
     <Compile Include="AngularJS\Classes\Element.cs" />

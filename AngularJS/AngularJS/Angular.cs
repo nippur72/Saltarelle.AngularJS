@@ -76,7 +76,7 @@ namespace AngularJS
       [ScriptName("toJson")] public static string ToJson(string s) { return null; }
       [ScriptName("toJson")] public static string ToJson(string s, bool pretty) { return null; }
       [ScriptName("uppercase")] public static string UpperCase(string s) { return null; }
-      [ScriptName("version"), IntrinsicProperty] public static JsDictionary Version { get { return null; } }
+      [ScriptName("version"), IntrinsicProperty] public static Version Version { get { return null; } }
 
       #endregion
    }  

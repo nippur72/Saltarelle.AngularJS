@@ -344,10 +344,17 @@
 	global.TestAngularJS.UiRouterExample = $TestAngularJS_UiRouterExample;
 	ss.initClass($JasmineTests, $asm, {
 		SpecRunner: function() {
-			this.Constant();
-			this.Value();
-			this.Parse();
+			describe('Angular.Module', ss.mkdel(this, function() {
+				this.Constant();
+				this.Value();
+			}));
+			describe('Angular services', ss.mkdel(this, function() {
+				this.Parse();
+				this.Locale();
+				this.Interpolate();
+			}));
 			this.Filters();
+			this.Version();
 		},
 		Constant: function() {
 			var M = angular.module('test', []);
@@ -399,6 +406,38 @@
 				}));
 			}));
 		},
+		Locale: function() {
+			describe('$locale', ss.mkdel(this, function() {
+				var injector = angular.injector(['ng']);
+				var loc = injector.get('$locale');
+				it('should be set to english language/US by default', ss.mkdel(this, function() {
+					expect(loc.id).toEqual('en-us');
+				}));
+			}));
+		},
+		Interpolate: function() {
+			describe('$interpolate', ss.mkdel(this, function() {
+				var injector = angular.injector(['ng']);
+				var interpolate = injector.get('$interpolate');
+				it('should interpolate strings with given context', ss.mkdel(this, function() {
+					var exp = interpolate('Hello {{name | uppercase}}!');
+					var context = { name: 'Angular' };
+					expect(exp(context)).toEqual('Hello ANGULAR!');
+				}));
+				it("should interpolate strings in 'forgiving' mode", ss.mkdel(this, function() {
+					var context1 = { greeting: 'Hello' };
+					var exp1 = interpolate('{{greeting}} {{name}}!');
+					expect(exp1(context1)).toEqual('Hello !');
+				}));
+				it("should interpolate strings in 'allOrNothing' mode", ss.mkdel(this, function() {
+					var context2 = { greeting: 'Hello' };
+					var context_full = { greeting: 'Hello', name: 'Angular' };
+					var exp2 = interpolate('{{greeting}} {{name}}!', false, null, true);
+					expect(exp2(context2)).toBeUndefined();
+					expect(exp2(context_full)).toEqual('Hello Angular!');
+				}));
+			}));
+		},
 		Filters: function() {
 			describe('Filters', ss.mkdel(this, function() {
 				describe('Currency filter', ss.mkdel(this, function() {
@@ -424,6 +463,14 @@
 					it('should format long dates', ss.mkdel(this, function() {
 						expect(f1(d, 'dd/MM/yyyy')).toBe('03/05/1972');
 					}));
+				}));
+			}));
+		},
+		Version: function() {
+			describe('Angular.Version', ss.mkdel(this, function() {
+				it('should be at least 1.3 in this testing environment', ss.mkdel(this, function() {
+					expect(angular.version.major).not.toBeLessThan(1);
+					expect(angular.version.minor).not.toBeLessThan(3);
 				}));
 			}));
 		}

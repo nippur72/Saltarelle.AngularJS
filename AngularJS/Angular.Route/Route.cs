@@ -29,31 +29,10 @@ namespace AngularJS
       public RouteMap()
       {
       }
-   }
-
-   [Imported]
-   public sealed class RouteProvider
-   {
-      [InlineCode("{this}.otherwise({route})")]
-      public RouteProvider otherwise(RouteMap route)
-      {
-         return this;
-      }
-
-      [InlineCode("{this}.when({path},{route})")]
-      public RouteProvider when(string path, RouteMap route)
-      {
-         return this;
-      }
-   }
+   }  
    
    public class RouteParams
    {
-   }
-
-   [Imported]
-   public sealed class RouteProviderExtension
-   {
-   }
+   }  
 }
 
