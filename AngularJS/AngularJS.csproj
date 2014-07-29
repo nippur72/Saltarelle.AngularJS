@@ -61,6 +61,7 @@
     <Compile Include="AngularJS\Services\ExceptionHandler.cs" />
     <Compile Include="AngularJS\Services\Compile.cs" />
     <Compile Include="AngularJS\Services\Interval.cs" />
+    <Compile Include="AngularJS\Services\Log.cs" />
     <Compile Include="AngularJS\Services\Q.cs" />
     <Compile Include="AngularJS\Services\RootElement.cs" />
     <Compile Include="AngularJS\Services\Window.cs" />
