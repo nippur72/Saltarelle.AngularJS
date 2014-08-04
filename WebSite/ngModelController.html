@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html ng-app='myApp' xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <script type="text/javascript" src="libs/angular.js"></script>
+   <script type="text/javascript" src="libs/angular-sanitize.js"></script>
+   <script type="text/javascript" src="libs/mscorlib.js"></script>
+   <script type="text/javascript" src="Scripts/Saltarelle.AngularJS.js?1500"></script>
+   <script type="text/javascript" src="Scripts/Examples.js?1500"></script>
+   <script type="text/javascript">TestAngularJS.ngModelControllerExample.Main();</script>
+   <style>
+      [contenteditable] {
+         border: 1px solid black;
+         background-color: white;
+         min-height: 20px;
+      }
+
+      .ng-invalid {
+         border: 1px solid red;
+      }
+   </style>
+</head>
+<body>
+   <h1>ngModelController example</h1>
+
+   <p>This example is an adaptation from the Angular docs. Making empty the following input field should make it red-framed and the word "required" should appear.</p>
+
+   <form name="myForm">
+      <div contenteditable name="myWidget" ng-model="userContent" strip-br="true" required>
+         Change me!
+      </div>
+      <span ng-show="myForm.myWidget.$error.required">Required!</span>
+      <hr>
+      <textarea ng-model="userContent"></textarea>
+   </form>
+</body>
+</html>
+
+
+

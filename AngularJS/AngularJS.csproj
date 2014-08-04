@@ -49,6 +49,7 @@
     <Compile Include="Angular.UI-Router\State.cs" />
     <Compile Include="Angular.UI-Router\StateConfig.cs" />
     <Compile Include="AngularJS\Classes\Attributes.cs" />
+    <Compile Include="AngularJS\Classes\NgModelController.cs" />
     <Compile Include="AngularJS\Classes\Version.cs" />
     <Compile Include="AngularJS\ModuleHelper\Injectable.cs" />
     <Compile Include="AngularJS\ModuleHelper\TypeExtensions.cs" />

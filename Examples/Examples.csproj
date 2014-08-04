@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Assembly.cs" />
     <Compile Include="Examples\animation.cs" />
+    <Compile Include="Examples\ngModelController.cs" />
     <Compile Include="Examples\old_examples\uirouter.cs" />
     <Compile Include="Examples\old_examples\resource_example.cs" />
     <Compile Include="Examples\old_examples\phone.cs" />

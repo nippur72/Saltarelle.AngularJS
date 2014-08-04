@@ -71,6 +71,15 @@
 	$TestAngularJS_CartItem.__typeName = 'TestAngularJS.CartItem';
 	global.TestAngularJS.CartItem = $TestAngularJS_CartItem;
 	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.contenteditableDirective
+	var $TestAngularJS_contenteditableDirective = function(_sce) {
+		this.$_sce = null;
+		// save the injectable
+		this.$_sce = _sce;
+	};
+	$TestAngularJS_contenteditableDirective.__typeName = 'TestAngularJS.contenteditableDirective';
+	global.TestAngularJS.contenteditableDirective = $TestAngularJS_contenteditableDirective;
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.DirectivesExample
 	var $TestAngularJS_DirectivesExample = function() {
 	};
@@ -143,6 +152,17 @@
 	};
 	$TestAngularJS_MyController.__typeName = 'TestAngularJS.MyController';
 	global.TestAngularJS.MyController = $TestAngularJS_MyController;
+	////////////////////////////////////////////////////////////////////////////////
+	// TestAngularJS.ngModelControllerExample
+	var $TestAngularJS_ngModelControllerExample = function() {
+	};
+	$TestAngularJS_ngModelControllerExample.__typeName = 'TestAngularJS.ngModelControllerExample';
+	$TestAngularJS_ngModelControllerExample.Main = function() {
+		var app = angular.module('myApp', ['ngSanitize']);
+		AngularJS.ModuleBuilder.Directive($TestAngularJS_contenteditableDirective).call(null, app);
+		AngularJS.ModuleBuilder.Controller($TestAngularJS_TestDirectiveController).call(null, app);
+	};
+	global.TestAngularJS.ngModelControllerExample = $TestAngularJS_ngModelControllerExample;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.Person
 	var $TestAngularJS_Person = function() {
@@ -534,6 +554,45 @@
 		}
 	});
 	ss.initClass($TestAngularJS_CartItem, $asm, {});
+	ss.initClass($TestAngularJS_contenteditableDirective, $asm, {
+		GetDefinition: function() {
+			var def = new AngularJS.DirectiveDefinitionHelper();
+			def.Restrict = 2;
+			def.RequireDirective('ngModel', false, true);
+			def.Link = ss.mkdel(this, this.Link);
+			return def.ToDefinitionObject();
+		},
+		Link: function(scope, el, attrs, ngmodel) {
+			// this directive required the directive ng-model, and its controller is passed into Link
+			var ngModel = ngmodel;
+			var element = el;
+			if (ss.isNullOrUndefined(ngModel)) {
+				return;
+			}
+			// do nothing if no ng-model
+			// Write data to the model
+			var read = function() {
+				var html = element.html();
+				// When we clear the content editable the browser leaves a <br> behind
+				// If strip-br attribute is provided then we strip this out
+				var stripBr = attrs['stripBr'];
+				if (!!(stripBr !== '' && html === '<br>')) {
+					html = '';
+				}
+				ngModel.$setViewValue(ss.cast(html, String));
+			};
+			// Specify how UI should be updated
+			ngModel.$render = function() {
+				element.html(this.$_sce.getTrustedHtml(ngModel.$viewValue));
+			};
+			// Listen for change events to enable binding
+			element.on('blur keyup change', function() {
+				scope.$apply(read);
+			});
+			read();
+			// initialize
+		}
+	}, null, [AngularJS.IDirective]);
 	ss.initClass($TestAngularJS_DirectivesExample, $asm, {});
 	ss.initClass($TestAngularJS_ExpanderController, $asm, {
 		toggle: function() {
@@ -628,6 +687,7 @@
 			this.$state.go('state2.inner');
 		}
 	});
+	ss.initClass($TestAngularJS_ngModelControllerExample, $asm, {});
 	ss.initClass($TestAngularJS_Person, $asm, {}, null, [AngularJS.IResourceObject]);
 	ss.initClass($TestAngularJS_PhoneConfig, $asm, {});
 	ss.initClass($TestAngularJS_PhoneExample, $asm, {});
