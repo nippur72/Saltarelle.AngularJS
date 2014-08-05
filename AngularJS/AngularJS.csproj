@@ -60,6 +60,7 @@
     <Compile Include="Angular.Animate\Animate.cs" />
     <Compile Include="Angular.UI-Router\UiRouter.cs" />
     <Compile Include="Angular.Resource\Resource.cs" />
+    <Compile Include="AngularJS\Classes\FormController.cs" />
     <Compile Include="AngularJS\Provider\LocationProvider.cs" />
     <Compile Include="AngularJS\Services\Controller.cs" />
     <Compile Include="AngularJS\Services\Filter.cs" />
