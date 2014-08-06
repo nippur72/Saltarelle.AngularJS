@@ -97,34 +97,40 @@
 		}
 		return result;
 	};
-	$AngularJS_ModuleBuilder.FixAnnotation = function(type) {
+	$AngularJS_ModuleBuilder.FixAnnotation = function(type, annotations) {
 		var constructor = $AngularJS_TypeExtensionMethods.GetConstructorFunction(type);
-		// gets and annotate constructor parameter; annotations are stored in type.$inject                                             
-		var parameters = $AngularJS_ModuleBuilder.PatchDollarName$1(angular.injector().annotate(constructor));
-		// fix "$" in parameter names
+		var parameters = null;
+		// gets and annotate constructor parameter; annotations are stored in type.$inject
+		if (ss.isValue(annotations) && annotations.length > 0) {
+			parameters = annotations;
+		}
+		else {
+			// fix "$" in parameter names
+			parameters = $AngularJS_ModuleBuilder.PatchDollarName$1(angular.injector().annotate(constructor));
+		}
 		constructor.$inject = parameters;
 		return parameters;
 	};
 	$AngularJS_ModuleBuilder.Controller = function(T) {
-		return function(module) {
+		return function(module, annotations) {
 			var type = T;
-			$AngularJS_ModuleBuilder.FixAnnotation(type);
+			$AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			module.controller(ss.getTypeName(type), type);
 		};
 	};
 	$AngularJS_ModuleBuilder.Service = function(T) {
-		return function(module) {
+		return function(module, annotations) {
 			var type = T;
-			$AngularJS_ModuleBuilder.FixAnnotation(type);
+			$AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			// patch service name for names starting with "$"                
 			var servicename = $AngularJS_ModuleBuilder.PatchDollarName(ss.getTypeName(T));
 			module.service(servicename, type);
 		};
 	};
 	$AngularJS_ModuleBuilder.Config = function(T) {
-		return function(module) {
+		return function(module, annotations) {
 			var type = T;
-			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// "run" function are called without a "this" reference, so we need to instantiate the class with "new"
 			var body = '{ new ' + ss.getTypeFullName(type) + '(' + plist + '); }';
@@ -134,9 +140,9 @@
 		};
 	};
 	$AngularJS_ModuleBuilder.Run = function(T) {
-		return function(module) {
+		return function(module, annotations) {
 			var type = T;
-			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// "run" function are called without a "this" reference, so we need to instantiate the class with "new"
 			var body = '{ new ' + ss.getTypeFullName(type) + '(' + plist + '); }';
@@ -146,9 +152,9 @@
 		};
 	};
 	$AngularJS_ModuleBuilder.Factory = function(T) {
-		return function(module) {
+		return function(module, annotations) {
 			var type = T;
-			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// register all public instance methods as factory                      
 			var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
@@ -161,9 +167,9 @@
 		};
 	};
 	$AngularJS_ModuleBuilder.Filter = function(T) {
-		return function(module) {
+		return function(module, annotations) {
 			var type = T;
-			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// register all public instance methods as filters                      
 			var $t1 = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
@@ -177,9 +183,9 @@
 		};
 	};
 	$AngularJS_ModuleBuilder.Directive = function(T) {
-		return function(module) {
+		return function(module, annotations) {
 			var type = T;
-			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// a directive is a (injectable) function returning a definition object
 			var body = '{ var $ob = new ' + ss.getTypeFullName(type) + '(' + plist + '); return $ob.GetDefinition(); }';
@@ -194,9 +200,9 @@
 		};
 	};
 	$AngularJS_ModuleBuilder.Animation = function(T) {
-		return function(module, name) {
+		return function(module, name, annotations) {
 			var type = T;
-			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type);
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// an animation is a (injectable) function returning a definition object
 			var body = '{ var $ob = new ' + ss.getTypeFullName(type) + '(' + plist + '); return $ob.GetDefinition(); }';
@@ -444,7 +450,7 @@
 			}
 			// maps (shared) controller         
 			if (ss.isValue(this.$ControllerType)) {
-				$AngularJS_ModuleBuilder.FixAnnotation(this.$ControllerType);
+				$AngularJS_ModuleBuilder.FixAnnotation(this.$ControllerType, []);
 				result['controller'] = this.$ControllerType;
 			}
 			// maps controllerAs 

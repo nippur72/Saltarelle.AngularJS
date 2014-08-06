@@ -39,16 +39,24 @@ namespace AngularJS
             if(t!=parameters.Length-1) result+=",";
          }
          return result;
-      }      
+      }
 
-      public static string[] FixAnnotation(Type type)
+      public static string[] FixAnnotation(Type type, params string[] annotations)
       {
          Injectable constructor = type.GetConstructorFunction();
-         
-         // gets and annotate constructor parameter; annotations are stored in type.$inject                                             
-         var parameters = PatchDollarName(Angular.Injector().Annotate(constructor));
-         
-         // fix "$" in parameter names
+         string[] parameters = null;
+
+         // gets and annotate constructor parameter; annotations are stored in type.$inject
+         if (annotations != null && annotations.Length > 0)
+         {
+             parameters = annotations;
+         }
+         else
+         {
+             // fix "$" in parameter names
+             parameters = PatchDollarName(Angular.Injector().Annotate(constructor));
+         }
+
          constructor.Inject = parameters;
          
          return parameters;                        
@@ -58,21 +66,21 @@ namespace AngularJS
 
       #region Controllers      
 
-      public static void Controller<T>(this Module module)
+      public static void Controller<T>(this Module module, params string[] annotations)
       {         
          Type type = typeof(T);
-         FixAnnotation(type);                  
+         FixAnnotation(type, annotations);   
          Controller(module,type.Name,type);
       }
 
       #endregion
 
       #region Services
-      
-      public static void Service<T>(this Module module)
+
+      public static void Service<T>(this Module module, params string[] annotations)
       {         
          Type type = typeof(T);
-         FixAnnotation(type); 
+         FixAnnotation(type, annotations); 
 
          // patch service name for names starting with "$"                
          string servicename = PatchDollarName(typeof(T).Name); 
@@ -84,10 +92,10 @@ namespace AngularJS
 
       #region Configs
 
-      public static void Config<T>(this Module module)
+      public static void Config<T>(this Module module, params string[] annotations)
       {
          Type type = typeof(T);
-         var parameters = FixAnnotation(type);          
+         var parameters = FixAnnotation(type, annotations);          
          var plist = CommaSeparatedList(parameters);
                   
          // "run" function are called without a "this" reference, so we need to instantiate the class with "new"
@@ -102,10 +110,10 @@ namespace AngularJS
 
       #region Runs
 
-      public static void Run<T>(this Module module)
+      public static void Run<T>(this Module module, params string[] annotations)
       {       
          Type type = typeof(T);
-         var parameters = FixAnnotation(type);          
+         var parameters = FixAnnotation(type, annotations);          
          var plist = CommaSeparatedList(parameters);
                   
          // "run" function are called without a "this" reference, so we need to instantiate the class with "new"
@@ -121,10 +129,10 @@ namespace AngularJS
      
       #region Factory
 
-      public static void Factory<T>(this Module module)
+      public static void Factory<T>(this Module module, params string[] annotations)
       {                  
          Type type = typeof(T);
-         var parameters = FixAnnotation(type); 
+         var parameters = FixAnnotation(type, annotations); 
          var plist = CommaSeparatedList(parameters);
                   
          // register all public instance methods as factory                      
@@ -139,11 +147,11 @@ namespace AngularJS
       #endregion
 
       #region Filters
-     
-      public static void Filter<T>(this Module module)
+
+      public static void Filter<T>(this Module module, params string[] annotations)
       {         
          Type type = typeof(T);
-         var parameters = FixAnnotation(type); 
+         var parameters = FixAnnotation(type, annotations); 
          var plist = CommaSeparatedList(parameters);                         
 
          // register all public instance methods as filters                      
@@ -159,10 +167,10 @@ namespace AngularJS
 
       #region Directives                 
 
-      public static void Directive<T>(this Module module) where T: IDirective
+      public static void Directive<T>(this Module module, params string[] annotations) where T : IDirective
       {        
          Type type = typeof(T);
-         var parameters = FixAnnotation(type); 
+         var parameters = FixAnnotation(type, annotations); 
          var plist = CommaSeparatedList(parameters);
 
          // a directive is a (injectable) function returning a definition object
@@ -181,10 +189,10 @@ namespace AngularJS
 
       #region Animations            
 
-      public static void Animation<T>(this Module module, string name) where T: AngularJS.Animate.IAnimation
+      public static void Animation<T>(this Module module, string name, params string[] annotations) where T : AngularJS.Animate.IAnimation
       {         
          Type type = typeof(T);
-         var parameters = FixAnnotation(type); 
+         var parameters = FixAnnotation(type, annotations); 
          var plist = CommaSeparatedList(parameters);
 
          // an animation is a (injectable) function returning a definition object
