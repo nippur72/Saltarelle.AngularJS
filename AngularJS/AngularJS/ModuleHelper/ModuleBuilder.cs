@@ -42,21 +42,32 @@ namespace AngularJS
       }
 
       public static string[] FixAnnotation(Type type, params string[] annotations)
-      {
+      {         
          Injectable constructor = type.GetConstructorFunction();
          string[] parameters = null;
-
-         // gets and annotate constructor parameter; annotations are stored in type.$inject
-         if (annotations != null && annotations.Length > 0)
+         
+         if(annotations != null && annotations.Length > 0)
          {
+             // annotations are specified as argument 
              parameters = annotations;
          }
          else
          {
-             // fix "$" in parameter names
-             parameters = PatchDollarName(Angular.Injector().Annotate(constructor));
+            var attrs = type.GetCustomAttributes(typeof(InjectAttribute),true);
+            if(attrs.Length!=0)
+            {
+               // annotations are specified with the [Inject] decorator 
+               parameters = (attrs[0] as InjectAttribute).Injectables;
+            }
+            else
+            {
+               // annotations are read from constructor parameter names
+               // fix "$" in parameter names
+               parameters = PatchDollarName(Angular.Injector().Annotate(constructor));
+            }
          }
-
+        
+         // annotations are stored in type.$inject
          constructor.Inject = parameters;
          
          return parameters;                        

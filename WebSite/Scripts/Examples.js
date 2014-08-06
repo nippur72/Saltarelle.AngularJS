@@ -11,6 +11,22 @@
 	$JasmineTests.__typeName = 'JasmineTests';
 	global.JasmineTests = $JasmineTests;
 	////////////////////////////////////////////////////////////////////////////////
+	// TestDIService1
+	var $TestDIService1 = function(injected_object) {
+		this.injected_value = null;
+		this.injected_value = injected_object;
+	};
+	$TestDIService1.__typeName = 'TestDIService1';
+	global.TestDIService1 = $TestDIService1;
+	////////////////////////////////////////////////////////////////////////////////
+	// TestDIService2
+	var $TestDIService2 = function(injected_object) {
+		this.injected_value = null;
+		this.injected_value = injected_object;
+	};
+	$TestDIService2.__typeName = 'TestDIService2';
+	global.TestDIService2 = $TestDIService2;
+	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.AccordionController
 	var $TestAngularJS_AccordionController = function() {
 		this.accordiontitle = 'This is an accordion';
@@ -364,6 +380,7 @@
 	global.TestAngularJS.UiRouterExample = $TestAngularJS_UiRouterExample;
 	ss.initClass($JasmineTests, $asm, {
 		SpecRunner: function() {
+			this.DependencyInjection();
 			describe('Angular.Module', ss.mkdel(this, function() {
 				this.Constant();
 				this.Value();
@@ -375,6 +392,38 @@
 			}));
 			this.Filters();
 			this.Version();
+		},
+		DependencyInjection: function() {
+			describe('Dependecy injection', ss.mkdel(this, function() {
+				it('should work with implicit annotation in constructor parameter names', ss.mkdel(this, function() {
+					var M = angular.module('test1', []);
+					AngularJS.ModuleBuilder.Service($TestDIService1).call(null, M, []);
+					// TestDIService1 is a service with an implicit injection named "injected_object"
+					M.constant('injected_object', 42);
+					var injector = angular.injector(['test1']);
+					var serv = injector.get('TestDIService1');
+					expect(serv.injected_value).toBe(42);
+				}));
+				it('should work with explicit annotation', ss.mkdel(this, function() {
+					var M1 = angular.module('test2', []);
+					M1.constant('injected_object', 16);
+					M1.constant('explicit_injected_object', 42);
+					AngularJS.ModuleBuilder.Service($TestDIService1).call(null, M1, ['explicit_injected_object']);
+					// TestDIService1 is a service with an implicit injection named "injected_object"
+					var injector1 = angular.injector(['test2']);
+					var serv1 = injector1.get('TestDIService1');
+					expect(serv1.injected_value).toBe(42);
+				}));
+				it('should work with explicit annotation with [Inject] decorator', ss.mkdel(this, function() {
+					var M2 = angular.module('test3', []);
+					AngularJS.ModuleBuilder.Service($TestDIService2).call(null, M2, []);
+					// TestDIService2 is a service with an explicit attribute injection named "attribute_injected_object"
+					M2.constant('attribute_injected_object', 42);
+					var injector2 = angular.injector(['test3']);
+					var serv2 = injector2.get('TestDIService2');
+					expect(serv2.injected_value).toBe(42);
+				}));
+			}));
 		},
 		Constant: function() {
 			var M = angular.module('test', []);
@@ -495,6 +544,8 @@
 			}));
 		}
 	}, Object);
+	ss.initClass($TestDIService1, $asm, {});
+	ss.initClass($TestDIService2, $asm, {});
 	ss.initClass($TestAngularJS_AccordionController, $asm, {
 		clickme: function() {
 			window.alert('clicked!');
@@ -795,4 +846,5 @@
 	});
 	ss.initClass($TestAngularJS_UiRouterConfig, $asm, {});
 	ss.initClass($TestAngularJS_UiRouterExample, $asm, {});
+	ss.setMetadata($TestDIService2, { attr: [new AngularJS.InjectAttribute(['attribute_injected_object'])] });
 })();

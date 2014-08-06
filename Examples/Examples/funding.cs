@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Serialization;
 
 using AngularJS;
+using System.Diagnostics;
 
 namespace TestAngularJS
 {                           
@@ -22,15 +23,15 @@ namespace TestAngularJS
    public class StartUpController 
    {                    	                                                                                               
       public double fundingStartingEstimate;
-      public double fundingNeeded;
-            
+      public double fundingNeeded;        
+      
       public StartUpController(Scope _scope)
       {
          fundingStartingEstimate = 0;
 
          _scope.Watch<double>( ()=>{ return fundingStartingEstimate; }, compneeded);          
       }
-
+      
       public void computeNeeded() 
       {
          fundingNeeded = fundingStartingEstimate * 10;

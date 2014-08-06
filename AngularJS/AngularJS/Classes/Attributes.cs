@@ -14,7 +14,7 @@ namespace AngularJS
    /// $compile.directive.Attributes 
    /// A shared object between directive compile / linking functions which contains normalized DOM element attributes.    
    /// </summary>
-   [Imported]
+   [Imported]   
    public sealed class Attributes
    {
       [IntrinsicProperty]

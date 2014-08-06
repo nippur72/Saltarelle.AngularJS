@@ -62,6 +62,14 @@
 	$AngularJS_IDirective.__typeName = 'AngularJS.IDirective';
 	global.AngularJS.IDirective = $AngularJS_IDirective;
 	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.InjectAttribute
+	var $AngularJS_InjectAttribute = function(annotations) {
+		this.Injectables = null;
+		this.Injectables = annotations;
+	};
+	$AngularJS_InjectAttribute.__typeName = 'AngularJS.InjectAttribute';
+	global.AngularJS.InjectAttribute = $AngularJS_InjectAttribute;
+	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.IResourceObject
 	var $AngularJS_IResourceObject = function() {
 	};
@@ -100,14 +108,23 @@
 	$AngularJS_ModuleBuilder.FixAnnotation = function(type, annotations) {
 		var constructor = $AngularJS_TypeExtensionMethods.GetConstructorFunction(type);
 		var parameters = null;
-		// gets and annotate constructor parameter; annotations are stored in type.$inject
 		if (ss.isValue(annotations) && annotations.length > 0) {
+			// annotations are specified as argument 
 			parameters = annotations;
 		}
 		else {
-			// fix "$" in parameter names
-			parameters = $AngularJS_ModuleBuilder.PatchDollarName$1(angular.injector().annotate(constructor));
+			var attrs = ss.getAttributes(type, $AngularJS_InjectAttribute, true);
+			if (attrs.length !== 0) {
+				// annotations are specified with the [Inject] decorator 
+				parameters = ss.safeCast(attrs[0], $AngularJS_InjectAttribute).Injectables;
+			}
+			else {
+				// annotations are read from constructor parameter names
+				// fix "$" in parameter names
+				parameters = $AngularJS_ModuleBuilder.PatchDollarName$1(angular.injector().annotate(constructor));
+			}
 		}
+		// annotations are stored in type.$inject
 		constructor.$inject = parameters;
 		return parameters;
 	};
@@ -472,6 +489,7 @@
 	});
 	ss.initClass($AngularJS_Event, $asm, {});
 	ss.initInterface($AngularJS_IDirective, $asm, { GetDefinition: null });
+	ss.initClass($AngularJS_InjectAttribute, $asm, {});
 	ss.initInterface($AngularJS_IResourceObject, $asm, {});
 	ss.initClass($AngularJS_ModuleBuilder, $asm, {});
 	ss.initClass($AngularJS_ResourceObjectExtensions, $asm, {});

@@ -22,11 +22,11 @@ namespace AngularJS
          return null;
       }
 
-      [ScriptName("$inject"), IntrinsicProperty]
+      [ScriptName("$inject"), IntrinsicProperty]  
       public string[] Inject
       {
           get; set;
       }
-   }
+   }   
 }
 

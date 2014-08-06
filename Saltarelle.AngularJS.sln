@@ -23,6 +23,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebSite(1)", "WebSite\", "{
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "14533"
 		VWDVirtualPath = "/"
+		SlnRelativePath = "WebSite\"
 	EndProjectSection
 	ProjectSection(ProjectDependencies) = postProject
 		{67CCC814-5E88-49A1-BF39-9555D27E8748} = {67CCC814-5E88-49A1-BF39-9555D27E8748}
@@ -36,8 +37,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Exampl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0DEE2A3D-4594-4DA0-83C6-0B0E57D4B545}"
 	ProjectSection(SolutionItems) = preProject
-		AngularJS\README.Directives.md = AngularJS\README.Directives.md
+		README.Animations.md = README.Animations.md
+		README.Config.md = README.Config.md
+		README.Controllers.md = README.Controllers.md
+		README.DependencyInjection.md = README.DependencyInjection.md
+		README.Differences.md = README.Differences.md
+		README.Directives.md = README.Directives.md
+		README.GettingStarted.md = README.GettingStarted.md
 		README.md = README.md
+		README.Modules.md = README.Modules.md
+		README.ServiceFactory.md = README.ServiceFactory.md
 		AngularJS\todo.txt = AngularJS\todo.txt
 		WebEssentials-Settings.json = WebEssentials-Settings.json
 	EndProjectSection
