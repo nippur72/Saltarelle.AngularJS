@@ -19,27 +19,27 @@ namespace AngularJS.Animate
    [Imported]   
    public sealed class Animate
    {      
-      public Action enter(Element element, Element parentElement, Element afterElement) { return null; }
-      public Action enter(Element element, Element parentElement, Element afterElement, Action doneCallback) { return null; }
+      public Action enter(jElement element, jElement parentElement, jElement afterElement) { return null; }
+      public Action enter(jElement element, jElement parentElement, jElement afterElement, Action doneCallback) { return null; }
 
-      public Action leave(Element element) { return null; }
-      public Action leave(Element element, Action doneCallback) { return null; }
+      public Action leave(jElement element) { return null; }
+      public Action leave(jElement element, Action doneCallback) { return null; }
 
-      public Action move(Element element, Element parentElement, Element afterElement) { return null; }
-      public Action move(Element element, Element parentElement, Element afterElement, Action doneCallback) { return null; }
+      public Action move(jElement element, jElement parentElement, jElement afterElement) { return null; }
+      public Action move(jElement element, jElement parentElement, jElement afterElement, Action doneCallback) { return null; }
 
-      public Action addClass(Element element, string className) { return null; }
-      public Action addClass(Element element, string className, Action doneCallback) { return null; }
+      public Action addClass(jElement element, string className) { return null; }
+      public Action addClass(jElement element, string className, Action doneCallback) { return null; }
 
-      public Action removeClass(Element element, string className) { return null; }
-      public Action removeClass(Element element, string className, Action doneCallback) { return null; }
+      public Action removeClass(jElement element, string className) { return null; }
+      public Action removeClass(jElement element, string className, Action doneCallback) { return null; }
 
-      public Action setClass(Element element, string add, string remove) { return null; }
-      public Action setClass(Element element, string add, string remove, Action doneCallback) { return null; }
+      public Action setClass(jElement element, string add, string remove) { return null; }
+      public Action setClass(jElement element, string add, string remove, Action doneCallback) { return null; }
       
       public bool enabled() { return false; }
       public bool enabled(bool value) { return false; }
-      public bool enabled(bool value, Element element) { return false; }      
+      public bool enabled(bool value, jElement element) { return false; }      
    } 
    
    public interface IAnimation

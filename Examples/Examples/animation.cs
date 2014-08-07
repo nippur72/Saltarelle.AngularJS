@@ -59,10 +59,10 @@ namespace TestAngularJS
 
       public object GetDefinition()
       {         
-         Func<List<System.Html.Element>,string,Action,Action> removeClass = (element,className,doneCallback)=>
+         Func<jElement,string,Action,Action> removeClass = (element,className,doneCallback)=>
          {                                   
             // keep tracks of the timer
-            Promise timerPromise = null;
+            Promise timerPromise = null;           
 
             // the cancel/end animation funcion
             Action cancelCallback = ()=>
@@ -71,7 +71,7 @@ namespace TestAngularJS
             };
 
             // the function that updated the control
-            Action<System.Html.Element> OnTick = (el)=>
+            Action<Element> OnTick = (el)=>
             {
                int l = el.TextContent.Length;
                if(l<scrolltext.Length) 
@@ -99,7 +99,7 @@ namespace TestAngularJS
          };
          
          // Action<bool> addClass(element, string className, Action done)
-         Action<List<System.Html.Element>,string,Action> addClass = (element,className,done)=>
+         Action<List<Element>,string,Action> addClass = (element,className,done)=>
          {            
             if(className == "ng-hide") 
             {

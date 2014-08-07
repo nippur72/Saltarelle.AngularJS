@@ -42,7 +42,7 @@ namespace TestAngularJS
          return def.ToDefinitionObject();
       }      
 
-      public void Link(Scope scope, AngularJS.Element el, Attributes attrs, NgModelController ngModel)      
+      public void Link(Scope scope, AngularJS.jElement el, Attributes attrs, NgModelController ngModel)      
       {
          dynamic element = el;
 

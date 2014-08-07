@@ -82,7 +82,7 @@ namespace TestAngularJS
 
    public class expanderDirective : IDirective                                                                                      
    {
-      public void Link(Scope _scope, AngularJS.Element iElement, Attributes iAttrs, AccordionController acontroller)
+      public void Link(Scope _scope, AngularJS.jElement iElement, Attributes iAttrs, AccordionController acontroller)
       {                                    
          ExpanderController ctrl = _scope.ControllerAs<ExpanderController>("ccc");
          
