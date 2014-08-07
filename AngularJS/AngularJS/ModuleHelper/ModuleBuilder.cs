@@ -73,7 +73,7 @@ namespace AngularJS
          return parameters;                        
       }
 
-      // TODO: provider, value, constant
+      // TODO: provider
 
       #region Controllers      
 

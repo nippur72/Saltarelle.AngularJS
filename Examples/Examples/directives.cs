@@ -35,10 +35,6 @@ namespace TestAngularJS
 
    public class accordionDirective : IDirective
    {            
-      public void Link(Scope _scope, AngularJS.Element iElement, Attributes iAttrs, object acontroller)      
-      {
-      }
-
       public DefinitionObject GetDefinition()
       {
          var def = new DirectiveDefinitionHelper();
@@ -86,11 +82,11 @@ namespace TestAngularJS
 
    public class expanderDirective : IDirective                                                                                      
    {
-      public void Link(Scope _scope, AngularJS.Element iElement, Attributes iAttrs, object acontroller)
+      public void Link(Scope _scope, AngularJS.Element iElement, Attributes iAttrs, AccordionController acontroller)
       {                                    
          ExpanderController ctrl = _scope.ControllerAs<ExpanderController>("ccc");
          
-         ctrl.accordionController = Script.Reinterpret<AccordionController>(acontroller);      
+         ctrl.accordionController = acontroller;      
          ctrl.accordionController.addExpander(ctrl);                           
       }
       
@@ -107,9 +103,9 @@ namespace TestAngularJS
          def.Template = @"<div>
                              <div class='title' ng-click='ccc.toggle()'>{{title}}</div>
                              <div style='margin-left: 1em;' class='body' ng-show='ccc.showMe' ng-transclude></div>
-                          </div>";
-                                   
-         def.Link = this.Link;
+                          </div>";                                           
+
+         def.LinkFunction<AccordionController>(this.Link);
          
          def.Controller<ExpanderController>();
          def.ControllerAs = "ccc";

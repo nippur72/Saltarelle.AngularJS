@@ -173,12 +173,27 @@ namespace AngularJS
       /// <summary>
       /// A compile function form manipulating the DOM. It may return an object with { pre, post} linking functions
       /// </summary>
-      public Action<AngularJS.Element, Attributes> Compile;
+      private Action<AngularJS.Element, Attributes> Compile;
+
+      /// <summary>
+      /// Set Compile function
+      /// </summary>
+      [InlineCode("{this}.$Compile = {compileFunction}")] public void CompileFunction(Action<AngularJS.Element, Attributes> compileFunction) { }
 
       /// <summary>
       /// Link function 
       /// </summary>
-      public Action<Scope, AngularJS.Element, Attributes, object> Link;
+      private Action<Scope, AngularJS.Element, Attributes, object> Link;
+      
+      /// <summary>
+      /// Set Link function, specifying the type of the controller parameter
+      /// </summary>
+      [InlineCode("{this}.$Link = {linkFunction}")] public void LinkFunction<T>(Action<Scope, AngularJS.Element, Attributes, T> linkFunction) { }
+
+      /// <summary>
+      /// Set Link function with no controller parameter
+      /// </summary>
+      [InlineCode("{this}.$Link = {linkFunction}")] public void LinkFunction(Action<Scope, AngularJS.Element, Attributes> linkFunction) { }
 
       private string RestrictString()
       {
@@ -279,9 +294,9 @@ namespace AngularJS
             result["scope"] = scope;
          }         
 
-         // maps compile and link function
+         // maps compile and link function         
          if(Compile!=null) result["compile"] = Compile;
-         if(Link!=null) result["link"] = Link;
+         if(Link!=null) result["link"] = Link;                                
          
          // maps (shared) controller         
          if(ControllerType != null) 

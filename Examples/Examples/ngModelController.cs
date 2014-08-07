@@ -37,15 +37,13 @@ namespace TestAngularJS
 
          def.Restrict = RestrictFlags.Attribute;
          def.RequireDirective("ngModel", false, true);
-         def.Link = this.Link;         
-
+         def.LinkFunction<NgModelController>(this.Link);         
+                                          
          return def.ToDefinitionObject();
       }      
 
-      public void Link(Scope scope, AngularJS.Element el, Attributes attrs, object ngmodel)      
+      public void Link(Scope scope, AngularJS.Element el, Attributes attrs, NgModelController ngModel)      
       {
-         // this directive required the directive ng-model, and its controller is passed into Link
-         NgModelController ngModel = Script.Reinterpret<NgModelController>(ngmodel);
          dynamic element = el;
 
          if(ngModel==null) return; // do nothing if no ng-model

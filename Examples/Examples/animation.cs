@@ -11,7 +11,7 @@ using AngularJS.Animate;
 using System.Diagnostics;
 
 namespace TestAngularJS
-{                           
+{                             
    public class AnimationExample
    {
       public static void Main()
@@ -23,7 +23,7 @@ namespace TestAngularJS
          app.Controller<AnimationController>();
       }   
    }  
-
+   
    public class AnimationController
    {
       public bool Checked;
