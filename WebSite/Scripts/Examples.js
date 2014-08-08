@@ -608,7 +608,7 @@
 			var def = new AngularJS.DirectiveDefinitionHelper();
 			def.Restrict = 2;
 			def.RequireDirective('ngModel', false, true);
-			def.$Link = ss.mkdel(this, this.Link);
+			def.Link = ss.mkdel(this, this.Link);
 			return def.ToDefinitionObject();
 		},
 		Link: function(scope, el, attrs, ngModel) {
@@ -662,7 +662,7 @@
 			def.ScopeMode = 2;
 			def.BindAttribute$2('title', 'expanderTitle');
 			def.Template = "<div>\r\n                             <div class='title' ng-click='ccc.toggle()'>{{title}}</div>\r\n                             <div style='margin-left: 1em;' class='body' ng-show='ccc.showMe' ng-transclude></div>\r\n                          </div>";
-			def.$Link = ss.mkdel(this, this.Link);
+			def.Link = ss.mkdel(this, this.Link);
 			def.Controller($TestAngularJS_ExpanderController).call(def);
 			def.ControllerAs = 'ccc';
 			return def.ToDefinitionObject();

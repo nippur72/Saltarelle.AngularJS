@@ -10,6 +10,6 @@ using System.Diagnostics;
 
 namespace AngularJS
 {             
-   public delegate Action<Scope> Compile(AngularJS.jElement element);   
+   public delegate Action<Scope> Compile(jElement element);   
 }
 

@@ -38,8 +38,8 @@
 		this.$Require = [];
 		this.$ControllerType = null;
 		this.ControllerAs = null;
-		this.$Compile = null;
-		this.$Link = null;
+		this.Compile = null;
+		this.Link = null;
 	};
 	$AngularJS_DirectiveDefinitionHelper.__typeName = 'AngularJS.DirectiveDefinitionHelper';
 	global.AngularJS.DirectiveDefinitionHelper = $AngularJS_DirectiveDefinitionHelper;
@@ -459,11 +459,11 @@
 				result['scope'] = scope;
 			}
 			// maps compile and link function         
-			if (!ss.staticEquals(this.$Compile, null)) {
-				result['compile'] = this.$Compile;
+			if (!ss.staticEquals(this.Compile, null)) {
+				result['compile'] = this.Compile;
 			}
-			if (!ss.staticEquals(this.$Link, null)) {
-				result['link'] = this.$Link;
+			if (!ss.staticEquals(this.Link, null)) {
+				result['link'] = this.Link;
 			}
 			// maps (shared) controller         
 			if (ss.isValue(this.$ControllerType)) {

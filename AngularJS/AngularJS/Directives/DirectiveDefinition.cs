@@ -173,27 +173,29 @@ namespace AngularJS
       /// <summary>
       /// A compile function form manipulating the DOM. It may return an object with { pre, post} linking functions
       /// </summary>
-      private Action<AngularJS.jElement, Attributes> Compile;
+      [PreserveName] // PreserveName required because of the inline code optimization
+      private Action<jElement, Attributes> Compile;
 
       /// <summary>
       /// Set Compile function
       /// </summary>
-      [InlineCode("{this}.$Compile = {compileFunction}")] public void CompileFunction(Action<AngularJS.jElement, Attributes> compileFunction) { }
+      [InlineCode("{this}.Compile = {compileFunction}")] public void CompileFunction(Action<jElement, Attributes> compileFunction) { }
 
       /// <summary>
       /// Link function 
       /// </summary>
-      private Action<Scope, AngularJS.jElement, Attributes, object> Link;
+      [PreserveName] // PreserveName required because of the inline code optimization
+      private Action<Scope, jElement, Attributes, object> Link;
       
       /// <summary>
       /// Set Link function, specifying the type of the controller parameter
       /// </summary>
-      [InlineCode("{this}.$Link = {linkFunction}")] public void LinkFunction<T>(Action<Scope, AngularJS.jElement, Attributes, T> linkFunction) { }
+      [InlineCode("{this}.Link = {linkFunction}")] public void LinkFunction<T>(Action<Scope, jElement, Attributes, T> linkFunction) { }
 
       /// <summary>
       /// Set Link function with no controller parameter
       /// </summary>
-      [InlineCode("{this}.$Link = {linkFunction}")] public void LinkFunction(Action<Scope, AngularJS.jElement, Attributes> linkFunction) { }
+      [InlineCode("{this}.Link = {linkFunction}")] public void LinkFunction(Action<Scope, jElement, Attributes> linkFunction) { }
 
       private string RestrictString()
       {
