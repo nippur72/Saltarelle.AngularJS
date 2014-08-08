@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Diagnostics;
 
 namespace AngularJS
-{         
+{              
    [Imported]
    public sealed class currencyFilter
    {

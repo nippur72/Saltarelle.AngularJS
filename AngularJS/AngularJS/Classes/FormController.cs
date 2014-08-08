@@ -34,7 +34,7 @@ namespace AngularJS
       [ScriptName("$addControl")] public void addControl() {}
 
       /// <summary>
-      // Deregister a control from the form.
+      /// Deregister a control from the form.
       /// </summary>
       [ScriptName("$removeControl")] public void removeControl() {}
 

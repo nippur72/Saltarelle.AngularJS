@@ -392,6 +392,9 @@
 			}));
 			this.Filters();
 			this.Version();
+			describe('ngSanitize', ss.mkdel(this, function() {
+				this.Sanitize();
+			}));
 		},
 		DependencyInjection: function() {
 			describe('Dependecy injection', ss.mkdel(this, function() {
@@ -540,6 +543,27 @@
 				it('should be at least 1.3 in this testing environment', ss.mkdel(this, function() {
 					expect(angular.version.major).not.toBeLessThan(1);
 					expect(angular.version.minor).not.toBeLessThan(3);
+				}));
+			}));
+		},
+		Sanitize: function() {
+			describe('$sanitize', ss.mkdel(this, function() {
+				var M = angular.module('testsanitize', ['ngSanitize']);
+				var el = window.document.createElement('p');
+				var injector = angular.bootstrap(el, [M.name]);
+				var sanitize = injector.get('$sanitize');
+				it('should sanitize an html string', ss.mkdel(this, function() {
+					expect(sanitize("<p>this is<b onmouseover=alert('oo')>dangerous</b>data</p>")).toEqual('<p>this is<b>dangerous</b>data</p>');
+				}));
+			}));
+			describe('linky Filter', ss.mkdel(this, function() {
+				var M1 = angular.module('testlinkyfilter', ['ngSanitize']);
+				var el1 = window.document.createElement('p');
+				var injector1 = angular.bootstrap(el1, [M1.name]);
+				var Filter = injector1.get('$filter');
+				var linky = Filter('linky');
+				it('should convert text into http link', ss.mkdel(this, function() {
+					expect(linky('http://www.hello.com')).toBe('<a href="http://www.hello.com">http://www.hello.com</a>');
 				}));
 			}));
 		}

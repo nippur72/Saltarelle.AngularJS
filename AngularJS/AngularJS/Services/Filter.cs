@@ -12,12 +12,13 @@ namespace AngularJS
 {               
    /// <summary>
    /// Retrieves a filtering function by giving the filter name
-   /// <summary>
+   /// </summary>
    public delegate FilterFunction Filter(string filtername);   
 
    /// <summary>
    /// Filters a string
-   /// <summary>
-   public delegate string FilterFunction(string expr);   
+   /// </summary>
+   [ExpandParams]
+   public delegate string FilterFunction(params object[] arguments);
 }
 

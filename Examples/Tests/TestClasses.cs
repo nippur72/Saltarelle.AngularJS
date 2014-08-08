@@ -15,7 +15,7 @@ using System.Diagnostics;
 public class TestDIService1
 {
    public object injected_value;
-
+      
    public TestDIService1(object injected_object)
    {
       this.injected_value = injected_object;

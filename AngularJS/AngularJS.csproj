@@ -41,6 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Angular.Route\RouteProvider.cs" />
+    <Compile Include="Angular.Sanitize\Sanitize.cs" />
     <Compile Include="Angular.UI-Bootstrap\Bootstrap.cs" />
     <Compile Include="Angular.UI-Router\UrlRouterProvider.cs" />
     <Compile Include="Angular.UI-Router\StateParams.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="AngularJS\ModuleHelper\TypeExtensions.cs" />
     <Compile Include="AngularJS\Directives\Directive.cs" />
     <Compile Include="AngularJS\Classes\Event.cs" />
-    <Compile Include="AngularJS\Classes\Filters.cs" />
+    <Compile Include="AngularJS\Classes\BuiltinFilters.cs" />
     <Compile Include="AngularJS\Classes\Promise.cs" />
     <Compile Include="Angular.Animate\Animate.cs" />
     <Compile Include="Angular.UI-Router\UiRouter.cs" />
