@@ -22,7 +22,7 @@ public class TestDIService1
    }
 }
 
-[Reflectable, Inject("attribute_injected_object")]
+[Inject("attribute_injected_object")]
 public class TestDIService2
 {
    public object injected_value;
