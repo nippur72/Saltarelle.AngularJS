@@ -71,9 +71,7 @@ namespace AngularJS
          constructor.Inject = parameters;
          
          return parameters;                        
-      }
-
-      // TODO: provider
+      }     
 
       #region Controllers      
 
@@ -153,6 +151,22 @@ namespace AngularJS
             Function F = new Function(parameters,body);
             Factory(module,PatchDollarName(funcname),F);
          }
+      }
+            
+      #endregion
+
+      #region Provider
+
+      public static void Provider<T>(this Module module, params string[] annotations)
+      {                         
+         Type type = typeof(T);
+         FixAnnotation(type, annotations); 
+
+         string providerName = type.FullName;
+         if(!providerName.EndsWith("Provider")) throw new Exception("provider names must end with the suffix 'Provider'");
+         string serviceName = providerName.Substring(0,providerName.Length-8);                   
+           
+         Provider(module,serviceName,type);
       }
             
       #endregion
@@ -239,6 +253,9 @@ namespace AngularJS
       [InlineCode("{module}.factory({Name},{func})")]
       public static void Factory(Module module, string Name, object func) { }          
 
+      [InlineCode("{module}.provider({Name},{func})")]
+      public static void Provider(Module module, string Name, object func) { }          
+
       [InlineCode("{module}.filter({FilterName},{ob})")]
       public static void Filter(Module module, string FilterName, object ob) { }            
 
@@ -250,7 +267,6 @@ namespace AngularJS
 
       [InlineCode("{module}.value({Name},{value})")]
       public static void Value(this Module module, string Name, object value) { }            
-
 
       #endregion
    }

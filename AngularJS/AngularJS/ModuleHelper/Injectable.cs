@@ -21,7 +21,7 @@ namespace AngularJS
       {
          return null;
       }
-
+      
       [ScriptName("$inject"), IntrinsicProperty]  
       public string[] Inject
       {

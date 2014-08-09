@@ -183,6 +183,18 @@
 			}
 		};
 	};
+	$AngularJS_ModuleBuilder.Provider = function(T) {
+		return function(module, annotations) {
+			var type = T;
+			$AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
+			var providerName = ss.getTypeFullName(type);
+			if (!ss.endsWithString(providerName, 'Provider')) {
+				throw new ss.Exception("provider names must end with the suffix 'Provider'");
+			}
+			var serviceName = providerName.substr(0, providerName.length - 8);
+			module.provider(serviceName, type);
+		};
+	};
 	$AngularJS_ModuleBuilder.Filter = function(T) {
 		return function(module, annotations) {
 			var type = T;

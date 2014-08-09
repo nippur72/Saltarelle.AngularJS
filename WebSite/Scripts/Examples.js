@@ -11,6 +11,19 @@
 	$JasmineTests.__typeName = 'JasmineTests';
 	global.JasmineTests = $JasmineTests;
 	////////////////////////////////////////////////////////////////////////////////
+	// SimpleFactories
+	var $SimpleFactories = function() {
+	};
+	$SimpleFactories.__typeName = 'SimpleFactories';
+	global.SimpleFactories = $SimpleFactories;
+	////////////////////////////////////////////////////////////////////////////////
+	// SimpleService
+	var $SimpleService = function() {
+		this.testval = 42;
+	};
+	$SimpleService.__typeName = 'SimpleService';
+	global.SimpleService = $SimpleService;
+	////////////////////////////////////////////////////////////////////////////////
 	// TestDIService1
 	var $TestDIService1 = function(injected_object) {
 		this.injected_value = null;
@@ -26,6 +39,35 @@
 	};
 	$TestDIService2.__typeName = 'TestDIService2';
 	global.TestDIService2 = $TestDIService2;
+	////////////////////////////////////////////////////////////////////////////////
+	// UnicornConfig
+	var $UnicornConfig = function(UnicornLauncherProvider) {
+		UnicornLauncherProvider.useTinfoilShielding(true);
+	};
+	$UnicornConfig.__typeName = 'UnicornConfig';
+	global.UnicornConfig = $UnicornConfig;
+	////////////////////////////////////////////////////////////////////////////////
+	// UnicornLauncher
+	var $UnicornLauncher = function(_timeout, useTinfoilShielding) {
+		this.launchedCount = 0;
+		this.shieldtype = 'none';
+		this.Timeout = null;
+		this.Timeout = _timeout;
+		if (useTinfoilShielding) {
+			this.shieldtype = 'tinfoil';
+		}
+	};
+	$UnicornLauncher.__typeName = 'UnicornLauncher';
+	global.UnicornLauncher = $UnicornLauncher;
+	////////////////////////////////////////////////////////////////////////////////
+	// UnicornLauncherProvider
+	var $UnicornLauncherProvider = function() {
+		this.$shield_flag = false;
+		this.$get = null;
+		this.$get = this.UnicornLauncher();
+	};
+	$UnicornLauncherProvider.__typeName = 'UnicornLauncherProvider';
+	global.UnicornLauncherProvider = $UnicornLauncherProvider;
 	////////////////////////////////////////////////////////////////////////////////
 	// TestAngularJS.AccordionController
 	var $TestAngularJS_AccordionController = function() {
@@ -384,6 +426,9 @@
 			describe('Angular.Module', ss.mkdel(this, function() {
 				this.Constant();
 				this.Value();
+				this.Service();
+				this.Factory();
+				this.Provider();
 			}));
 			describe('Angular services', ss.mkdel(this, function() {
 				this.Parse();
@@ -459,6 +504,56 @@
 				}));
 				it('should return the expected value', ss.mkdel(this, function() {
 					expect(testvalue).toBe(42);
+				}));
+			}));
+		},
+		Service: function() {
+			var M = angular.module('testservice', []);
+			AngularJS.ModuleBuilder.Service($SimpleService).call(null, M, []);
+			var el = window.document.createElement('p');
+			var injector = angular.bootstrap(el, [M.name]);
+			describe('Service', ss.mkdel(this, function() {
+				var simpleService = injector.get('SimpleService');
+				it('should be defined in the injector', ss.mkdel(this, function() {
+					expect(simpleService).not.toBeNull();
+				}));
+				it('should return the expected value', ss.mkdel(this, function() {
+					expect(simpleService.testval).toBe(42);
+				}));
+			}));
+		},
+		Factory: function() {
+			var M = angular.module('testfactory', []);
+			AngularJS.ModuleBuilder.Factory($SimpleFactories).call(null, M, []);
+			var el = window.document.createElement('p');
+			var injector = angular.bootstrap(el, [M.name]);
+			describe('Factory', ss.mkdel(this, function() {
+				var factory = injector.get('SimpleFactory1');
+				it('should be defined in the injector', ss.mkdel(this, function() {
+					expect(factory).not.toBeNull();
+				}));
+				it('should return the expected value', ss.mkdel(this, function() {
+					expect(factory).toBe('fortytwo');
+				}));
+			}));
+		},
+		Provider: function() {
+			var M = angular.module('testprovider', []);
+			AngularJS.ModuleBuilder.Provider($UnicornLauncherProvider).call(null, M, []);
+			AngularJS.ModuleBuilder.Config($UnicornConfig).call(null, M, []);
+			var el = window.document.createElement('p');
+			var injector = angular.bootstrap(el, [M.name]);
+			describe('Provider', ss.mkdel(this, function() {
+				var launcher = injector.get('UnicornLauncher');
+				var timeout = injector.get('$timeout');
+				it('should create service in the injector', ss.mkdel(this, function() {
+					expect(launcher).not.toBeNull();
+				}));
+				it('should set parameters in service', ss.mkdel(this, function() {
+					expect(launcher.shieldtype).toBe('tinfoil');
+				}));
+				it('should create service with correct dependency injection', ss.mkdel(this, function() {
+					expect(launcher.Timeout).toBe(timeout);
 				}));
 			}));
 		},
@@ -568,8 +663,32 @@
 			}));
 		}
 	}, Object);
+	ss.initClass($SimpleFactories, $asm, {
+		SimpleFactory1: function() {
+			return 'fortytwo';
+		}
+	});
+	ss.initClass($SimpleService, $asm, {});
 	ss.initClass($TestDIService1, $asm, {});
 	ss.initClass($TestDIService2, $asm, {});
+	ss.initClass($UnicornConfig, $asm, {});
+	ss.initClass($UnicornLauncher, $asm, {
+		launch: function() {
+			this.launchedCount++;
+		}
+	});
+	ss.initClass($UnicornLauncherProvider, $asm, {
+		useTinfoilShielding: function(flag) {
+			this.$shield_flag = flag;
+		},
+		UnicornLauncher: function() {
+			var func = ss.mkdel(this, function(t) {
+				return new $UnicornLauncher(t, this.$shield_flag);
+			});
+			var inj = ['$timeout', func];
+			return inj;
+		}
+	});
 	ss.initClass($TestAngularJS_AccordionController, $asm, {
 		clickme: function() {
 			window.alert('clicked!');

@@ -22,6 +22,9 @@ public class JasmineTests : JasmineSuite
       {
          Constant();
          Value();
+         Service();
+         Factory();
+         Provider();
       });
 
       describe("Angular services",()=>
@@ -130,6 +133,86 @@ public class JasmineTests : JasmineSuite
          {            
             expect(testvalue).toBe(42);
          });   
+      });
+   }
+
+   public void Service()
+   {
+      Module M = new Module("testservice");
+      M.Service<SimpleService>();
+
+      var el = Window.Document.CreateElement("p");
+      Injector injector = Angular.Bootstrap(el, M.Name);           
+
+      describe("Service",()=>
+      {         
+         var simpleService = injector.Get<SimpleService>("SimpleService");
+
+         it("should be defined in the injector",()=>
+         {           
+            expect(simpleService).not.toBeNull();
+         });            
+
+         it("should return the expected value",()=>
+         {            
+            expect(simpleService.testval).toBe(42);
+         });   
+      });
+   }
+
+   public void Factory()
+   {
+      Module M = new Module("testfactory");
+      M.Factory<SimpleFactories>();
+
+      var el = Window.Document.CreateElement("p");
+      Injector injector = Angular.Bootstrap(el, M.Name);           
+
+      describe("Factory",()=>
+      {         
+         var factory = injector.Get<string>("SimpleFactory1");
+
+         it("should be defined in the injector",()=>
+         {           
+            expect(factory).not.toBeNull();
+         });            
+
+         it("should return the expected value",()=>
+         {            
+            expect(factory).toBe("fortytwo");
+         });   
+      });
+   }
+
+   public void Provider()
+   {
+      Module M = new Module("testprovider");     
+
+      M.Provider<UnicornLauncherProvider>();      
+      M.Config<UnicornConfig>();
+
+      var el = Window.Document.CreateElement("p");
+      Injector injector = Angular.Bootstrap(el, M.Name);           
+
+      describe("Provider",()=>
+      {         
+         var launcher = injector.Get<UnicornLauncher>("UnicornLauncher");         
+         var timeout  = injector.Get("$timeout");         
+
+         it("should create service in the injector",()=>
+         {           
+            expect(launcher).not.toBeNull();
+         });            
+         
+         it("should set parameters in service",()=>
+         {           
+            expect(launcher.shieldtype).toBe("tinfoil");
+         });
+
+         it("should create service with correct dependency injection",()=>
+         {           
+            expect(launcher.Timeout).toBe(timeout);
+         });            
       });
    }
 

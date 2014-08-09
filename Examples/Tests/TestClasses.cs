@@ -33,5 +33,78 @@ public class TestDIService2
    }
 }
 
+public class SimpleService
+{   
+   public int testval = 42;
 
+   public SimpleService()
+   {
+   }
+}
 
+public class SimpleFactories
+{
+   public string SimpleFactory1()
+   {
+      return "fortytwo";   
+   }
+}
+
+public class UnicornLauncher
+{
+   public int launchedCount = 0; 
+   public string shieldtype = "none";  
+   public Timeout Timeout;
+
+   public UnicornLauncher(Timeout _timeout, bool useTinfoilShielding)
+   {
+      Timeout = _timeout;
+
+      if(useTinfoilShielding)
+      {
+         shieldtype = "tinfoil";
+      }
+   }
+
+   public void launch()
+   {
+      this.launchedCount++;
+   } 
+}
+
+public class UnicornLauncherProvider 
+{
+   private bool shield_flag = false;  
+   
+   public UnicornLauncherProvider()
+   {      
+      Get = UnicornLauncher();
+   }
+
+   public void useTinfoilShielding(bool flag)
+   {
+      shield_flag = flag;
+   }
+
+   // this is the $$get property
+   [ScriptName("$get")]
+   public object[] Get;
+
+   // this is the $$get 
+   public object[] UnicornLauncher()
+   {                  
+      Func<Timeout,UnicornLauncher> func = (t) => { return new UnicornLauncher(t,shield_flag); };
+
+      object[] inj = new object[] { "$timeout", func };
+
+      return inj;
+   }   
+}
+
+public class UnicornConfig
+{
+   public UnicornConfig(UnicornLauncherProvider UnicornLauncherProvider)
+   {      
+      UnicornLauncherProvider.useTinfoilShielding(true);   
+   }
+}
