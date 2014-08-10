@@ -8,9 +8,13 @@ using System.Serialization;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace AngularJS.Sanitize  
+namespace AngularJS.Animate
 {          
-   public delegate string Sanitize(string html);    
+   [Imported, ScriptName("angular"), ScriptNamespace("")]
+   public static class ngAnimate
+   {      
+      public static string ModuleName { [InlineCode("'ngAnimate'")] get { return null; } }
+   }     
 }
 
 

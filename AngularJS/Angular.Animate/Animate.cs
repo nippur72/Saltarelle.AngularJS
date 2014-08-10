@@ -10,11 +10,10 @@ using System.Diagnostics;
 
 namespace AngularJS.Animate
 {          
-   [Imported, ScriptName("angular"), ScriptNamespace("")]
-   public static class ngAnimate
-   {      
-      public static string ModuleName { [InlineCode("'ngAnimate'")] get { return null; } }
-   }   
+   public interface IAnimation
+   {
+      object GetDefinition();
+   }    
 
    [Imported]   
    public sealed class Animate
@@ -40,11 +39,6 @@ namespace AngularJS.Animate
       public bool enabled() { return false; }
       public bool enabled(bool value) { return false; }
       public bool enabled(bool value, jElement element) { return false; }      
-   } 
-   
-   public interface IAnimation
-   {
-      object GetDefinition();
    }    
 }
 

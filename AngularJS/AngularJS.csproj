@@ -40,7 +40,14 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Angular.Animate\Animate.cs" />
+    <Compile Include="Angular.Cookies\Cookie.cs" />
+    <Compile Include="Angular.Cookies\CookieStore.cs" />
+    <Compile Include="Angular.Cookies\ngCookies.cs" />
+    <Compile Include="Angular.Messages\ngMessages.cs" />
     <Compile Include="Angular.Route\RouteProvider.cs" />
+    <Compile Include="Angular.Sanitize\ngSanitize.cs" />
+    <Compile Include="Angular.Sanitize\LinkyFilter.cs" />
     <Compile Include="Angular.Sanitize\Sanitize.cs" />
     <Compile Include="Angular.UI-Bootstrap\Bootstrap.cs" />
     <Compile Include="Angular.UI-Router\UrlRouterProvider.cs" />
@@ -60,7 +67,7 @@
     <Compile Include="AngularJS\Classes\Event.cs" />
     <Compile Include="AngularJS\Classes\BuiltinFilters.cs" />
     <Compile Include="AngularJS\Classes\Promise.cs" />
-    <Compile Include="Angular.Animate\Animate.cs" />
+    <Compile Include="Angular.Animate\ngAnimate.cs" />
     <Compile Include="Angular.UI-Router\UiRouter.cs" />
     <Compile Include="Angular.Resource\Resource.cs" />
     <Compile Include="AngularJS\Classes\FormController.cs" />

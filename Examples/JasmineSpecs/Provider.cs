@@ -10,43 +10,38 @@ using AngularJS;
 using Jasmine;
 using System.Diagnostics;
 
-// service for testing dependency injection
-
-public class TestDIService1
+public partial class JasmineTests : JasmineSuite
 {
-   public object injected_value;
-      
-   public TestDIService1(object injected_object)
+   public void Provider()
    {
-      this.injected_value = injected_object;
-   }
-}
+      Module M = new Module("testprovider");     
 
-[Inject("attribute_injected_object")]
-public class TestDIService2
-{
-   public object injected_value;
+      M.Provider<UnicornLauncherProvider>();      
+      M.Config<UnicornConfig>();
 
-   public TestDIService2(object injected_object)
-   {
-      this.injected_value = injected_object;
-   }
-}
+      var el = Window.Document.CreateElement("p");
+      Injector injector = Angular.Bootstrap(el, M.Name);           
 
-public class SimpleService
-{   
-   public int testval = 42;
+      describe("Provider",()=>
+      {         
+         var launcher = injector.Get<UnicornLauncher>("UnicornLauncher");         
+         var timeout  = injector.Get("$timeout");         
 
-   public SimpleService()
-   {
-   }
-}
+         it("should create service in the injector",()=>
+         {           
+            expect(launcher).not.toBeNull();
+         });            
+         
+         it("should set parameters in service",()=>
+         {           
+            expect(launcher.shieldtype).toBe("tinfoil");
+         });
 
-public class SimpleFactories
-{
-   public string SimpleFactory1()
-   {
-      return "fortytwo";   
+         it("should create service with correct dependency injection",()=>
+         {           
+            expect(launcher.Timeout).toBe(timeout);
+         });            
+      });
    }
 }
 

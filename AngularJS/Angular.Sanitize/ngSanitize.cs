@@ -10,7 +10,11 @@ using System.Diagnostics;
 
 namespace AngularJS.Sanitize  
 {          
-   public delegate string Sanitize(string html);    
+   [Imported, ScriptName("angular"), ScriptNamespace("")]
+   public static class ngSanitize
+   {      
+      public static string ModuleName { [InlineCode("'ngSanitize'")] get { return null; } }
+   }   
 }
 
 

@@ -46,10 +46,22 @@
     <Compile Include="Examples\old_examples\phone.cs" />
     <Compile Include="Examples\funding.cs" />
     <Compile Include="Examples\shopping_cart.cs" />
+    <Compile Include="JasmineSpecs\Interpolate.cs" />
+    <Compile Include="JasmineSpecs\Constant.cs" />
+    <Compile Include="JasmineSpecs\Filters.cs" />
+    <Compile Include="JasmineSpecs\CacheFactory.cs" />
+    <Compile Include="JasmineSpecs\Locale.cs" />
+    <Compile Include="JasmineSpecs\Value.cs" />
+    <Compile Include="JasmineSpecs\Version.cs" />
+    <Compile Include="JasmineSpecs\Sanitize.cs" />
+    <Compile Include="JasmineSpecs\Parse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Examples\directives.cs" />
-    <Compile Include="Tests\TestClasses.cs" />
-    <Compile Include="Tests\JasmineTests.cs" />
+    <Compile Include="JasmineSpecs\DependecyInjection.cs" />
+    <Compile Include="JasmineSpecs\Factory.cs" />
+    <Compile Include="JasmineSpecs\Service.cs" />
+    <Compile Include="JasmineSpecs\Provider.cs" />
+    <Compile Include="JasmineSpecs\JasmineTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
