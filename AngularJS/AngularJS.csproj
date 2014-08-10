@@ -51,6 +51,7 @@
     <Compile Include="Angular.UI-Router\StateConfig.cs" />
     <Compile Include="AngularJS\Classes\Attributes.cs" />
     <Compile Include="AngularJS\Classes\NgModelController.cs" />
+    <Compile Include="AngularJS\Classes\Cache.cs" />
     <Compile Include="AngularJS\Classes\Version.cs" />
     <Compile Include="AngularJS\ModuleHelper\InjectableAttribute.cs" />
     <Compile Include="AngularJS\ModuleHelper\Injectable.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="AngularJS\Services\Q.cs" />
     <Compile Include="AngularJS\Services\RootElement.cs" />
     <Compile Include="AngularJS\Services\Document.cs" />
+    <Compile Include="AngularJS\Services\CacheFactory.cs" />
     <Compile Include="AngularJS\Services\Window.cs" />
     <Compile Include="AngularJS\Services\Timeout.cs" />
     <Compile Include="AngularJS\Classes\Element.cs" />

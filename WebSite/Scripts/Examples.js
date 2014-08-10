@@ -434,6 +434,7 @@
 				this.Parse();
 				this.Locale();
 				this.Interpolate();
+				this.CacheFactory();
 			}));
 			this.Filters();
 			this.Version();
@@ -602,6 +603,38 @@
 					var exp2 = interpolate('{{greeting}} {{name}}!', false, null, true);
 					expect(exp2(context2)).toBeUndefined();
 					expect(exp2(context_full)).toEqual('Hello Angular!');
+				}));
+			}));
+		},
+		CacheFactory: function() {
+			describe('$cacheFactory', ss.mkdel(this, function() {
+				var injector = angular.injector(['ng']);
+				var cacheFactory = injector.get('$cacheFactory');
+				var cache = cacheFactory('cacheId');
+				it('should create a Cache object in the cache', ss.mkdel(this, function() {
+					expect(cacheFactory.get('cacheId')).toBe(cache);
+				}));
+				it('should not find unexisting Cache objects', ss.mkdel(this, function() {
+					expect(cacheFactory.get('noSuchCacheId')).not.toBeDefined();
+				}));
+				it('should write values to cache', ss.mkdel(this, function() {
+					cache.put('key', 'value');
+					cache.put('another key', 'another value');
+					expect(cache.info()).toEqual({ id: 'cacheId', size: 2 });
+					expect(cache.get('key')).toEqual('value');
+					expect(cache.get('another key')).toEqual('another value');
+				}));
+				it('should remove values from cache', ss.mkdel(this, function() {
+					cache.remove('another key');
+					expect(cache.info()).toEqual({ id: 'cacheId', size: 1 });
+				}));
+				it('should remove all values from cache', ss.mkdel(this, function() {
+					cache.removeAll();
+					expect(cache.info()).toEqual({ id: 'cacheId', size: 0 });
+				}));
+				it('should destroy the cache', ss.mkdel(this, function() {
+					cache.destroy();
+					expect(cacheFactory.get('cacheId')).not.toBeDefined();
 				}));
 			}));
 		},
