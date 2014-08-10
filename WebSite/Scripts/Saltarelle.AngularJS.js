@@ -56,6 +56,30 @@
 	$AngularJS_Event.__typeName = 'AngularJS.Event';
 	global.AngularJS.Event = $AngularJS_Event;
 	////////////////////////////////////////////////////////////////////////////////
+	// AngularJS.FixGetterSetterExtension
+	var $AngularJS_FixGetterSetterExtension = function() {
+	};
+	$AngularJS_FixGetterSetterExtension.__typeName = 'AngularJS.FixGetterSetterExtension';
+	$AngularJS_FixGetterSetterExtension.FixGetterSetter = function(type) {
+		var methods = $AngularJS_TypeExtensionMethods.GetInstanceMethodNames(type);
+		for (var $t1 = 0; $t1 < methods.length; $t1++) {
+			var methname = methods[$t1];
+			if (ss.startsWithString(methname, 'get_')) {
+				var propname = methname.substring(4);
+				var has_setter = ss.contains(methods, 'set_' + propname);
+				var fget = new Function('', ss.formatString('return this.get_{0}();', propname));
+				var fset = new Function('value', ss.formatString('this.set_{0}(value);', propname));
+				if (has_setter) {
+					Object.defineProperty(type.prototype, propname, { get: fget, set: fset, enumerable: true, configurable: true });
+				}
+				else {
+					Object.defineProperty(type.prototype, propname, { get: fget, enumerable: true, configurable: true });
+				}
+			}
+		}
+	};
+	global.AngularJS.FixGetterSetterExtension = $AngularJS_FixGetterSetterExtension;
+	////////////////////////////////////////////////////////////////////////////////
 	// AngularJS.IDirective
 	var $AngularJS_IDirective = function() {
 	};
@@ -131,6 +155,7 @@
 	$AngularJS_ModuleBuilder.Controller = function(T) {
 		return function(module, annotations) {
 			var type = T;
+			$AngularJS_FixGetterSetterExtension.FixGetterSetter(type);
 			$AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			module.controller(ss.getTypeName(type), type);
 		};
@@ -138,6 +163,7 @@
 	$AngularJS_ModuleBuilder.Service = function(T) {
 		return function(module, annotations) {
 			var type = T;
+			$AngularJS_FixGetterSetterExtension.FixGetterSetter(type);
 			$AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			// patch service name for names starting with "$"                
 			var servicename = $AngularJS_ModuleBuilder.PatchDollarName(ss.getTypeName(T));
@@ -171,6 +197,7 @@
 	$AngularJS_ModuleBuilder.Factory = function(T) {
 		return function(module, annotations) {
 			var type = T;
+			$AngularJS_FixGetterSetterExtension.FixGetterSetter(type);
 			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
 			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			// register all public instance methods as factory                      
@@ -500,6 +527,7 @@
 		}
 	});
 	ss.initClass($AngularJS_Event, $asm, {});
+	ss.initClass($AngularJS_FixGetterSetterExtension, $asm, {});
 	ss.initInterface($AngularJS_IDirective, $asm, { GetDefinition: null });
 	ss.initClass($AngularJS_InjectAttribute, $asm, {});
 	ss.initInterface($AngularJS_IResourceObject, $asm, {});

@@ -25,7 +25,7 @@ namespace AngularJS
       public static Injectable GetConstructorFunction(this Type type)
       {         
          return (Injectable) type.Prototype["constructor"];                 
-      }      
+      }     
    }
 }
 

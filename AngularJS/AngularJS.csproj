@@ -62,6 +62,7 @@
     <Compile Include="AngularJS\Classes\Version.cs" />
     <Compile Include="AngularJS\ModuleHelper\InjectableAttribute.cs" />
     <Compile Include="AngularJS\ModuleHelper\Injectable.cs" />
+    <Compile Include="AngularJS\ModuleHelper\FixGetterSetter.cs" />
     <Compile Include="AngularJS\ModuleHelper\TypeExtensions.cs" />
     <Compile Include="AngularJS\Directives\Directive.cs" />
     <Compile Include="AngularJS\Classes\Event.cs" />

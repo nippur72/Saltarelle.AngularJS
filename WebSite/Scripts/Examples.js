@@ -354,7 +354,7 @@
 	// TestAngularJS.StartUpController
 	var $TestAngularJS_StartUpController = function(_scope) {
 		this.fundingStartingEstimate = 0;
-		this.fundingNeeded = 0;
+		this._fundingNeeded = 0;
 		this.fundingStartingEstimate = 0;
 		_scope.$watch(ss.mkdel(this, function() {
 			return this.fundingStartingEstimate;
@@ -991,8 +991,14 @@
 		}
 	}, null, [AngularJS.Animate.IAnimation]);
 	ss.initClass($TestAngularJS_StartUpController, $asm, {
+		get_fundingNeeded: function() {
+			return this._fundingNeeded;
+		},
+		set_fundingNeeded: function(value) {
+			this._fundingNeeded = value;
+		},
 		computeNeeded: function() {
-			this.fundingNeeded = this.fundingStartingEstimate * 10;
+			this.set_fundingNeeded(this.fundingStartingEstimate * 10);
 		},
 		requestFunding: function() {
 			window.alert('Sorry, please get more customers first.');
@@ -1001,7 +1007,7 @@
 			this.fundingStartingEstimate = 0;
 		},
 		compneeded: function(newval, oldval) {
-			this.fundingNeeded = this.fundingStartingEstimate * 10;
+			this.set_fundingNeeded(this.fundingStartingEstimate * 10);
 		}
 	});
 	ss.initClass($TestAngularJS_State1Controller, $asm, {});

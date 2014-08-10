@@ -78,7 +78,8 @@ namespace AngularJS
       public static void Controller<T>(this Module module, params string[] annotations)
       {         
          Type type = typeof(T);
-         FixAnnotation(type, annotations);   
+         type.FixGetterSetter();
+         FixAnnotation(type, annotations);                   
          Controller(module,type.Name,type);
       }
 
@@ -89,6 +90,7 @@ namespace AngularJS
       public static void Service<T>(this Module module, params string[] annotations)
       {         
          Type type = typeof(T);
+         type.FixGetterSetter();
          FixAnnotation(type, annotations); 
 
          // patch service name for names starting with "$"                
@@ -141,6 +143,7 @@ namespace AngularJS
       public static void Factory<T>(this Module module, params string[] annotations)
       {                  
          Type type = typeof(T);
+         type.FixGetterSetter();
          var parameters = FixAnnotation(type, annotations); 
          var plist = CommaSeparatedList(parameters);
                   

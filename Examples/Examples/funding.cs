@@ -23,12 +23,17 @@ namespace TestAngularJS
    public class StartUpController 
    {                    	                                                                                               
       public double fundingStartingEstimate;
-      public double fundingNeeded;        
+      public double _fundingNeeded;        
+
+      public double fundingNeeded
+      {
+         get { return _fundingNeeded; }
+         set { _fundingNeeded = value; }
+      }
       
       public StartUpController(Scope _scope)
       {
-         fundingStartingEstimate = 0;
-
+         fundingStartingEstimate = 0;        
          _scope.Watch<double>( ()=>{ return fundingStartingEstimate; }, compneeded);          
       }
       
