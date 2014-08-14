@@ -197,6 +197,16 @@ namespace AngularJS
       /// </summary>
       [InlineCode("{this}.Link = {linkFunction}")] public void LinkFunction(Action<Scope, jElement, Attributes> linkFunction) { }
 
+      /// <summary>
+      /// Set Link function, specifying the type of the controller parameter
+      /// </summary>
+      [InlineCode("{this}.Link = {linkFunction}")] public void LinkFunction<T>(Action<Scope, object, Attributes, T> linkFunction) { }
+
+      /// <summary>
+      /// Set Link function with no controller parameter
+      /// </summary>
+      [InlineCode("{this}.Link = {linkFunction}")] public void LinkFunction(Action<Scope, object, Attributes> linkFunction) { }
+
       private string RestrictString()
       {
          string s = "";

@@ -73,28 +73,20 @@ public class UnicornLauncherProvider
    
    public UnicornLauncherProvider()
    {      
-      Get = UnicornLauncher();
    }
 
    public void useTinfoilShielding(bool flag)
    {
       shield_flag = flag;
    }
-
-   // this is the $$get property
-   [ScriptName("$get")]
-   public object[] Get;
-
-   // this is the $$get 
-   public object[] UnicornLauncher()
-   {                  
-      Func<Timeout,UnicornLauncher> func = (t) => { return new UnicornLauncher(t,shield_flag); };
-
-      object[] inj = new object[] { "$timeout", func };
-
-      return inj;
+   
+   [Inject("$timeout")]
+   public UnicornLauncher UnicornLauncher(Timeout _timeout)
+   {
+      return new UnicornLauncher(_timeout, shield_flag);
    }   
 }
+
 
 public class UnicornConfig
 {

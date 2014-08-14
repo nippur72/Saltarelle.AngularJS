@@ -213,13 +213,44 @@
 	$AngularJS_ModuleBuilder.Provider = function(T) {
 		return function(module, annotations) {
 			var type = T;
-			$AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
+			var parameters = $AngularJS_ModuleBuilder.FixAnnotation(type, annotations);
+			var plist = $AngularJS_ModuleBuilder.CommaSeparatedList(parameters);
 			var providerName = ss.getTypeFullName(type);
 			if (!ss.endsWithString(providerName, 'Provider')) {
 				throw new ss.Exception("provider names must end with the suffix 'Provider'");
 			}
 			var serviceName = providerName.substr(0, providerName.length - 8);
-			module.provider(serviceName, type);
+			var annotations_factory_method = null;
+			var factory_method = type.prototype[serviceName];
+			if (angular.isUndefined(factory_method)) {
+				throw new ss.Exception("provider class must contain a factory method named '" + serviceName + "'");
+			}
+			// looks for factory method, and its Inject attribute                  
+			var $t1 = ss.getMembers(type, 8, 20);
+			for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+				var method = $t1[$t2];
+				if (ss.referenceEquals(method.name, serviceName)) {
+					var attrs = (method.attr || []).filter(function(a) {
+						return ss.isInstanceOfType(a, $AngularJS_InjectAttribute);
+					});
+					if (ss.isValue(attrs) && attrs.length > 0) {
+						var attr = ss.safeCast(attrs[0], $AngularJS_InjectAttribute);
+						annotations_factory_method = attr.Injectables;
+						break;
+					}
+				}
+			}
+			if (ss.isNullOrUndefined(annotations_factory_method)) {
+				// if [Inject] was not specified, look for inline annotations
+				annotations_factory_method = $AngularJS_ModuleBuilder.PatchDollarName$1(angular.injector().annotate(factory_method));
+			}
+			// Inject annotations for the factory method
+			factory_method.$inject = annotations_factory_method;
+			// creates a wrapped function around the provider class. The provider class in instantiated and the $get is filled.
+			var body = 'var $ob = new ' + ss.getTypeFullName(type) + '(' + plist + '); $ob.$get = $ob.' + serviceName + '; return $ob;';
+			var F = new Function(parameters, body);
+			F.$inject = parameters;
+			module.provider(serviceName, F);
 		};
 	};
 	$AngularJS_ModuleBuilder.Filter = function(T) {

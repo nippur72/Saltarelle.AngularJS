@@ -1,9 +1,14 @@
-# Defining a Factory
+# Factory, Service, Provider
 
-A factory is a function that returns an object resource that can be used in controllers or other parts of Angular and 
-that is injected automatically using the its name. 
+There is just one type of Angular service and it can be created in three different ways with Factory, Service and Provider.
 
-In the following example the factory called "Items" is defined
+`Provider` is the most complex, `Factory` and `Service` are just synonims of `Provider` that are easier to use.
+
+## Factory
+
+Use `Factory` when you want to create a (named) service just from a plain javascript object.
+
+In the following example the service named "Items" consisting of an array of objects is defined:
 
 ```C#
 public class ItemsFactory
@@ -21,37 +26,105 @@ public class ItemsFactory
       return items;
    }
 }    
-```
 
-and then registered with:
+// ...
 
-```C#
 app.Factory<ItemsFactory>();
 ```
 
-once the factory is registered, it can be used in any angular function by refering its name ("Items"). 
+## Service
 
-# Defining a Service
+Use `Service` when you want to create a named service drirectly from an instantiable class. It is equivalent of
+having a factory with a method that returns the new instance of the class. `Service` is just a short for it.
 
-A service is a singleton named class hat can be used in controllers or other parts of Angular and 
-that is injected automatically using the service name. 
-
-In the following example the service called "Item" is defined
+In the following example the service called "User" is defined
 
 ```C#
-public class Item
+public class User
 {                
-   public Items(/* injectables */)
+   public User(/* injectables */)
    {
-
+      // service initialization here
    }
+
+   // service methods and propr here
 }    
+
+// ...
+
+app.Service<User>();
 ```
 
-and then registered with:
+## Provider
+
+Services created from `Factory` or `Service` cannot be configured during the config phase because when they are
+needed they are instantiated passing them no parameters (other than dependency injection).
+
+`Provider` lets you define a serviceProvider that handles object initialization during the config phase.
+
+Consider the following service named "UnicornLauncher":
 
 ```C#
-app.Service<Item>();
+public class UnicornLauncher
+{
+   public int launchedCount = 0; 
+   public string shieldtype = "none";  
+   public Timeout Timeout;
+
+   public UnicornLauncher(Timeout _timeout, bool useTinfoilShielding)
+   {
+      Timeout = _timeout;
+
+      if(useTinfoilShielding)
+      {
+         shieldtype = "tinfoil";
+      }
+   }
+
+   public void launch()
+   {
+      this.launchedCount++;
+   } 
+}
 ```
 
-once the service is registered, it can be used in any angular function by refering its name ("Item"). 
+notice it's configurable because its constructor accepts a flag "useTinfoilShielding". We can build a provider for it:
+
+```C#
+public class UnicornLauncherProvider 
+{
+   private bool shield_flag = false;  
+   
+   public UnicornLauncherProvider()
+   {      
+   }
+
+   public void useTinfoilShielding(bool flag)
+   {
+      shield_flag = flag;
+   }
+   
+   [Inject("$timeout")]
+   public UnicornLauncher UnicornLauncher(Timeout _timeout)
+   {
+      return new UnicornLauncher(_timeout, shield_flag);
+   }   
+}
+```
+
+and use the provider to configure the UnicornLauncher during the config phase:
+
+```C#
+public class UnicornConfig
+{
+   public UnicornConfig(UnicornLauncherProvider UnicornLauncherProvider)
+   {      
+      UnicornLauncherProvider.useTinfoilShielding(true);   
+   }
+}
+
+// ...
+
+app.Provider<UnicornProvider>();
+app.Config<UnicornConfig>();
+```

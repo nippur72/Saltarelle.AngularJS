@@ -25,7 +25,13 @@ namespace AngularJS
       public static Injectable GetConstructorFunction(this Type type)
       {         
          return (Injectable) type.Prototype["constructor"];                 
-      }     
+      }              
+      
+      [InlineCode("{type}.prototype[{methodName}]")]
+      public static Function GetMethodAsFunction(this Type type, string methodName)    
+      {
+         return null;
+      }
    }
 }
 

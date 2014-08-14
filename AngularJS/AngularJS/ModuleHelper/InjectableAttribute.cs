@@ -13,7 +13,7 @@ namespace AngularJS
    /// <summary>
    /// Specify dependency injection for the class
    /// </summary>
-   [AttributeUsage(AttributeTargets.Class,AllowMultiple=false)]   
+   [AttributeUsage(AttributeTargets.Class|AttributeTargets.Method,AllowMultiple=false)]   
    public class InjectAttribute : Attribute
    {
       public string[] Injectables;

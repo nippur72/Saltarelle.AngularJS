@@ -59,6 +59,7 @@ namespace AngularJS
                // annotations are specified with the [Inject] decorator 
                parameters = (attrs[0] as InjectAttribute).Injectables;
             }
+            // TODO check Inject attribute in constructors too?
             else
             {
                // annotations are read from constructor parameter names
@@ -72,7 +73,7 @@ namespace AngularJS
          
          return parameters;                        
       }     
-
+  
       #region Controllers      
 
       public static void Controller<T>(this Module module, params string[] annotations)
@@ -160,18 +161,61 @@ namespace AngularJS
 
       #region Provider
 
+      // Providers are injectable classes containing a callable method that returns a new instance of the service.
+      // Both the class and the factory methods have different injections because they are called at distinct times.
+      // The class (constructor function) is called at config phase, while the method is called when the service
+      // needs to be instantiated. For convention, the class must me named with suffix "Provider" and the method
+      // must be of equal name without the suffix (e.g. "UserProvider" and "User").
+
       public static void Provider<T>(this Module module, params string[] annotations)
       {                         
          Type type = typeof(T);
-         FixAnnotation(type, annotations); 
+         var parameters = FixAnnotation(type, annotations);
+         var plist = CommaSeparatedList(parameters); 
 
          string providerName = type.FullName;
          if(!providerName.EndsWith("Provider")) throw new Exception("provider names must end with the suffix 'Provider'");
-         string serviceName = providerName.Substring(0,providerName.Length-8);                   
-           
-         Provider(module,serviceName,type);
-      }
-            
+         string serviceName = providerName.Substring(0,providerName.Length-8); 
+         
+         string[] annotations_factory_method = null;                 
+
+         Function factory_method = type.GetMethodAsFunction(serviceName);
+         if(Angular.IsUndefined(factory_method))
+         {
+            throw new Exception("provider class must contain a factory method named '"+serviceName+"'");   
+         }
+         
+         // looks for factory method, and its Inject attribute                  
+         foreach(var method in type.GetMethods(BindingFlags.Instance|BindingFlags.Public))
+         {
+            if(method.Name==serviceName)
+            {
+               object[] attrs = method.GetCustomAttributes(typeof(InjectAttribute));
+               if(attrs!=null && attrs.Length>0)
+               {
+                  InjectAttribute attr = attrs[0] as InjectAttribute;
+                  annotations_factory_method = attr.Injectables;
+                  break;
+               }
+            }
+         }
+                 
+         if(annotations_factory_method==null)
+         {            
+            // if [Inject] was not specified, look for inline annotations
+            annotations_factory_method = PatchDollarName(Angular.Injector().Annotate(factory_method));
+         }        
+
+         // Inject annotations for the factory method
+         Injectable.From(factory_method).Inject = annotations_factory_method; 
+
+         // creates a wrapped function around the provider class. The provider class in instantiated and the $get is filled.
+         string body = "var $ob = new "+type.FullName+"("+plist+"); $ob.$get = $ob."+serviceName+"; return $ob;";
+         Function F = new Function(parameters,body);
+         Injectable.From(F).Inject = parameters; 
+                                                                 
+         Provider(module,serviceName,F);
+      }      
       #endregion
 
       #region Filters

@@ -63,8 +63,6 @@
 	// UnicornLauncherProvider
 	var $UnicornLauncherProvider = function() {
 		this.$shield_flag = false;
-		this.$get = null;
-		this.$get = this.UnicornLauncher();
 	};
 	$UnicornLauncherProvider.__typeName = 'UnicornLauncherProvider';
 	global.UnicornLauncherProvider = $UnicornLauncherProvider;
@@ -714,12 +712,8 @@
 		useTinfoilShielding: function(flag) {
 			this.$shield_flag = flag;
 		},
-		UnicornLauncher: function() {
-			var func = ss.mkdel(this, function(t) {
-				return new $UnicornLauncher(t, this.$shield_flag);
-			});
-			var inj = ['$timeout', func];
-			return inj;
+		UnicornLauncher: function(_timeout) {
+			return new $UnicornLauncher(_timeout, this.$shield_flag);
 		}
 	});
 	ss.initClass($TestAngularJS_AccordionController, $asm, {
@@ -1025,4 +1019,5 @@
 	ss.initClass($TestAngularJS_UiRouterConfig, $asm, {});
 	ss.initClass($TestAngularJS_UiRouterExample, $asm, {});
 	ss.setMetadata($TestDIService2, { attr: [new AngularJS.InjectAttribute(['attribute_injected_object'])] });
+	ss.setMetadata($UnicornLauncherProvider, { members: [{ attr: [new AngularJS.InjectAttribute(['$timeout'])], name: 'UnicornLauncher', type: 8, sname: 'UnicornLauncher', returnType: $UnicornLauncher, params: [AngularJS.Timeout] }] });
 })();
