@@ -276,7 +276,7 @@ namespace AngularJS
          if(Priority!=null) result["priority"] = Priority;
 
          // maps terminal
-         if(Priority!=null) result["termina"] = Terminal;
+         if(Priority!=null) result["terminal"] = Terminal;
 
          // maps restrict
          result["restrict"] = RestrictString();
