@@ -38,6 +38,7 @@
 		this.$Require = [];
 		this.$ControllerType = null;
 		this.ControllerAs = null;
+		this.BindToController = false;
 		this.Compile = null;
 		this.Link = null;
 	};
@@ -497,7 +498,7 @@
 			}
 			// maps terminal
 			if (ss.isValue(this.Priority)) {
-				result['termina'] = this.Terminal;
+				result['terminal'] = this.Terminal;
 			}
 			// maps restrict
 			result['restrict'] = this.$RestrictString();
@@ -543,6 +544,10 @@
 			// maps controllerAs 
 			if (ss.isValue(this.ControllerAs)) {
 				result['controllerAs'] = this.ControllerAs;
+			}
+			// maps bindToController
+			if (this.BindToController !== null) {
+				result['bindToController'] = this.BindToController;
 			}
 			// maps require
 			if (ss.isValue(this.$Require)) {

@@ -16,8 +16,8 @@ public partial class JasmineTests : JasmineSuite
 {
    public void SpecRunner()
    {           
-      DependencyInjection();
-
+      DependencyInjection();            
+      
       describe("Angular.Module",()=>
       {
          Constant();

@@ -171,6 +171,12 @@ namespace AngularJS
       public string ControllerAs;      
 
       /// <summary>
+      /// When an isolate scope is used for a component, and controllerAs is used, allows a component to have its properties bound to the controller, 
+      /// rather than to scope. When the controller is instantiated, the initial values of the isolate scope bindings are already available.
+      /// </summary>
+      public bool BindToController;
+
+      /// <summary>
       /// A compile function form manipulating the DOM. It may return an object with { pre, post} linking functions
       /// </summary>
       [PreserveName] // PreserveName required because of the inline code optimization
@@ -320,6 +326,9 @@ namespace AngularJS
          // maps controllerAs 
          if(ControllerAs!=null) result["controllerAs"] = ControllerAs;                                                                                
                                                              
+         // maps bindToController
+         if(BindToController!=null) result["bindToController"] = BindToController;                                                                                
+
          // maps require
          if(Require!=null) 
          {

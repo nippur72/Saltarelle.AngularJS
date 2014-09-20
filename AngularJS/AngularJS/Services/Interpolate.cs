@@ -18,7 +18,7 @@ namespace AngularJS
       /// Compiles a string with markup into an interpolation function.
       /// </summary>
       [InlineCode("{this}({text})")]
-      public InterpolationFunction Call(string text) { return null; }
+      public extern InterpolationFunction Call(string text); 
 
       /// <summary>
       /// Compiles a string with markup into an interpolation function.

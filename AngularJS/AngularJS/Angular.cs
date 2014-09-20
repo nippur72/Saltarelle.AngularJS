@@ -75,8 +75,8 @@ namespace AngularJS
       [ScriptName("noop")] public static Action NoOp() { return null; }
       [ScriptName("toJson")] public static string ToJson(string s) { return null; }
       [ScriptName("toJson")] public static string ToJson(string s, bool pretty) { return null; }
-      [ScriptName("uppercase")] public static string UpperCase(string s) { return null; }
-      [ScriptName("version"), IntrinsicProperty] public static Version Version { get { return null; } }
+      [ScriptName("uppercase")] public static extern string UpperCase(string s);
+      [ScriptName("version"), IntrinsicProperty] public static extern Version Version { get; }
 
       #endregion
    }  
