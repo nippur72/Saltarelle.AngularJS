@@ -1,35 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="Examples" Label="Examples" Category="Progetto" />
-    <Node Id="Saltarelle.Compiler 2.5.0" Label="Saltarelle.Compiler 2.5.0" Category="Pacchetto" />
-    <Node Id="Saltarelle.Jasmine.Cs 0.0.1" Label="Saltarelle.Jasmine.Cs 0.0.1" Category="Pacchetto" />
-    <Node Id="Saltarelle.Runtime 2.5.0" Label="Saltarelle.Runtime 2.5.0" Category="Pacchetto" />
-    <Node Id="Saltarelle.Web 3.1.0" Label="Saltarelle.Web 3.1.0" Category="Pacchetto" />
-    <Node Id="WebSite(1)" Label="WebSite(1)" Category="Progetto" />
-    <Node Id="Saltarelle.Compiler 2.5.0" Label="Saltarelle.Compiler 2.5.0" Category="Pacchetto" />
-    <Node Id="Saltarelle.Runtime 2.5.0" Label="Saltarelle.Runtime 2.5.0" Category="Pacchetto" />
-    <Node Id="AngularJS" Label="AngularJS" Category="Progetto" />
-    <Node Id="Saltarelle.Compiler 2.5.0" Label="Saltarelle.Compiler 2.5.0" Category="Pacchetto" />
-    <Node Id="Saltarelle.Runtime 2.5.0" Label="Saltarelle.Runtime 2.5.0" Category="Pacchetto" />
-    <Node Id="Saltarelle.Web 3.1.0" Label="Saltarelle.Web 3.1.0" Category="Pacchetto" />
+    <Node Id="AngularJS" Category="Progetto" Bounds="258.998333333333,0,88.03,29.95" Label="AngularJS" />
+    <Node Id="Examples" Category="Progetto" Bounds="145.12,0,83.7866666666667,29.95" Label="Examples" />
+    <Node Id="Saltarelle.Compiler 2.5.0" Category="Pacchetto" Bounds="210.806666666667,179.85,184.413333333333,29.95" Label="Saltarelle.Compiler 2.5.0" />
+    <Node Id="Saltarelle.Jasmine.Cs 0.0.1" Category="Pacchetto" Bounds="0,59.95,196.026666666667,29.95" Label="Saltarelle.Jasmine.Cs 0.0.1" />
+    <Node Id="Saltarelle.Runtime 2.5.0" Category="Pacchetto" Bounds="213.065,119.9,179.896666666667,29.95" Label="Saltarelle.Runtime 2.5.0" />
+    <Node Id="Saltarelle.Web 3.1.0" Category="Pacchetto" Bounds="226.04,59.95,153.946666666667,29.95" Label="Saltarelle.Web 3.1.0" />
+    <Node Id="WebSite(1)" Category="Progetto" Bounds="419.385,1.95000000000005,95.2566666666667,29.95" Label="WebSite(1)" UseManualLocation="True" />
   </Nodes>
   <Links>
-    <Link Source="Saltarelle.Jasmine.Cs 0.0.1" Target="Saltarelle.Runtime 2.5.0" Category="Dipendenza pacchetto" />
-    <Link Source="Saltarelle.Runtime 2.5.0" Target="Saltarelle.Compiler 2.5.0" Category="Dipendenza pacchetto" />
-    <Link Source="Saltarelle.Web 3.1.0" Target="Saltarelle.Runtime 2.5.0" Category="Dipendenza pacchetto" />
-    <Link Source="Examples" Target="Saltarelle.Jasmine.Cs 0.0.1" Category="Pacchetto installato" />
-    <Link Source="Examples" Target="Saltarelle.Web 3.1.0" Category="Pacchetto installato" />
-    <Link Source="Saltarelle.Runtime 2.5.0" Target="Saltarelle.Compiler 2.5.0" Category="Dipendenza pacchetto" />
-    <Link Source="WebSite(1)" Target="Saltarelle.Runtime 2.5.0" Category="Pacchetto installato" />
-    <Link Source="Saltarelle.Runtime 2.5.0" Target="Saltarelle.Compiler 2.5.0" Category="Dipendenza pacchetto" />
-    <Link Source="Saltarelle.Web 3.1.0" Target="Saltarelle.Runtime 2.5.0" Category="Dipendenza pacchetto" />
-    <Link Source="AngularJS" Target="Saltarelle.Web 3.1.0" Category="Pacchetto installato" />
+    <Link Source="AngularJS" Target="Saltarelle.Web 3.1.0" Category="Pacchetto installato" Bounds="303.013336181641,29.9500007629395,0,21" />
+    <Link Source="Examples" Target="Saltarelle.Jasmine.Cs 0.0.1" Category="Pacchetto installato" Bounds="127.709274291992,29.9500007629395,37.0726165771484,24.9719467163086" />
+    <Link Source="Examples" Target="Saltarelle.Web 3.1.0" Category="Pacchetto installato" Bounds="215.989151000977,29.9500007629395,50.0529937744141,25.8679122924805" />
+    <Link Source="Saltarelle.Jasmine.Cs 0.0.1" Target="Saltarelle.Runtime 2.5.0" Category="Dipendenza pacchetto" Bounds="149.220596313477,89.9000015258789,93.9472808837891,27.4738540649414" />
+    <Link Source="Saltarelle.Runtime 2.5.0" Target="Saltarelle.Compiler 2.5.0" Category="Dipendenza pacchetto" Bounds="303.013336181641,149.850006103516,0,21" />
+    <Link Source="Saltarelle.Web 3.1.0" Target="Saltarelle.Runtime 2.5.0" Category="Dipendenza pacchetto" Bounds="303.013336181641,89.9000015258789,0,21" />
   </Links>
   <Categories>
-    <Category Id="Progetto" />
+    <Category Id="Dipendenza pacchetto" />
     <Category Id="Pacchetto" />
+    <Category Id="Pacchetto installato" />
+    <Category Id="Progetto" />
   </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="Label" Label="Etichetta" Description="Etichetta visualizzabile di un oggetto Annotatable" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+  </Properties>
   <Styles>
     <Style TargetType="Node" GroupLabel="Progetto" ValueLabel="True">
       <Condition Expression="HasCategory('Progetto')" />

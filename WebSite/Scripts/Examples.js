@@ -729,7 +729,7 @@
 			}
 		},
 		addExpander: function(expander) {
-			ss.add(this.expanders, expander);
+			this.expanders.push(expander);
 		}
 	});
 	ss.initClass($TestAngularJS_accordionDirective, $asm, {
@@ -864,32 +864,32 @@
 			$t1.title = 'AaAa';
 			$t1.quantity = 1024;
 			$t1.price = 44.95;
-			ss.add(items, $t1);
+			items.push($t1);
 			var $t2 = new $TestAngularJS_CartItem();
 			$t2.title = 'BBBB';
 			$t2.quantity = 2048;
 			$t2.price = 55.95;
-			ss.add(items, $t2);
+			items.push($t2);
 			var $t3 = new $TestAngularJS_CartItem();
 			$t3.title = 'CCCC';
 			$t3.quantity = 4096;
 			$t3.price = 66.95;
-			ss.add(items, $t3);
+			items.push($t3);
 			var $t4 = new $TestAngularJS_CartItem();
 			$t4.title = 'dddd';
 			$t4.quantity = 1024;
 			$t4.price = 44.95;
-			ss.add(items, $t4);
+			items.push($t4);
 			var $t5 = new $TestAngularJS_CartItem();
 			$t5.title = 'eeee';
 			$t5.quantity = 2048;
 			$t5.price = 55.95;
-			ss.add(items, $t5);
+			items.push($t5);
 			var $t6 = new $TestAngularJS_CartItem();
 			$t6.title = 'ffff';
 			$t6.quantity = 4096;
 			$t6.price = 66.95;
-			ss.add(items, $t6);
+			items.push($t6);
 			return items;
 		}
 	});

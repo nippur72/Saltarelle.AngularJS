@@ -116,7 +116,7 @@
 	$AngularJS_ModuleBuilder.PatchDollarName$1 = function(names) {
 		var result = [];
 		for (var t = 0; t < names.length; t++) {
-			ss.add(result, $AngularJS_ModuleBuilder.PatchDollarName(names[t]));
+			result.push($AngularJS_ModuleBuilder.PatchDollarName(names[t]));
 		}
 		return Array.prototype.slice.call(result);
 	};
@@ -405,7 +405,7 @@
 			while ($t1.moveNext()) {
 				var key = $t1.current();
 				if (key !== 'constructor') {
-					ss.add(result, key);
+					result.push(key);
 				}
 			}
 		}
@@ -476,19 +476,19 @@
 			return s;
 		},
 		RequireDirective: function(ControllerName, LookParent, Optional) {
-			ss.add(this.$Require, this.$RequireDirectiveString(ControllerName, LookParent, Optional));
+			this.$Require.push(this.$RequireDirectiveString(ControllerName, LookParent, Optional));
 		},
 		BindAttribute: function(ScopeVariableName) {
-			ss.add(this.$ScopeAttributes, new $AngularJS_ScopeBindings(ScopeVariableName));
+			this.$ScopeAttributes.push(new $AngularJS_ScopeBindings(ScopeVariableName));
 		},
 		BindAttribute$2: function(ScopeVariableName, AlternateAttributeName) {
-			ss.add(this.$ScopeAttributes, new $AngularJS_ScopeBindings.$ctor2(ScopeVariableName, AlternateAttributeName));
+			this.$ScopeAttributes.push(new $AngularJS_ScopeBindings.$ctor2(ScopeVariableName, AlternateAttributeName));
 		},
 		BindAttribute$1: function(ScopeVariableName, Strategy) {
-			ss.add(this.$ScopeAttributes, new $AngularJS_ScopeBindings.$ctor1(ScopeVariableName, Strategy));
+			this.$ScopeAttributes.push(new $AngularJS_ScopeBindings.$ctor1(ScopeVariableName, Strategy));
 		},
 		BindAttribute$3: function(ScopeVariableName, Strategy, AlternateAttributeName) {
-			ss.add(this.$ScopeAttributes, new $AngularJS_ScopeBindings.$ctor3(ScopeVariableName, Strategy, AlternateAttributeName));
+			this.$ScopeAttributes.push(new $AngularJS_ScopeBindings.$ctor3(ScopeVariableName, Strategy, AlternateAttributeName));
 		},
 		ToDefinitionObject: function() {
 			var result = {};
