@@ -149,6 +149,7 @@ namespace AngularJS
       /// <summary>
       /// Listens on events of a given type.
       /// </summary>      
+      [InlineCode("{this}.$on({name},{listener})")] public Action On(string name, Action listener)  { return null; } 
       [InlineCode("{this}.$on({name},{listener})")] public Action On(string name, Action<Event> listener)  { return null; }     
       [InlineCode("{this}.$on({name},{listener})")] public Action On<T1>(string name, Action<Event,T1> listener)  { return null; }     
       [InlineCode("{this}.$on({name},{listener})")] public Action On<T1,T2>(string name, Action<Event,T1,T2> listener)  { return null; }     
