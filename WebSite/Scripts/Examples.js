@@ -420,49 +420,49 @@
 	global.TestAngularJS.UiRouterExample = $TestAngularJS_UiRouterExample;
 	ss.initClass($JasmineTests, $asm, {
 		Interpolate: function() {
-			describe('$interpolate', ss.mkdel(this, function() {
+			describe('$interpolate', function() {
 				var injector = angular.injector(['ng']);
 				var interpolate = injector.get('$interpolate');
-				it('should interpolate strings with given context', ss.mkdel(this, function() {
+				it('should interpolate strings with given context', function() {
 					var exp = interpolate('Hello {{name | uppercase}}!');
 					var context = { name: 'Angular' };
 					expect(exp(context)).toEqual('Hello ANGULAR!');
-				}));
-				it("should interpolate strings in 'forgiving' mode", ss.mkdel(this, function() {
+				});
+				it("should interpolate strings in 'forgiving' mode", function() {
 					var context1 = { greeting: 'Hello' };
 					var exp1 = interpolate('{{greeting}} {{name}}!');
 					expect(exp1(context1)).toEqual('Hello !');
-				}));
-				it("should interpolate strings in 'allOrNothing' mode", ss.mkdel(this, function() {
+				});
+				it("should interpolate strings in 'allOrNothing' mode", function() {
 					var context2 = { greeting: 'Hello' };
 					var context_full = { greeting: 'Hello', name: 'Angular' };
 					var exp2 = interpolate('{{greeting}} {{name}}!', false, null, true);
 					expect(exp2(context2)).toBeUndefined();
 					expect(exp2(context_full)).toEqual('Hello Angular!');
-				}));
-			}));
+				});
+			});
 		},
 		Constant: function() {
 			var M = angular.module('test', []);
 			M.constant('testconst', 42);
 			var injector = angular.injector(['test']);
-			describe('Constant', ss.mkdel(this, function() {
+			describe('Constant', function() {
 				var testconst = null;
-				it('should be defined in the injector', ss.mkdel(this, function() {
+				it('should be defined in the injector', function() {
 					var read = function() {
 						testconst = injector.get('testconst');
 					};
 					expect(read).not.toThrow();
-				}));
-				it('should return the expected value', ss.mkdel(this, function() {
+				});
+				it('should return the expected value', function() {
 					expect(testconst).toBe(42);
-				}));
-			}));
+				});
+			});
 		},
 		Filters: function() {
-			describe('Filters', ss.mkdel(this, function() {
-				describe('Currency filter', ss.mkdel(this, function() {
-					it('should format numbers to money amounts', ss.mkdel(this, function() {
+			describe('Filters', function() {
+				describe('Currency filter', function() {
+					it('should format numbers to money amounts', function() {
 						var f = angular.injector(['ng']).get('$filter')('currency');
 						expect(f(0)).toBe('$0.00');
 						expect(f(5.75)).toBe('$5.75');
@@ -470,129 +470,129 @@
 						expect(f(-5.75)).toBe('($5.75)');
 						expect(f(5.753)).toBe('$5.75');
 						expect(f(5.75, '€')).toBe('€5.75');
-					}));
-				}));
-				describe('Date filter', ss.mkdel(this, function() {
+					});
+				});
+				describe('Date filter', function() {
 					var f1 = angular.injector(['ng']).get('$filter')('date');
 					var d = new Date(1972, 4, 3);
-					it('should format dates to U.S. format', ss.mkdel(this, function() {
+					it('should format dates to U.S. format', function() {
 						expect(f1(d)).toBe('May 3, 1972');
-					}));
-					it('should format short dates', ss.mkdel(this, function() {
+					});
+					it('should format short dates', function() {
 						expect(f1(d, 'dd/MM/yy')).toBe('03/05/72');
-					}));
-					it('should format long dates', ss.mkdel(this, function() {
+					});
+					it('should format long dates', function() {
 						expect(f1(d, 'dd/MM/yyyy')).toBe('03/05/1972');
-					}));
-				}));
-			}));
+					});
+				});
+			});
 		},
 		CacheFactory: function() {
-			describe('$cacheFactory', ss.mkdel(this, function() {
+			describe('$cacheFactory', function() {
 				var injector = angular.injector(['ng']);
 				var cacheFactory = injector.get('$cacheFactory');
 				var cache = cacheFactory('cacheId');
-				it('should create a Cache object in the cache', ss.mkdel(this, function() {
+				it('should create a Cache object in the cache', function() {
 					expect(cacheFactory.get('cacheId')).toBe(cache);
-				}));
-				it('should not find unexisting Cache objects', ss.mkdel(this, function() {
+				});
+				it('should not find unexisting Cache objects', function() {
 					expect(cacheFactory.get('noSuchCacheId')).not.toBeDefined();
-				}));
-				it('should write values to cache', ss.mkdel(this, function() {
+				});
+				it('should write values to cache', function() {
 					cache.put('key', 'value');
 					cache.put('another key', 'another value');
 					expect(cache.info()).toEqual({ id: 'cacheId', size: 2 });
 					expect(cache.get('key')).toEqual('value');
 					expect(cache.get('another key')).toEqual('another value');
-				}));
-				it('should remove values from cache', ss.mkdel(this, function() {
+				});
+				it('should remove values from cache', function() {
 					cache.remove('another key');
 					expect(cache.info()).toEqual({ id: 'cacheId', size: 1 });
-				}));
-				it('should remove all values from cache', ss.mkdel(this, function() {
+				});
+				it('should remove all values from cache', function() {
 					cache.removeAll();
 					expect(cache.info()).toEqual({ id: 'cacheId', size: 0 });
-				}));
-				it('should destroy the cache', ss.mkdel(this, function() {
+				});
+				it('should destroy the cache', function() {
 					cache.destroy();
 					expect(cacheFactory.get('cacheId')).not.toBeDefined();
-				}));
-			}));
+				});
+			});
 		},
 		Locale: function() {
-			describe('$locale', ss.mkdel(this, function() {
+			describe('$locale', function() {
 				var injector = angular.injector(['ng']);
 				var loc = injector.get('$locale');
-				it('should be set to english language/US by default', ss.mkdel(this, function() {
+				it('should be set to english language/US by default', function() {
 					expect(loc.id).toEqual('en-us');
-				}));
-			}));
+				});
+			});
 		},
 		Value: function() {
 			var M = angular.module('test', []);
 			M.value('testvalue', 42);
 			var injector = angular.injector(['test']);
-			describe('Value', ss.mkdel(this, function() {
+			describe('Value', function() {
 				var testvalue = null;
-				it('should be defined in the injector', ss.mkdel(this, function() {
+				it('should be defined in the injector', function() {
 					var read = function() {
 						testvalue = injector.get('testvalue');
 					};
 					expect(read).not.toThrow();
-				}));
-				it('should return the expected value', ss.mkdel(this, function() {
+				});
+				it('should return the expected value', function() {
 					expect(testvalue).toBe(42);
-				}));
-			}));
+				});
+			});
 		},
 		Version: function() {
-			describe('Angular.Version', ss.mkdel(this, function() {
-				it('should be at least 1.3 in this testing environment', ss.mkdel(this, function() {
+			describe('Angular.Version', function() {
+				it('should be at least 1.3 in this testing environment', function() {
 					expect(angular.version.major).not.toBeLessThan(1);
 					expect(angular.version.minor).not.toBeLessThan(3);
-				}));
-			}));
+				});
+			});
 		},
 		Sanitize: function() {
-			describe('$sanitize', ss.mkdel(this, function() {
+			describe('$sanitize', function() {
 				var M = angular.module('testsanitize', ['ngSanitize']);
 				var el = window.document.createElement('p');
 				var injector = angular.bootstrap(el, [M.name]);
 				var sanitize = injector.get('$sanitize');
-				it('should sanitize an html string', ss.mkdel(this, function() {
+				it('should sanitize an html string', function() {
 					expect(sanitize("<p>this is<b onmouseover=alert('oo')>dangerous</b>data</p>")).toEqual('<p>this is<b>dangerous</b>data</p>');
-				}));
-			}));
-			describe('linky Filter', ss.mkdel(this, function() {
+				});
+			});
+			describe('linky Filter', function() {
 				var M1 = angular.module('testlinkyfilter', ['ngSanitize']);
 				var el1 = window.document.createElement('p');
 				var injector1 = angular.bootstrap(el1, [M1.name]);
 				var Filter = injector1.get('$filter');
 				var linky = Filter('linky');
-				it('should convert text into http link', ss.mkdel(this, function() {
+				it('should convert text into http link', function() {
 					expect(linky('http://www.hello.com')).toBe('<a href="http://www.hello.com">http://www.hello.com</a>');
-				}));
-			}));
+				});
+			});
 		},
 		Parse: function() {
-			describe('$parse', ss.mkdel(this, function() {
+			describe('$parse', function() {
 				var injector = angular.injector(['ng']);
 				var _parse = injector.get('$parse');
 				var getter = _parse('user.name');
 				var setter = getter.assign;
 				var context = { user: { name: 'angular' } };
 				var locals = { user: { name: 'local' } };
-				it('should read and write context in a parsed expression', ss.mkdel(this, function() {
+				it('should read and write context in a parsed expression', function() {
 					expect(getter(context)).toEqual('angular');
 					setter(context, 'newValue');
 					expect(context.user.name).toEqual('newValue');
 					expect(getter(context, locals)).toEqual('local');
-				}));
-			}));
+				});
+			});
 		},
 		DependencyInjection: function() {
-			describe('Dependecy injection', ss.mkdel(this, function() {
-				it('should work with implicit annotation in constructor parameter names', ss.mkdel(this, function() {
+			describe('Dependecy injection', function() {
+				it('should work with implicit annotation in constructor parameter names', function() {
 					var M = angular.module('test1', []);
 					AngularJS.ModuleBuilder.Service($TestDIService1).call(null, M, []);
 					// TestDIService1 is a service with an implicit injection named "injected_object"
@@ -600,8 +600,8 @@
 					var injector = angular.injector(['test1']);
 					var serv = injector.get('TestDIService1');
 					expect(serv.injected_value).toBe(42);
-				}));
-				it('should work with explicit annotation', ss.mkdel(this, function() {
+				});
+				it('should work with explicit annotation', function() {
 					var M1 = angular.module('test2', []);
 					M1.constant('injected_object', 16);
 					M1.constant('explicit_injected_object', 42);
@@ -610,8 +610,8 @@
 					var injector1 = angular.injector(['test2']);
 					var serv1 = injector1.get('TestDIService1');
 					expect(serv1.injected_value).toBe(42);
-				}));
-				it('should work with explicit annotation with [Inject] decorator', ss.mkdel(this, function() {
+				});
+				it('should work with explicit annotation with [Inject] decorator', function() {
 					var M2 = angular.module('test3', []);
 					AngularJS.ModuleBuilder.Service($TestDIService2).call(null, M2, []);
 					// TestDIService2 is a service with an explicit attribute injection named "attribute_injected_object"
@@ -619,38 +619,38 @@
 					var injector2 = angular.injector(['test3']);
 					var serv2 = injector2.get('TestDIService2');
 					expect(serv2.injected_value).toBe(42);
-				}));
-			}));
+				});
+			});
 		},
 		Factory: function() {
 			var M = angular.module('testfactory', []);
 			AngularJS.ModuleBuilder.Factory($SimpleFactories).call(null, M, []);
 			var el = window.document.createElement('p');
 			var injector = angular.bootstrap(el, [M.name]);
-			describe('Factory', ss.mkdel(this, function() {
+			describe('Factory', function() {
 				var factory = injector.get('SimpleFactory1');
-				it('should be defined in the injector', ss.mkdel(this, function() {
+				it('should be defined in the injector', function() {
 					expect(factory).not.toBeNull();
-				}));
-				it('should return the expected value', ss.mkdel(this, function() {
+				});
+				it('should return the expected value', function() {
 					expect(factory).toBe('fortytwo');
-				}));
-			}));
+				});
+			});
 		},
 		Service: function() {
 			var M = angular.module('testservice', []);
 			AngularJS.ModuleBuilder.Service($SimpleService).call(null, M, []);
 			var el = window.document.createElement('p');
 			var injector = angular.bootstrap(el, [M.name]);
-			describe('Service', ss.mkdel(this, function() {
+			describe('Service', function() {
 				var simpleService = injector.get('SimpleService');
-				it('should be defined in the injector', ss.mkdel(this, function() {
+				it('should be defined in the injector', function() {
 					expect(simpleService).not.toBeNull();
-				}));
-				it('should return the expected value', ss.mkdel(this, function() {
+				});
+				it('should return the expected value', function() {
 					expect(simpleService.testval).toBe(42);
-				}));
-			}));
+				});
+			});
 		},
 		Provider: function() {
 			var M = angular.module('testprovider', []);
@@ -658,19 +658,19 @@
 			AngularJS.ModuleBuilder.Config($UnicornConfig).call(null, M, []);
 			var el = window.document.createElement('p');
 			var injector = angular.bootstrap(el, [M.name]);
-			describe('Provider', ss.mkdel(this, function() {
+			describe('Provider', function() {
 				var launcher = injector.get('UnicornLauncher');
 				var timeout = injector.get('$timeout');
-				it('should create service in the injector', ss.mkdel(this, function() {
+				it('should create service in the injector', function() {
 					expect(launcher).not.toBeNull();
-				}));
-				it('should set parameters in service', ss.mkdel(this, function() {
+				});
+				it('should set parameters in service', function() {
 					expect(launcher.shieldtype).toBe('tinfoil');
-				}));
-				it('should create service with correct dependency injection', ss.mkdel(this, function() {
+				});
+				it('should create service with correct dependency injection', function() {
 					expect(launcher.Timeout).toBe(timeout);
-				}));
-			}));
+				});
+			});
 		},
 		SpecRunner: function() {
 			this.DependencyInjection();

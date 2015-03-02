@@ -81,7 +81,7 @@
     </Reference>
     <Reference Include="Saltarelle.Jasmine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Saltarelle.Jasmine.Cs.0.0.2\lib\Saltarelle.Jasmine.dll</HintPath>
+      <HintPath>..\packages\Saltarelle.Jasmine.Cs.0.0.3\lib\Saltarelle.Jasmine.dll</HintPath>
     </Reference>
     <Reference Include="Saltarelle.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a4048e8fcc593f14, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
